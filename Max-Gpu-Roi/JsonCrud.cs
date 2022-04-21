@@ -13,6 +13,42 @@ namespace Max_Gpu_Roi
     {
         private static string HashratesFile = Directory.GetCurrentDirectory() + "\\Hashrates.json";
 
+        public static async Task<bool> SaveHashrates(List<GpuHashrate> hashrates)
+        {
+            // Get the file name
+            var file = HashratesFile;
+
+            // If this is a new list
+            if (!File.Exists(file))
+                return await WriteToHashratesFile(file, hashrates); // Save the new list to a new file
+
+
+            // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
+            int x = 0;
+            do
+            {
+                // If the file exists and its not locked
+                if (File.Exists(file) && !IsFileLocked(new FileInfo(file)))
+                    return await WriteToHashratesFile(file, hashrates);  // Save the updated list to the file
+
+                x++;
+                await Task.Delay(1000);
+            } while (x < 10);
+
+            try
+            {
+                // The file is locked, Try deleting the file
+                File.Delete(file);
+                return await WriteToHashratesFile(file, hashrates);  // Then save the updated list to the new file
+            }
+            catch { }
+
+            // Otherwise the file is in-use and cannot be deleted so we let the user know with a popup
+            var message = file + "  - Gpu list file in-use, please make sure the file isn't open and try again.";
+            MessageBox.Show(message);
+            return false;
+        }
+
         /// <summary>
         /// Save a given coin list to a file in json
         /// </summary>
@@ -383,6 +419,25 @@ namespace Max_Gpu_Roi
 
             //file is not locked
             return false;
+        }
+
+        /// <summary>
+        /// Write the given list of GpuHashrates to the given file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="hashrates"></param>
+        /// <returns></returns>
+        public static async Task<bool> WriteToHashratesFile(string file, List<GpuHashrate> hashrates)
+        {
+            // Save the given hashrate list to the file
+            try
+            {
+                using FileStream createStream = File.Create(file);
+                await JsonSerializer.SerializeAsync(createStream, hashrates, new JsonSerializerOptions() { WriteIndented = true });
+                createStream.Close();
+                return true;
+            }
+            catch { return false; }
         }
 
         /// <summary>

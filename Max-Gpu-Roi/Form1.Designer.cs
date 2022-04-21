@@ -67,9 +67,21 @@
             this.MaxMyROI = new System.Windows.Forms.Button();
             this.lblBudgetMoneySign = new System.Windows.Forms.Label();
             this.EditGpuPanel = new System.Windows.Forms.Panel();
+            this.GpuListName = new System.Windows.Forms.TextBox();
+            this.GetGpuPrice = new System.Windows.Forms.Button();
+            this.DateReleased = new System.Windows.Forms.TextBox();
+            this.AmdOrNvidia = new System.Windows.Forms.TextBox();
+            this.GpuVramSize = new System.Windows.Forms.TextBox();
+            this.GpuVersion = new System.Windows.Forms.TextBox();
+            this.GpuManufacturer = new System.Windows.Forms.TextBox();
+            this.GpuName = new System.Windows.Forms.TextBox();
+            this.AddGpu = new System.Windows.Forms.Button();
+            this.DeleteGpu = new System.Windows.Forms.Button();
+            this.UpdateGpuList = new System.Windows.Forms.Button();
+            this.Hashrates = new System.Windows.Forms.DataGridView();
+            this.EbayItemUrl = new System.Windows.Forms.LinkLabel();
             this.CancelGpuHashrates = new System.Windows.Forms.Button();
             this.SaveGpuHashrates = new System.Windows.Forms.Button();
-            this.Hashrates = new System.Windows.Forms.ListView();
             this.lblHashrates = new System.Windows.Forms.Label();
             this.PricePaid = new System.Windows.Forms.TextBox();
             this.EbayPrice = new System.Windows.Forms.TextBox();
@@ -78,10 +90,7 @@
             this.lblEbayPrice = new System.Windows.Forms.Label();
             this.lblMSRP = new System.Windows.Forms.Label();
             this.lblDateReleased = new System.Windows.Forms.Label();
-            this.DateReleased = new System.Windows.Forms.Label();
-            this.AmdOrNvidia = new System.Windows.Forms.Label();
             this.EditGpuList = new System.Windows.Forms.ListView();
-            this.GpuListName = new System.Windows.Forms.Label();
             this.EditCoinPanel = new System.Windows.Forms.Panel();
             this.lblAllCoinsList = new System.Windows.Forms.Label();
             this.DeleteCoin = new System.Windows.Forms.Button();
@@ -97,6 +106,7 @@
             this.pnlFilters.SuspendLayout();
             this.pnlResultsList.SuspendLayout();
             this.EditGpuPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Hashrates)).BeginInit();
             this.EditCoinPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -584,9 +594,21 @@
             // EditGpuPanel
             // 
             this.EditGpuPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.EditGpuPanel.Controls.Add(this.GpuListName);
+            this.EditGpuPanel.Controls.Add(this.GetGpuPrice);
+            this.EditGpuPanel.Controls.Add(this.DateReleased);
+            this.EditGpuPanel.Controls.Add(this.AmdOrNvidia);
+            this.EditGpuPanel.Controls.Add(this.GpuVramSize);
+            this.EditGpuPanel.Controls.Add(this.GpuVersion);
+            this.EditGpuPanel.Controls.Add(this.GpuManufacturer);
+            this.EditGpuPanel.Controls.Add(this.GpuName);
+            this.EditGpuPanel.Controls.Add(this.AddGpu);
+            this.EditGpuPanel.Controls.Add(this.DeleteGpu);
+            this.EditGpuPanel.Controls.Add(this.UpdateGpuList);
+            this.EditGpuPanel.Controls.Add(this.Hashrates);
+            this.EditGpuPanel.Controls.Add(this.EbayItemUrl);
             this.EditGpuPanel.Controls.Add(this.CancelGpuHashrates);
             this.EditGpuPanel.Controls.Add(this.SaveGpuHashrates);
-            this.EditGpuPanel.Controls.Add(this.Hashrates);
             this.EditGpuPanel.Controls.Add(this.lblHashrates);
             this.EditGpuPanel.Controls.Add(this.PricePaid);
             this.EditGpuPanel.Controls.Add(this.EbayPrice);
@@ -595,15 +617,169 @@
             this.EditGpuPanel.Controls.Add(this.lblEbayPrice);
             this.EditGpuPanel.Controls.Add(this.lblMSRP);
             this.EditGpuPanel.Controls.Add(this.lblDateReleased);
-            this.EditGpuPanel.Controls.Add(this.DateReleased);
-            this.EditGpuPanel.Controls.Add(this.AmdOrNvidia);
             this.EditGpuPanel.Controls.Add(this.EditGpuList);
-            this.EditGpuPanel.Controls.Add(this.GpuListName);
             this.EditGpuPanel.Location = new System.Drawing.Point(19, 941);
             this.EditGpuPanel.Name = "EditGpuPanel";
             this.EditGpuPanel.Size = new System.Drawing.Size(827, 502);
             this.EditGpuPanel.TabIndex = 15;
             this.EditGpuPanel.Visible = false;
+            // 
+            // GpuListName
+            // 
+            this.GpuListName.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuListName.Location = new System.Drawing.Point(6, 9);
+            this.GpuListName.MaxLength = 150;
+            this.GpuListName.Name = "GpuListName";
+            this.GpuListName.PlaceholderText = "Gpu  List Name";
+            this.GpuListName.Size = new System.Drawing.Size(306, 41);
+            this.GpuListName.TabIndex = 29;
+            this.GpuListName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GetGpuPrice
+            // 
+            this.GetGpuPrice.BackColor = System.Drawing.Color.RoyalBlue;
+            this.GetGpuPrice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetGpuPrice.Font = new System.Drawing.Font("Ink Free", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GetGpuPrice.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.GetGpuPrice.Location = new System.Drawing.Point(487, 149);
+            this.GetGpuPrice.Name = "GetGpuPrice";
+            this.GetGpuPrice.Size = new System.Drawing.Size(87, 30);
+            this.GetGpuPrice.TabIndex = 28;
+            this.GetGpuPrice.Text = "Get Price";
+            this.GetGpuPrice.UseVisualStyleBackColor = false;
+            this.GetGpuPrice.Click += new System.EventHandler(this.GetEbayPrice_Click);
+            // 
+            // DateReleased
+            // 
+            this.DateReleased.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DateReleased.Location = new System.Drawing.Point(565, 29);
+            this.DateReleased.MaxLength = 150;
+            this.DateReleased.Name = "DateReleased";
+            this.DateReleased.PlaceholderText = "Month Year";
+            this.DateReleased.Size = new System.Drawing.Size(204, 33);
+            this.DateReleased.TabIndex = 27;
+            this.DateReleased.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // AmdOrNvidia
+            // 
+            this.AmdOrNvidia.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AmdOrNvidia.Location = new System.Drawing.Point(351, 9);
+            this.AmdOrNvidia.MaxLength = 150;
+            this.AmdOrNvidia.Name = "AmdOrNvidia";
+            this.AmdOrNvidia.PlaceholderText = "Amd/Nvidia";
+            this.AmdOrNvidia.Size = new System.Drawing.Size(135, 41);
+            this.AmdOrNvidia.TabIndex = 26;
+            this.AmdOrNvidia.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GpuVramSize
+            // 
+            this.GpuVramSize.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuVramSize.Location = new System.Drawing.Point(271, 106);
+            this.GpuVramSize.MaxLength = 2;
+            this.GpuVramSize.Name = "GpuVramSize";
+            this.GpuVramSize.PlaceholderText = "Vram Size";
+            this.GpuVramSize.Size = new System.Drawing.Size(41, 31);
+            this.GpuVramSize.TabIndex = 25;
+            this.GpuVramSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GpuVersion
+            // 
+            this.GpuVersion.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuVersion.Location = new System.Drawing.Point(202, 106);
+            this.GpuVersion.MaxLength = 150;
+            this.GpuVersion.Name = "GpuVersion";
+            this.GpuVersion.PlaceholderText = "Version";
+            this.GpuVersion.Size = new System.Drawing.Size(54, 31);
+            this.GpuVersion.TabIndex = 24;
+            this.GpuVersion.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GpuManufacturer
+            // 
+            this.GpuManufacturer.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuManufacturer.Location = new System.Drawing.Point(113, 106);
+            this.GpuManufacturer.MaxLength = 150;
+            this.GpuManufacturer.Name = "GpuManufacturer";
+            this.GpuManufacturer.PlaceholderText = "Manufacturer";
+            this.GpuManufacturer.Size = new System.Drawing.Size(81, 31);
+            this.GpuManufacturer.TabIndex = 23;
+            this.GpuManufacturer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // GpuName
+            // 
+            this.GpuName.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuName.Location = new System.Drawing.Point(6, 106);
+            this.GpuName.MaxLength = 150;
+            this.GpuName.Name = "GpuName";
+            this.GpuName.PlaceholderText = "Gpu Name";
+            this.GpuName.Size = new System.Drawing.Size(101, 31);
+            this.GpuName.TabIndex = 22;
+            this.GpuName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // AddGpu
+            // 
+            this.AddGpu.BackColor = System.Drawing.Color.RoyalBlue;
+            this.AddGpu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddGpu.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AddGpu.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.AddGpu.Location = new System.Drawing.Point(157, 60);
+            this.AddGpu.Name = "AddGpu";
+            this.AddGpu.Size = new System.Drawing.Size(61, 30);
+            this.AddGpu.TabIndex = 21;
+            this.AddGpu.Text = "Add";
+            this.AddGpu.UseVisualStyleBackColor = false;
+            this.AddGpu.Click += new System.EventHandler(this.AddGpu_Click);
+            // 
+            // DeleteGpu
+            // 
+            this.DeleteGpu.BackColor = System.Drawing.Color.RoyalBlue;
+            this.DeleteGpu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteGpu.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DeleteGpu.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.DeleteGpu.Location = new System.Drawing.Point(239, 60);
+            this.DeleteGpu.Name = "DeleteGpu";
+            this.DeleteGpu.Size = new System.Drawing.Size(79, 30);
+            this.DeleteGpu.TabIndex = 20;
+            this.DeleteGpu.Text = "Delete";
+            this.DeleteGpu.UseVisualStyleBackColor = false;
+            this.DeleteGpu.Click += new System.EventHandler(this.DeleteGpu_Click);
+            // 
+            // UpdateGpuList
+            // 
+            this.UpdateGpuList.BackColor = System.Drawing.Color.RoyalBlue;
+            this.UpdateGpuList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.UpdateGpuList.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.UpdateGpuList.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.UpdateGpuList.Location = new System.Drawing.Point(6, 60);
+            this.UpdateGpuList.Name = "UpdateGpuList";
+            this.UpdateGpuList.Size = new System.Drawing.Size(131, 30);
+            this.UpdateGpuList.TabIndex = 19;
+            this.UpdateGpuList.Text = "Update Gpu";
+            this.UpdateGpuList.UseVisualStyleBackColor = false;
+            this.UpdateGpuList.Click += new System.EventHandler(this.UpdateGpuList_Click);
+            // 
+            // Hashrates
+            // 
+            this.Hashrates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Hashrates.Location = new System.Drawing.Point(340, 218);
+            this.Hashrates.Name = "Hashrates";
+            this.Hashrates.RowTemplate.Height = 25;
+            this.Hashrates.ShowCellToolTips = false;
+            this.Hashrates.Size = new System.Drawing.Size(478, 236);
+            this.Hashrates.TabIndex = 18;
+            this.Hashrates.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Hashrates_EditingControlShowing);
+            this.Hashrates.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Hashrates_KeyDown);
+            // 
+            // EbayItemUrl
+            // 
+            this.EbayItemUrl.AutoSize = true;
+            this.EbayItemUrl.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EbayItemUrl.Location = new System.Drawing.Point(608, 150);
+            this.EbayItemUrl.Name = "EbayItemUrl";
+            this.EbayItemUrl.Size = new System.Drawing.Size(53, 26);
+            this.EbayItemUrl.TabIndex = 17;
+            this.EbayItemUrl.TabStop = true;
+            this.EbayItemUrl.Text = "Link";
+            this.EbayItemUrl.Click += new System.EventHandler(this.EbayItemUrl_Click);
             // 
             // CancelGpuHashrates
             // 
@@ -633,19 +809,6 @@
             this.SaveGpuHashrates.UseVisualStyleBackColor = false;
             this.SaveGpuHashrates.Click += new System.EventHandler(this.SaveGpuHashrates_Click);
             // 
-            // Hashrates
-            // 
-            this.Hashrates.FullRowSelect = true;
-            this.Hashrates.HideSelection = false;
-            this.Hashrates.Location = new System.Drawing.Point(336, 212);
-            this.Hashrates.MultiSelect = false;
-            this.Hashrates.Name = "Hashrates";
-            this.Hashrates.Size = new System.Drawing.Size(476, 236);
-            this.Hashrates.SmallImageList = this.coinImageList;
-            this.Hashrates.TabIndex = 14;
-            this.Hashrates.UseCompatibleStateImageBehavior = false;
-            this.Hashrates.View = System.Windows.Forms.View.Details;
-            // 
             // lblHashrates
             // 
             this.lblHashrates.AutoSize = true;
@@ -665,7 +828,7 @@
             this.PricePaid.Location = new System.Drawing.Point(680, 106);
             this.PricePaid.MaxLength = 9;
             this.PricePaid.Name = "PricePaid";
-            this.PricePaid.PlaceholderText = "900.00";
+            this.PricePaid.PlaceholderText = "0.00";
             this.PricePaid.Size = new System.Drawing.Size(136, 37);
             this.PricePaid.TabIndex = 12;
             this.PricePaid.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -676,7 +839,7 @@
             this.EbayPrice.Location = new System.Drawing.Point(510, 106);
             this.EbayPrice.MaxLength = 9;
             this.EbayPrice.Name = "EbayPrice";
-            this.EbayPrice.PlaceholderText = "950.00";
+            this.EbayPrice.PlaceholderText = "0.00";
             this.EbayPrice.Size = new System.Drawing.Size(136, 37);
             this.EbayPrice.TabIndex = 11;
             this.EbayPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -687,7 +850,7 @@
             this.MSRP.Location = new System.Drawing.Point(336, 106);
             this.MSRP.MaxLength = 9;
             this.MSRP.Name = "MSRP";
-            this.MSRP.PlaceholderText = "750.00";
+            this.MSRP.PlaceholderText = "0.00";
             this.MSRP.Size = new System.Drawing.Size(136, 37);
             this.MSRP.TabIndex = 10;
             this.MSRP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -744,57 +907,18 @@
             this.lblDateReleased.TabIndex = 6;
             this.lblDateReleased.Text = "Release Date";
             // 
-            // DateReleased
-            // 
-            this.DateReleased.AutoSize = true;
-            this.DateReleased.BackColor = System.Drawing.Color.Transparent;
-            this.DateReleased.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DateReleased.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.DateReleased.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.DateReleased.Location = new System.Drawing.Point(578, 33);
-            this.DateReleased.Name = "DateReleased";
-            this.DateReleased.Size = new System.Drawing.Size(127, 30);
-            this.DateReleased.TabIndex = 5;
-            this.DateReleased.Text = "July 2021";
-            // 
-            // AmdOrNvidia
-            // 
-            this.AmdOrNvidia.AutoSize = true;
-            this.AmdOrNvidia.BackColor = System.Drawing.Color.Transparent;
-            this.AmdOrNvidia.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AmdOrNvidia.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AmdOrNvidia.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.AmdOrNvidia.Location = new System.Drawing.Point(336, 15);
-            this.AmdOrNvidia.Name = "AmdOrNvidia";
-            this.AmdOrNvidia.Size = new System.Drawing.Size(140, 30);
-            this.AmdOrNvidia.TabIndex = 4;
-            this.AmdOrNvidia.Text = "Amd/Nvidia";
-            // 
             // EditGpuList
             // 
             this.EditGpuList.FullRowSelect = true;
             this.EditGpuList.HideSelection = false;
-            this.EditGpuList.Location = new System.Drawing.Point(6, 50);
+            this.EditGpuList.Location = new System.Drawing.Point(6, 146);
             this.EditGpuList.MultiSelect = false;
             this.EditGpuList.Name = "EditGpuList";
-            this.EditGpuList.Size = new System.Drawing.Size(320, 446);
+            this.EditGpuList.Size = new System.Drawing.Size(320, 350);
             this.EditGpuList.TabIndex = 3;
             this.EditGpuList.UseCompatibleStateImageBehavior = false;
             this.EditGpuList.View = System.Windows.Forms.View.Details;
             this.EditGpuList.SelectedIndexChanged += new System.EventHandler(this.EditGpuList_SelectedIndexChanged);
-            // 
-            // GpuListName
-            // 
-            this.GpuListName.AutoSize = true;
-            this.GpuListName.BackColor = System.Drawing.Color.Transparent;
-            this.GpuListName.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GpuListName.Font = new System.Drawing.Font("Ink Free", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuListName.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.GpuListName.Location = new System.Drawing.Point(1, 1);
-            this.GpuListName.Name = "GpuListName";
-            this.GpuListName.Size = new System.Drawing.Size(273, 46);
-            this.GpuListName.TabIndex = 1;
-            this.GpuListName.Text = "Gpu List Name";
             // 
             // EditCoinPanel
             // 
@@ -960,6 +1084,7 @@
             this.pnlResultsList.PerformLayout();
             this.EditGpuPanel.ResumeLayout(false);
             this.EditGpuPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Hashrates)).EndInit();
             this.EditCoinPanel.ResumeLayout(false);
             this.EditCoinPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -1006,7 +1131,6 @@
         private System.Windows.Forms.Button MaxMyROI;
         private System.Windows.Forms.Label lblBudgetMoneySign;
         private System.Windows.Forms.Panel EditGpuPanel;
-        private System.Windows.Forms.Label GpuListName;
         private System.Windows.Forms.ListView EditGpuList;
         private System.Windows.Forms.TextBox PricePaid;
         private System.Windows.Forms.TextBox EbayPrice;
@@ -1015,9 +1139,6 @@
         private System.Windows.Forms.Label lblEbayPrice;
         private System.Windows.Forms.Label lblMSRP;
         private System.Windows.Forms.Label lblDateReleased;
-        private System.Windows.Forms.Label DateReleased;
-        private System.Windows.Forms.Label AmdOrNvidia;
-        private System.Windows.Forms.ListView Hashrates;
         private System.Windows.Forms.Label lblHashrates;
         private System.Windows.Forms.Button CancelGpuHashrates;
         private System.Windows.Forms.Button SaveGpuHashrates;
@@ -1030,5 +1151,18 @@
         private System.Windows.Forms.Button CancelEditCoinList;
         private System.Windows.Forms.Button SaveCoinList;
         private System.Windows.Forms.Label lblAllCoinsList;
+        private System.Windows.Forms.LinkLabel EbayItemUrl;
+        private System.Windows.Forms.DataGridView Hashrates;
+        private System.Windows.Forms.Button UpdateGpuList;
+        private System.Windows.Forms.Button DeleteGpu;
+        private System.Windows.Forms.Button AddGpu;
+        private System.Windows.Forms.TextBox GpuVramSize;
+        private System.Windows.Forms.TextBox GpuVersion;
+        private System.Windows.Forms.TextBox GpuManufacturer;
+        private System.Windows.Forms.TextBox GpuName;
+        private System.Windows.Forms.Button GetGpuPrice;
+        private System.Windows.Forms.TextBox DateReleased;
+        private System.Windows.Forms.TextBox AmdOrNvidia;
+        private System.Windows.Forms.TextBox GpuListName;
     }
 }
