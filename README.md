@@ -8,6 +8,9 @@ Currently only works with gpus/coins that are measured in megahashes per second 
 Update for considerations for dual mining planned for future realese.
 
 
+
+
+
 # Frequently Asked Questions
 
 ## How to find the "best" gpu to buy?
