@@ -53,3 +53,7 @@ I also only look at Buy It Now listings so its possible you could find an even c
 ## Why do I see { Text = gpu name $price, Value = Max_Gpu_Roi.EbayItem } in the ebay dropdown menus?
 
 It is a limitation of the combo box that I used. There is surely a better way of doing it, and it will be updated when I can get around to it.
+
+## Disclaimer
+
+Although I do my best to provide trustworthy ebay listings that I would purchase my self. There is always the possiblity that a reputable seller's Ebay account gets hacked or a reputable seller could be going through some rough times and decides to scam someone. Do your own due diligence when it comes to using Ebay and if it seems too good to be true it probably is. Don't risk saving a few dollars by purchasing from an untrustworthy source but if you do then use PayPal - Goods and Services only or a credit card so if you do get scammed you can just do a charge back to get your money back.
