@@ -37,15 +37,16 @@ You can copy default hashrates for a single coin from here and paste it into you
 ## How to find the cheapest gpu on ebay?
 
 There are two ways. You can click on one of the gpus that appear after clicking Max My ROI.
+
 Then click the Ebay Link above that list.
+
 Or
-Click the edit button nearest the gpu lists.
-Then find the gpu you are looking for and click it.
-Click the Ebay Link. If that isn't the right gpu/item then you can use the dropdown menu to select the next cheapest option.
+
+Click the edit button nearest the gpu lists. Then find the gpu you are looking for and click it, then click the Ebay Link. If that isn't the right gpu/item then you can use the dropdown menu to select the next cheapest option.
 
 ## Why do I sometimes get the wrong gpu when I click on an Ebay Link?
 
-Unfortunetly, it is out of my skill set to search each ebay image for every gpu listing in order to get all of the necessary information, because sometimes a seller will only post the important details in an image.
+Unfortunetly, it is out of my skill set to search each ebay images for every gpu listing in order to get all of the necessary information, because sometimes a seller will only post the important details in an image.
 I have done my best to create an algorithm that can find the cheapest gpu from a reputable seller on ebay.
 A seller must have at least 100 feedback and a score of at least 97% for me to even consider the listing.
 I also only look at Buy It Now listings so its possible you could find an even cheaper gpu if you play the auction game.
