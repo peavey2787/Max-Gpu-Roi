@@ -1,4 +1,6 @@
 # Max-Gpu-Roi
+## Don't leave money on the table
+Currently only works with gpus/coins that are measured in megahashes per second (mhs).
 
 ## How to find the "best" gpu to buy?
 Best is subjective, but there are plenty of options to sort the gpus by.
