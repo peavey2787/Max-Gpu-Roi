@@ -33,12 +33,11 @@ Then click Max My ROI.
 
 Click the edit button  near Gpu Lists and find your gpu in the list and click on it.
 You can copy default hashrates for a single coin from here and paste it into your own custom gpu list.
+If you want to add a coin that isn't listed just select the empty row and add the hashrate info, but make sure to enter the correct coin symbol/algorithm. There are plans to include a dropdown menu to prevent inaccurate entries in a future realese.
 
 ## How to find the cheapest gpu on ebay?
 
-There are two ways. You can click on one of the gpus that appear after clicking Max My ROI.
-
-Then click the Ebay Link above that list.
+There are two ways. You can click on one of the gpus that appear after clicking Max My ROI. Then click the Ebay Link above that list.
 
 Or
 
