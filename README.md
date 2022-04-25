@@ -7,10 +7,6 @@ If you aren't looking to purchase any more gpus this app will still help maximiz
 Currently only works with gpus/coins that are measured in megahashes per second (mhs).
 Update for considerations for dual mining planned for future realese.
 
-
-
-
-
 # Frequently Asked Questions
 
 ## How to find the "best" gpu to buy?
