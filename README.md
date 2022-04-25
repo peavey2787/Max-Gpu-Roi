@@ -14,8 +14,8 @@ Update for considerations for dual mining planned for future realese.
 Best is subjective, but there are plenty of options to sort the gpus by.
 Launch the app and click Max My ROI.
 Then sort the list by clicking on one of the column headers.
-If you're looking for low power usage high profits click Efficiency.
-If you're looking for low cost high profits regardless of power click $/Mhs.
+If you're looking for low power usage and high profits click Efficiency.
+If you're looking for low cost and high profits regardless of power click $/Mhs.
 If you're looking for the quickest ROI click ROI.
 If you just want the cheapest gpu click Price.
 
