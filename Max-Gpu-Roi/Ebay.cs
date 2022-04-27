@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -14,8 +13,71 @@ namespace Max_Gpu_Roi
     internal class Ebay
     {
         private string BaseUrl = "https://api.ebay.com/buy/browse/v1/item_summary/";
-        public string AccessToken = @"v^1.1#i^1#I^3#p^1#f^0#r^0#t^H4sIAAAAAAAAAOVYbWwURRjuXq/FgpWaQiENCcfyERR2b3bve+UuHv2gV2l75UqtJQR392bbhbvd7c6cbcVgrXzoD0PEqBgkNjVNQKOEpAQVP6LFSEwMGtMY/WEAgxKNGguhxgTi7N1RrpUA0kts4v25zDvvvPM8z7zvzOyAvuKS+3fX7R4vpWbZBvpAn42iuDmgpLho1T2FtsqiApDjQA30Leuz9xdeWIPEZMIQNkBk6BqCjp5kQkNC2hikU6Ym6CJSkaCJSYgELAuxcMN6gWeBYJg61mU9QTsi1UE6ICl+RVTcbjf0QxiQiFW7FrNFJ/0ulyxC0Q2UuER8fKQfoRSMaAiLGg7SPOB5BrgZnmvhfIIHCBzPch6+nXa0QhOpukZcWECH0nCF9FgzB+vNoYoIQROTIHQoEq6NNYUj1TWNLWucObFCWR1iWMQpNLlVpceho1VMpODNp0FpbyGWkmWIEO0MZWaYHFQIXwNzB/AzUrugAjxSnAMS5GQA8yJlrW4mRXxzHJZFjTNK2lWAGlZx760UJWpIW6GMs61GEiJS7bD+mlNiQlVUaAbpmrXhR8LRKB2qF5MqrNNNpkHsWWekNuhMdEM1o7h52QXiXj/j8nAKBxVPdqJMtKzMU2aq0rW4aomGHI06XgsJajhVG3eONsSpSWsywwq2EOX6Ba5p6Pa3W4uaWcUU7tSsdYVJIoQj3bz1CkyMxthUpRSGExGmdqQlCtKiYahxempnOhez6dODgnQnxobgdHZ3d7PdLlY3O5w8AJyzrWF9TO6ESZEmvlatZ/zVWw9g1DQVmeQW8Rdwr0Gw9JBcJQC0Djrk9vhBwJfVfTKs0FTrPww5nJ2TKyJvFeLngcxzMkeKRAQ+Lh8VEsomqdPCASWxl0mK5jaIjYQoQ0YmeZZKQlONCy6Pwrv8CmTi3oDCuAOKwkieuJfhFAgBhJIkB/z/p0K53VSPQdmEOC+5nrc8j/jbulJtD0drDFhv6iga7azqNIGGYZXubY7xW6XO2p7GhxSfB3cHb7cabki+KqESZVrI/PkQwKr1/IlQpyMM49OiF5N1A0b1hCr3zqwFdpnxqGji3hhMJIhhWiTDhhHJz16dN3r/cpu4M975O6P+o/PphqyQlbIzi5U1HpEAoqGy1gnEynrSadW6LpLrh2XekkY9Ld4qubnOKNaEZIatGs9cOdk0XRY9JrMmRHrKJLdttsm6gbXo26BGzjNs6okENFu5addzMpnCopSAM62w85DgqjjDDlvO6wEer8vN8dPiJaeP0i0zbUvKx1ZsX3eH12rn5I/8UEH6x/VTx0A/ddRGUcAJlnNLwZLiwo32wrsrkYohq4oKi9QOjXy7mpDdBnsNUTVtxdSOBqF5NOdZYWAzWDjxsFBSyM3JeWUAi673FHFzF5TyPHDzHOfzAI5vB0uv99q5Cvu8+pYrm587fh8Xe7P28M/y6OVl7uM7QOmEE0UVFdj7qYLy78bm4hWtz3qVQxWh/fsHjz3aVYk63o0dMV7+4NKhA690jH/YNqi1D8lB73sXR+bVnNp+fGBpdV3X4oUd5w/+csi/vezsW5XdO3/aU/Lg/PEL5dzqr55YEC5cPPz+7EXl8MQeqbxsfPXVN4bOrYBntu+ofSc0EPx12HdgvmPTxpG9e/849s2pwU1N0fFnnrY91T18oqxi89ng6+c+Drx0unZw35KVz387su/JPz8a/HLWydO7jpz89PD3/F/z1v/eN0z9cPHMVdw857WosJL5pMc2K7rz6F0Xxj5fUTo0eln4+rcmW4U0Mno+tOrKAy/UL770xY9ju+YvD9hLu+Y2zz749upXhz6rfvxFquZed1lm+f4GIs0CmvARAAA=";
-        
+        public string SecretId = "PRD-42c30d68b1b3-cbfb-4ffc-afe4-308b";
+        public string ClientId = "JamieHor-MaxGpuRo-PRD-f42c30d68-351f1ef5";
+        public string tempAccessToken = @"v^1.1#i^1#f^0#I^3#r^0#p^1#t^H4sIAAAAAAAAAOVYa2wUVRTu9EUQWgxBUISwDpqguLN3Znd2Zwd2dWkLXehj261saTQ4M3unO+3szDD3Dm2N1U0JqOADQ0yKCVIUDRpJfUTFmDQqP8RXEIUfpv7wHRPA+ENChBidmS1lWwkg3cQmbrLZzLnnnvt93znn3rsDcpUz79hWv+1sFTGjdCgHcqUEQc8CMysrlleXlS6sKAEFDsRQ7tZc+UDZLyuRkFUNvhUiQ9cQ9PRmVQ3xrjFCWqbG6wJSEK8JWYh4LPHJWGMDz1CAN0wd65Kukp54bYQM+WlG5GBYZkMC5PzAtmoXYrbpETItsjAkMyGaAywjsgF7HCELxjWEBQ1HSAYwjBcEvAzTBoJ8IMizHMX6Qx2kZz00kaJrtgsFyKgLl3fnmgVYLw9VQAia2A5CRuOx1cnmWLy2rqltpa8gVnRMhyQWsIUmPtXoaehZL6gWvPwyyPXmk5YkQYRIXzS/wsSgfOwCmGuA70othLgw4CQuEE4DCEWxKFKu1s2sgC+Pw7Eoaa/suvJQwwruu5KithpiF5Tw2FOTHSJe63F+WixBVWQFmhGyblVsQyyRIKNrhawC63XT2yj0rjGsVt2baK31ygFG8oN0kPP6WVqmocyOLZSPNibzpJVqdC2tOKIhT5OOV0EbNZysjb9AG9upWWs2YzJ2EBX6ceMa0h1OUvNZtHBGc/IKs7YQHvfxyhkYn42xqYgWhuMRJg+4Etm5NgwlTU4edGtxrHx6UYTMYGzwPl9PTw/V46d0s9PHAED72hsbklIGZgXS9nV6Pe+vXHmCV3GpSNCeiRQe9xk2ll67Vm0AWicZDbAcCIfGdJ8IKzrZ+g9DAWffxI4oVoeE/UxIZNiACASWY9P+YnRIdKxIfQ4OKAp93qxgdkNsqIIEvZJdZ1YWmkqa97My4+dk6E0Hw7I3EJZlr8img15ahtDtVynM/Z8a5WpLPQklE+Ki1HrR6jzOtW+y2lOJOgOuNXWUSGRqMibQMKzRgy1JpkvMrO5tWieHWNwTudpuuCT5GlWxlWmz1y+GAE6vF0+Eeh1hmJ4SvaSkGzChq4rUN70S7DfTCcHEfUmoqrZhSiRjhhEvzl5dNHr/cpu4Nt7FO6P+o/PpkqyQU7LTi5UzH9kBBEOhnBOIkvSsz+l1XbCvH455o4t6SrwV++Y6rVjbJPNslXT+ykm5dCm0WaJMiHTLtG/bVLNzA2vTu6Fmn2fY1FUVmuvpKfdzNmthQVThdGvsIhS4Ikyzw5YOsiBI21O4KfGS3KN043TbkoqxFZevucZrtW/in/xoifuhB4i3wADxeilBAB+4jV4Kbqksu6e8bPZCpGBIKYJMIaVTs/+7mpDqhn2GoJillcRDjXzLiYLXCkP3gRvHXyzMLKNnFbxlAIsujlTQcxZUMQwI2N9gIMhyHWDpxdFyen75POLZA+/PodaJe46kXiGOeeCWuocHQdW4E0FUlJQPECV1N+wb+WHvgqO1Ku5f8mt107k3NfHuR1sOpfojxz+991xV9YbUsu1Pzd/oSR18L+dv2Gpt2rrb98fIvt9zX546PGj9LNeuO/VIX8PmRbUfP7Dj+/2p37I7D884P/ztT7tbu3OfbG7PZAfOGSM5taty/+j9736+rOaA/vX2Fw/tQn8OH7ZOLx9V+JbBgy93Ht1zfuhAzaOfrex46ekPhhe/c5w48vauN07ObfSj0eihE+LIky0PLgxRzSvunLdk74qyM3P3g9nD8W0/3tX12PLTo4tvSu0YvO6rZ6qP7/ymvf25LXNfRY9XLf7iiZ3lt3f+dWbDCydnfzdry7ITHx57vi4U3PHR9a/Jwtn+/puX1gcr8+n7Gw/RGoPwEQAA";
+        public string RuName = "Jamie_Horton-JamieHor-MaxGpu-kayglub";
+        public string AccessToken = "";
+        public DateTime TokenExpirationDate;
+        public string AppAccessToken = "";
+
+
+        private async Task<bool> GetAppAccessToken()
+        {
+            // Token isn't expired
+            if (TokenExpirationDate.Year == DateTime.Now.Year && TokenExpirationDate.CompareTo(DateTime.Now) < 0)
+                return true;
+            
+            // Toke expired, get a new one
+            var url = "https://api.ebay.com/identity/v1/oauth2/token";
+
+            var values = new Dictionary<string, string>
+              {
+                  { "grant_type", "client_credentials" },
+                  { "scope", "https://api.ebay.com/oauth/api_scope"}
+              };
+            var payload = new FormUrlEncodedContent(values);
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+            var base64Creds = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + SecretId));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Basic " + base64Creds);   
+            var response = await client.PostAsync(url, payload);
+            var responseString = await response.Content.ReadAsStringAsync();
+            AppAccessToken = responseString[0].ToString();
+
+            dynamic data = JsonSerializer.Deserialize<ExpandoObject>(responseString);
+            AppAccessToken = data.access_token.ToString();
+            TokenExpirationDate = DateTime.Now.AddSeconds(data.expires_in.GetInt32());
+
+            return true;
+        }
+
+        private async void RefreshAccessToken()
+        {
+            var url = "https://api.ebay.com/identity/v1/oauth2/token";
+
+            var values = new Dictionary<string, string>
+              {
+                  { "grant_type", "refresh_token" },
+                  { "refresh_token", AppAccessToken },
+                  { "scope", "https://api.ebay.com/oauth/api_scope"}
+              };
+            var content = new FormUrlEncodedContent(values);
+
+            HttpClient client = new HttpClient();
+            var response = await client.PostAsync(url, content);
+
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + SecretId)));
+
+            var responseString = await response.Content.ReadAsStringAsync();
+            AccessToken = responseString[0].ToString();
+
+        }
+
+       
+
         /// <summary>
         /// Returns the lowest priced item based on a given search phrase. Also uses filters 
         /// to only search buy it now options in the United States with users that have 
@@ -23,55 +85,139 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <returns></returns>
-        public async Task<EbayItem> GetLowestPrice(string searchPhrase)
+        public async Task<List<EbayItem>> GetLowestPrice(Gpu gpu)
         {
-            var ebayItem = new EbayItem();
+            var searchPhrase = gpu.Name;
+
+            if(!await GetAppAccessToken())
+                return new List<EbayItem>();
+
+            var ebayItems = new List<EbayItem>();
+
+            /*
+            if(gpu.ModelNumber == "3060" && gpu.VersionSuffix == "ti")
+            {
+                var come = "get me for debugging";
+            }
+            */
+
+            // If nvidia and a possible lhr/non lhr confusion specify non lhr if lhr = false an lhr if its true
+            if (gpu.AmdOrNvidia.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum) 
+                && parsedModelNum > 3000
+                && parsedModelNum != 3050 )
+            {
+                if (gpu.Lhr)
+                    searchPhrase += " lhr";
+                else
+                    searchPhrase += " non-lhr";
+            }
+
+
+
+
+            // If amd add vram size to search
+            var version = gpu.VersionPrefix == null ? "" : gpu.VersionPrefix.ToLower();
+            var model = gpu.ModelNumber.ToLower();
+            var versionSuffix = gpu.VersionSuffix == null ? "" : gpu.VersionSuffix.ToLower();
+
+            if (version == "r9" || model == "radeon" || model == "vega")
+                { }
+            else if (gpu.AmdOrNvidia.ToLower() == "amd" && gpu.VramSize > 0)
+                searchPhrase += " " + gpu.VramSize + "gb";
 
             // Convert all spaces to %20 for browser            
             var url = BaseUrl + "search?q=" + Uri.EscapeDataString(searchPhrase);
 
-            try
-            {
+                try
+                {
+                var root = new Root();
+                
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-                request.Method = "GET";
-                request.Headers.Add(HttpRequestHeader.Authorization, "Bearer " + AccessToken);
+                request.Method = "GET";                
+                request.Headers.Add(HttpRequestHeader.Authorization, "Bearer " + AppAccessToken);                
                 request.Headers.Add(HttpRequestHeader.Accept, "application/json");
                 request.Headers.Add("X-EBAY-C-MARKETPLACE-ID", "EBAY-US");
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                
+
 
                 var response = (HttpWebResponse)request.GetResponse();
-                var root = new Root();
+
                 using (var streamReader = new StreamReader(response.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
                     root = JsonSerializer.Deserialize<Root>(result);//.DeserializeAsync<Root>(result);
                 }
+                
+                if (root.itemSummaries == null)
+                    return ebayItems;
+
+                var gpuModelNumber = searchPhrase.ToLower();
 
                 // get lowest price with user rating atleast 97% and over 100 items sold 
                 foreach (var item in root.itemSummaries)
                 {
-                    // only include buy it now options from the United States
+                    // only include buy it now options from the United States for $100 or more
                     if (item.buyingOptions.Count > 0 && item.buyingOptions[0] == "FIXED_PRICE" && item.itemLocation.country == "US"
-                        && item.seller.feedbackScore > 100 && double.Parse(item.seller.feedbackPercentage) > 97)
+                        && item.seller.feedbackScore > 100 && double.Parse(item.seller.feedbackPercentage) > 97
+                        && double.Parse(item.price.value) > 100 && item.condition != "For parts or not working"
+                        && !item.title.ToLower().Contains("cooler only") && !item.title.ToLower().Contains("fan only") && !item.title.ToLower().Contains("fans only")
+                        && !item.title.ToLower().Contains("no fan") && !item.title.ToLower().Contains("missing fan")
+                        && !item.title.ToLower().Contains("read description")  && !item.title.ToLower().Contains("fans broken") && !item.title.ToLower().Contains("fan broken")
+                        && !item.title.ToLower().Contains("artifact") && item.title.ToLower().Contains(gpu.ModelNumber)
+                        && item.title.ToLower().Contains(versionSuffix))
                     {
+
+                        // Don't get non-lhr options if looking for lhr cards
+                        if (searchPhrase.ToLower().Contains("non lhr") || searchPhrase.ToLower().Contains("non-lhr")
+                            || searchPhrase.ToLower().Contains("fhr") || !searchPhrase.ToLower().Contains("lhr"))
+                        {
+                            // non lhr card search 
+                            if (item.title.ToLower().Contains("fhr") || item.title.ToLower().Contains("non-lhr")
+                            || item.title.ToLower().Contains("non lhr") || item.title.ToLower().Contains("no lhr")
+                            || item.title.ToLower().Contains("founders edition") || item.title.ToLower().Contains(gpuModelNumber + "fe"))
+                            {
+                                // this is specifically a non lhr card 
+                            }
+                            else if (item.title.ToLower().Contains("lhr"))
+                                continue; // skip this lhr card we looking for non lhr
+                        }
+                        else if (searchPhrase.ToLower().Contains("lhr") && item.title.ToLower().Contains("fhr") || item.title.ToLower().Contains("non-lhr")
+                            || item.title.ToLower().Contains("non lhr") || item.title.ToLower().Contains("no lhr"))
+                        {
+                            // searching for lhr card but this is a non lhr card skip this one                            
+                            continue;
+                        }
+
+                        // If we not looking for ti and this is a ti card skit it 
+                        if (!searchPhrase.ToLower().Contains("ti") && (item.title.ToLower().Contains(gpuModelNumber + " ti")
+                            || item.title.ToLower().Contains(gpuModelNumber + "ti")))
+                            continue;
+                        // Or if this is a ti card and we looking for ti card
+                        else if (searchPhrase.ToLower().Contains("ti") && (item.title.ToLower().Contains(gpuModelNumber + "ti")
+                            || item.title.ToLower().Contains(gpuModelNumber + " ti")))
+                        { }
+
+
+
                         // Get item's price + shipping costs
                         var shippingPrice = 0.0;
                         if (item.shippingOptions != null && item.shippingOptions[0].shippingCostType != "CALCULATED")
                             shippingPrice = double.Parse(item.shippingOptions[0].shippingCost.value);
                         var itemPrice = double.Parse(item.price.value) + shippingPrice;
 
+
                         // If this item is lower than the previous one, it is the new lowest option
-                        if (itemPrice <= ebayItem.Price || ebayItem.Price == 0)
-                        {
-                            var lowestEbayItem = new EbayItem();
-                            lowestEbayItem.Id = item.itemId;
-                            lowestEbayItem.Name = searchPhrase;
-                            lowestEbayItem.Url = item.itemWebUrl;
-                            lowestEbayItem.Price = double.Parse(item.price.value);
-                            lowestEbayItem.LastUpdated = DateTime.Now;
-                            ebayItem = lowestEbayItem;
-                        }
+
+                        //if (itemPrice <= ebayItem.Price || ebayItem.Price == 0)
+                        //{
+                        var lowestEbayItem = new EbayItem();
+                        lowestEbayItem.Id = item.itemId;
+                        lowestEbayItem.Name = searchPhrase;
+                        lowestEbayItem.Url = item.itemWebUrl;
+                        lowestEbayItem.Price = itemPrice;
+                        lowestEbayItem.LastUpdated = DateTime.Now;
+                        ebayItems.Add(lowestEbayItem);
+                        //}
                     }
                 }
             }
@@ -79,7 +225,8 @@ namespace Max_Gpu_Roi
             {
                 System.Windows.Forms.MessageBox.Show("Error getting ebay price info! " + ex.Message);
             }
-            return ebayItem;
+            ebayItems.Sort((y, x) => y.Price.CompareTo(x.Price));
+            return ebayItems;
         }
         
     }

@@ -11,55 +11,14 @@ namespace Max_Gpu_Roi
 {
     internal class JsonCrud
     {
-        private static string HashratesFile = Directory.GetCurrentDirectory() + "\\Hashrates.json";
-
-        public static async Task<bool> SaveHashrates(List<GpuHashrate> hashrates)
-        {
-            // Get the file name
-            var file = HashratesFile;
-
-            // If this is a new list
-            if (!File.Exists(file))
-                return await WriteToHashratesFile(file, hashrates); // Save the new list to a new file
-
-
-            // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
-            int x = 0;
-            do
-            {
-                // If the file exists and its not locked
-                if (File.Exists(file) && !IsFileLocked(new FileInfo(file)))
-                    return await WriteToHashratesFile(file, hashrates);  // Save the updated list to the file
-
-                x++;
-                await Task.Delay(1000);
-            } while (x < 10);
-
-            try
-            {
-                // The file is locked, Try deleting the file
-                File.Delete(file);
-                return await WriteToHashratesFile(file, hashrates);  // Then save the updated list to the new file
-            }
-            catch { }
-
-            // Otherwise the file is in-use and cannot be deleted so we let the user know with a popup
-            var message = file + "  - Gpu list file in-use, please make sure the file isn't open and try again.";
-            MessageBox.Show(message);
-            return false;
-        }
-
         /// <summary>
         /// Save a given coin list to a file in json
         /// </summary>
         /// <param name="coins"></param>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static async Task<bool> SaveCoinList(List<Coin> coins, string listName)
+        public static async Task<bool> SaveCoinList(List<Coin> coins, string file)
         {
-            // Get the file name
-            var file = Directory.GetCurrentDirectory() + "\\" + listName + ".json";
-
             // If this is a new list
             if (!File.Exists(file))
                 return await WriteToCoinListFile(file, coins); // Save the new list to a new file
@@ -142,10 +101,8 @@ namespace Max_Gpu_Roi
         /// <param name="gpus"></param>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static async Task<bool> SaveGpuList(List<Gpu> gpus, string listName)
+        public static async Task<bool> SaveGpuList(List<Gpu> gpus, string file)
         {
-            // Get the file name
-            var file = Directory.GetCurrentDirectory() + listName + ".json";
 
             // If this is a new list
             if (!File.Exists(file))                
@@ -207,6 +164,7 @@ namespace Max_Gpu_Roi
                     catch { }
 
                     // If the file has no data then return an empty list
+                    MessageBox.Show("Failed to load Gpu List data! Please import a backup.");
                     return new List<Gpu>();
                 }
                 x++;
@@ -221,177 +179,6 @@ namespace Max_Gpu_Roi
                 message = file + "  - Gpu list file in-use, please make sure the file isn't open and try again.";
             MessageBox.Show(message);
             return new List<Gpu>();
-        }
-
-        /// <summary>
-        /// Retrieve the hashrate for a given gpu and coin
-        /// </summary>
-        /// <param name="gpu"></param>
-        /// <param name="cryptoSymbol"></param>
-        /// <param name="lhr"></param>
-        /// <returns></returns>
-        public static async Task<List<GpuHashrate>> GetHashrates(int gpuId, string cryptoSymbol, string algorithm, bool lhr)
-        {
-            var newStats = new List<GpuHashrate>();
-
-            // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
-            int x = 0;
-            do
-            {
-                if (File.Exists(HashratesFile) && !IsFileLocked(new FileInfo(HashratesFile)))
-                {
-                    // Open the file 
-                    using FileStream fs = File.OpenRead(HashratesFile);
-                    // Extract the data
-                    var oldStats = await JsonSerializer.DeserializeAsync<List<GpuHashrate>>(fs);
-                    // Close the file
-                    fs.Close();
-
-                    // Continue if the file indeed has data
-                    if (oldStats != null)
-                    {
-                        // Go through all the hashrates in the file
-                        foreach (GpuHashrate gpuHashrate in oldStats)
-                        {
-                            // Add this hashrate info for the given gpu + coin
-                            if (gpuId == gpuHashrate.Id && cryptoSymbol == gpuHashrate.Coin && gpuHashrate.Algorithm == algorithm && lhr == gpuHashrate.Lhr)
-                                newStats.Add(gpuHashrate);
-                        }
-
-                        return newStats;
-                    }
-                }
-                x++;
-                await Task.Delay(1000);
-            } while (x < 10);
-
-            // The file was not found or in-use. Show a pop-up with which one it is.
-            var message = "";
-            if (!File.Exists(HashratesFile))
-                message = HashratesFile + "  - Hashrates file not found!";
-            else
-                message = HashratesFile + "  - Hashrates file in-use, please make sure the file isn't open and try again.";
-            MessageBox.Show(message);
-            return newStats;
-        }
-        public static async Task<List<GpuHashrate>> GetHashrates(int gpuId)
-        {
-            var newStats = new List<GpuHashrate>();
-
-            // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
-            int x = 0;
-            do
-            {
-                if (File.Exists(HashratesFile) && !IsFileLocked(new FileInfo(HashratesFile)))
-                {
-                    // Open the file 
-                    using FileStream fs = File.OpenRead(HashratesFile);
-                    // Extract the data
-                    var oldStats = await JsonSerializer.DeserializeAsync<List<GpuHashrate>>(fs);
-                    // Close the file
-                    fs.Close();
-
-                    // Continue if the file indeed has data
-                    if (oldStats != null)
-                    {
-                        // Go through all the hashrates in the file
-                        foreach (GpuHashrate gpuHashrate in oldStats)
-                        {
-                            // Add this hashrate info for the given gpu + coin
-                            if (gpuId == gpuHashrate.Id)
-                                newStats.Add(gpuHashrate);
-                        }
-
-                        return newStats;
-                    }
-                }
-                x++;
-                await Task.Delay(1000);
-            } while (x < 10);
-
-            // The file was not found or in-use. Show a pop-up with which one it is.
-            var message = "";
-            if (!File.Exists(HashratesFile))
-                message = HashratesFile + "  - Hashrates file not found!";
-            else
-                message = HashratesFile + "  - Hashrates file in-use, please make sure the file isn't open and try again.";
-            MessageBox.Show(message);
-            return newStats;
-        }
-
-        /// <summary>
-        /// Update a given gpu's hashrate and watts for a given coin
-        /// </summary>
-        /// <param name="gpuId"></param>
-        /// <param name="cryptoSymbol"></param>
-        /// <param name="hashrate"></param>
-        /// <param name="watts"></param>
-        /// <param name="lhr"></param>
-        /// <returns></returns>
-        public static async Task<bool> UpdateHashrate(int gpuId, string cryptoSymbol, double hashrate, int watts,  bool lhr)
-        {
-            // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
-            int x = 0;
-            do
-            {
-                if (File.Exists(HashratesFile) && !IsFileLocked(new FileInfo(HashratesFile)))
-                {
-                    // Open the file 
-                    using FileStream fs = File.OpenRead(HashratesFile);
-                    // Extract the data
-                    var oldStats = await JsonSerializer.DeserializeAsync<List<GpuHashrate>>(fs);
-                    // Close the file
-                    fs.Close();
-
-                    // Continue if the file indeed has data
-                    if (oldStats != null)
-                    {
-                        // Go through all the hashrates in the file
-                        for(int i=0; i<oldStats.Count; i++)
-                        {
-                            // Find the matching stats for the given gpu + coin
-                            if (gpuId == oldStats[i].Id && cryptoSymbol == oldStats[i].Coin && lhr == oldStats[i].Lhr)
-                            {
-                                // Update the stats
-                                oldStats[i].Hashrate = hashrate;
-                                oldStats[i].Watts = watts;
-
-                                // Save the file
-                                using FileStream createStream = File.Create(HashratesFile);
-                                await JsonSerializer.SerializeAsync(createStream, oldStats, new JsonSerializerOptions() { WriteIndented = true });
-                                createStream.Close();
-                                return true;
-                            }
-                        }
-
-                        // No match found, insert new entry
-                        var newStats = new GpuHashrate();
-                        newStats.Id = gpuId;
-                        newStats.Hashrate = hashrate;
-                        newStats.Watts = watts;
-                        newStats.Lhr = lhr;
-                        newStats.Coin = cryptoSymbol;
-                        oldStats.Add(newStats);
-
-                        // Save the file
-                        using FileStream cs = File.Create(HashratesFile);
-                        await JsonSerializer.SerializeAsync(cs, oldStats, new JsonSerializerOptions() { WriteIndented = true });
-                        cs.Close();
-                        return true;
-                    }
-                }
-                x++;
-                await Task.Delay(1000);
-            } while (x < 10);
-
-            // The file was not found or in-use. Show a pop-up with which one it is.
-            var message = "";
-            if (!File.Exists(HashratesFile))
-                message = HashratesFile + "  - Hashrates file not found!";
-            else
-                message = HashratesFile + "  - Hashrates file in-use, please make sure the file isn't open and try again.";
-            MessageBox.Show(message);
-            return false;
         }
 
         /// <summary>
@@ -419,25 +206,6 @@ namespace Max_Gpu_Roi
 
             //file is not locked
             return false;
-        }
-
-        /// <summary>
-        /// Write the given list of GpuHashrates to the given file
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="hashrates"></param>
-        /// <returns></returns>
-        public static async Task<bool> WriteToHashratesFile(string file, List<GpuHashrate> hashrates)
-        {
-            // Save the given hashrate list to the file
-            try
-            {
-                using FileStream createStream = File.Create(file);
-                await JsonSerializer.SerializeAsync(createStream, hashrates, new JsonSerializerOptions() { WriteIndented = true });
-                createStream.Close();
-                return true;
-            }
-            catch { return false; }
         }
 
         /// <summary>

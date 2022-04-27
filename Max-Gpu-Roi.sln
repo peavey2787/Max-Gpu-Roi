@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Max-Gpu-Roi", "Max-Gpu-Roi\Max-Gpu-Roi.csproj", "{C54A82C4-2523-4F99-88B5-0D2AD1B2CF8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Max-Gpu-Roi", "Max-Gpu-Roi\Max-Gpu-Roi.csproj", "{C54A82C4-2523-4F99-88B5-0D2AD1B2CF8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{050D737B-67E2-47BA-B804-D01C3C619324}"
+	ProjectSection(SolutionItems) = preProject
+		ebayCredentials.yaml = ebayCredentials.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

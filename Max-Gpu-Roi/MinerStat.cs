@@ -1,25 +1,32 @@
-﻿using System;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
+using WebDriverManager;
+using WebDriverManager.DriverConfigs.Impl; 
 
 namespace Max_Gpu_Roi
 {
     // The API is limited to 12 requests per minute.
     // Do note that the data refreshes every 5-10 minutes,
     // so there is no need to call the endpoint multiple times per minute.
+
     internal class MinerStat
     {
-        public async Task<CoinInfo> GetCoinInfo(string coinSymbol)
+        public static async Task<CoinInfo> GetCoinInfo(string coinSymbol)
         {
             var url = "https://api.minerstat.com/v2/coins?list=";
             var coinInfo = new CoinInfo();
 
-            
+
             try
             {
                 // Get coin info from minerstat.com as json data
@@ -32,7 +39,7 @@ namespace Max_Gpu_Roi
                 // Minerstat returned good data
                 if (coinInfos != null && coinInfos[0].price != -1)
                     return coinInfos[0];
-                
+
                 else
                 {
                     // Minerstat didn't return the coin's price/info
@@ -47,7 +54,7 @@ namespace Max_Gpu_Roi
             return coinInfo;
         }
 
-        public async Task<List<CoinInfo>> GetAllCoins()
+        public static async Task<List<CoinInfo>> GetAllCoins()
         {
             var url = "https://api.minerstat.com/v2/coins";
 
@@ -84,6 +91,52 @@ namespace Max_Gpu_Roi
 
             return new List<CoinInfo>();
         }
+
+        public static async Task<List<Gpu>> GetAllGpus()
+        {
+            var url = "https://api.minerstat.com/v2/hardware";
+            var gpus = new List<Gpu>();
+
+
+            // Get coin info from minerstat.com as json data
+            HttpClient hc = new HttpClient();
+            Task<Stream> result = hc.GetStreamAsync(url);
+            Stream stream = await result;
+            var devices = await JsonSerializer.DeserializeAsync<List<MinerStatHardware.Root>>(stream);
+            stream.Close();
+
+            int x = 0;
+            foreach (MinerStatHardware.Root device in devices)
+            {
+                // If this device is a gpu with eth hashrate
+                if (device.type == "gpu")
+                {
+                    // Get a list of just gpu names
+                    var gpu = new Gpu();
+
+                    gpu = new Gpu(device.name);
+
+                    gpu.Id = x;
+                    x++;
+
+                    // Attempt to get their hashrate info for eth (its not very accuarate or complete)
+                    /*
+                    if (device.algorithms != null && device.algorithms.Ethash != null)
+                    {
+                        var hashrate = new Hashrate();
+                        hashrate.Algorithm = "Ethash";
+                        hashrate.Coin = "Eth";
+                        hashrate.HashrateSpeed = double.TryParse(device.algorithms.Ethash.speed.ToString(), out var speed) ? speed / 1000000 : 0;
+                        hashrate.Watts = int.TryParse(device.algorithms.Ethash.power.ToString(), out var power) ? power : 0;
+                        gpu.Hashrates.Add(hashrate);
+                    }*/
+                    gpus.Add(gpu);
+                }
+            }
+
+
+            return gpus;
+        }
     }
 
     internal class CoinInfo
@@ -102,4 +155,5 @@ namespace Max_Gpu_Roi
         public double volume { get; set; }
         public int updated { get; set; }
     }
+
 }
