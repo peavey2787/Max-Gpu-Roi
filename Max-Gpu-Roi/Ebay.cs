@@ -206,7 +206,7 @@ namespace Max_Gpu_Roi
                         var lowestEbayItem = new EbayItem();
                         var rnd = new Random();                        
                         lowestEbayItem.Id = rnd.Next(99).ToString();
-                        searchPhrase.Replace("lhr lhr", "lhr"); // Remove double lhr 
+                        searchPhrase = searchPhrase.Replace("lhr lhr", "lhr"); // Remove double lhr 
                         lowestEbayItem.Name = searchPhrase;
                         lowestEbayItem.Url = item.itemWebUrl;
                         lowestEbayItem.Price = itemPrice;

@@ -34,20 +34,14 @@ namespace Max_Gpu_Roi
         private bool searchingByHodlPrice = false;
         private List<EbayItem> EbayItems = new List<EbayItem>();
         private List<Coin> coins = new List<Coin>();
+        private bool hideHashrateCoinsMenu = true;
+        private ContextMenuStrip resultsContextMenuStrip = new ContextMenuStrip();
 
         public MaxGpuRoi()
         {
             InitializeComponent();
         }
 
-        private void ShowErrorMessage(string message)
-        {
-            errorCountDownTimer.Enabled = true;
-            errorMessageTimer.Enabled = true;
-            ErrorMessagePanel.Visible = true;
-            ErrorMessage.Text = message;
-            return;
-        }
 
         // Timers
         private void OnErrorCountDownTimerTickEvent(object sender, ElapsedEventArgs e)
@@ -84,7 +78,6 @@ namespace Max_Gpu_Roi
             AllCoinInfos = await MinerStat.GetAllCoins();
             BusyGettingAllMinerStatCoinInfos = false;
         }
-
 
 
         // On Load / Exit
@@ -209,7 +202,7 @@ namespace Max_Gpu_Roi
             TotalsList.Columns.Add("Crypto Profits", -2, HorizontalAlignment.Center);
             TotalsList.Columns.Add("R-O-I", -2, HorizontalAlignment.Center);
             TotalsList.Columns[0].Width = 69;
-            TotalsList.Columns[1].Width = 40;
+            TotalsList.Columns[1].Width = 45;
             TotalsList.Columns[2].Width = 80;
             TotalsList.Columns[3].Width = 60;
             TotalsList.Columns[4].Width = 150;
@@ -346,9 +339,7 @@ namespace Max_Gpu_Roi
         private void Exit_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-        
-
+        }        
 
 
         // Results
@@ -777,6 +768,66 @@ namespace Max_Gpu_Roi
             }
             return index;
         }
+        // Results gpu right click menu
+        void cms_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            resultsContextMenuStrip.Items.Clear();
+
+            ToolStripMenuItem gpuToolStripMenuItem1 = new ToolStripMenuItem();
+            gpuToolStripMenuItem1.DropDownItemClicked += GpuToolStripMenuItem1_DropDownItemClicked;
+            gpuToolStripMenuItem1.Text = "Add to Gpu List";
+
+            // Populate the ContextMenuStrip control
+            foreach (ListViewItem item in GpuLists.Items)
+                gpuToolStripMenuItem1.DropDownItems.Add(item.Text);
+            resultsContextMenuStrip.Items.Add(gpuToolStripMenuItem1);
+
+            //resultsContextMenuStrip.Items.Add("-");
+            //resultsContextMenuStrip.Items.Add("Remove Gpu");
+
+            e.Cancel = false;
+        }
+        private void GpuToolStripMenuItem1_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var selectedItem = e.ClickedItem.Text;
+            var gpuAndCalc = ResultsList.SelectedItems[0].Tag as dynamic;
+            var gpu = gpuAndCalc.Gpu;
+
+            // Get the selected gpu list and load it
+            var file = GpuListsDirectory + selectedItem + ".json";
+            var gpuListToAddTo = JsonCrud.LoadGpuList(file);
+
+            // Give the gpu a unique id then add gpu to the list
+            gpu.Id = new Random().Next(300, 10000);
+            gpuListToAddTo.Add(gpu);
+
+            // Increase gpu count in gui for the list that was just added to
+            foreach (ListViewItem gpuListName in GpuLists.Items)
+                if (gpuListName.Text == selectedItem)
+                    gpuListName.SubItems[1].Text = (int.Parse(gpuListName.SubItems[1].Text) + 1).ToString();
+
+            // Save gpu list to file
+            JsonCrud.SaveGpuList(gpuListToAddTo, file);
+        }
+        private void ResultsList_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                var focusedItem = ResultsList.FocusedItem;
+                if (focusedItem != null && focusedItem.Bounds.Contains(e.Location))
+                {
+                    // ContextMenuStrip
+                    resultsContextMenuStrip.Opening += new CancelEventHandler(cms_Opening);
+                    resultsContextMenuStrip.ItemClicked += ResultsContextMenuStrip_ItemClicked;
+                    ResultsList.ContextMenuStrip = resultsContextMenuStrip;
+                }
+            }
+        }
+        private void ResultsContextMenuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            var selectedItem = e.ClickedItem.Text;
+        }
+
         // Totals
         private dynamic CalculateTotals()
         {
@@ -957,74 +1008,6 @@ namespace Max_Gpu_Roi
                 TotalsList.Items.Add(li);
             }
         }
-
-        // Disable/Enable GUI while editing gpu/coin lists
-        private void DisableUserInput()
-        {
-            GpuLists.Enabled = false;
-            ImportGpuLists.Enabled = false;
-            ExportGpuLists.Enabled = false;
-            EditGpuLists.Enabled = false;
-            CoinLists.Enabled = false;
-            ImportCoinLists.Enabled = false;
-            ExportCoinLists.Enabled = false;
-            EditCoinLists.Enabled = false;
-            Budget.Enabled = false;
-            MaxMyROI.Enabled = false;
-            ElectricityRate.Enabled = false;
-            PoolMinerFee.Enabled = false;
-            ShowAmd.Enabled = false;
-            ShowNvidia.Enabled = false;
-            HodlCoin.Enabled = false;
-            HodlPrice.Enabled = false;
-            MaxMyROI.Enabled = false;
-            Budget.Enabled = false;
-            VramFilter.Enabled = false;
-            AddGpuList.Enabled = false;
-            AddCoinList.Enabled = false;
-        }
-        private void EnableUserInput()
-        {
-            GpuLists.Enabled = true;
-            ImportGpuLists.Enabled = true;
-            ExportGpuLists.Enabled = true;
-            EditGpuLists.Enabled = true;
-            CoinLists.Enabled = true;
-            ImportCoinLists.Enabled = true;
-            ExportCoinLists.Enabled = true;
-            EditCoinLists.Enabled = true;
-            Budget.Enabled = true;
-            MaxMyROI.Enabled = true;
-            ElectricityRate.Enabled = true;
-            PoolMinerFee.Enabled = true;
-            ShowAmd.Enabled = true;
-            ShowNvidia.Enabled = true;
-            HodlCoin.Enabled = true;
-            HodlPrice.Enabled = true;
-            MaxMyROI.Enabled = true;
-            Budget.Enabled = true;
-            VramFilter.Enabled = true;
-            AddGpuList.Enabled = true;
-            AddCoinList.Enabled = true;
-        }
-
-
-        // Show file dialog for user to select a gpu/coin list file
-        private string GetFileFromUser()
-        {
-            var filePath = "";
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
-                openFileDialog.Filter = "Json files (*.json)|*.json";
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                    filePath = openFileDialog.FileName;
-            }
-            return filePath;
-        }
-
 
 
         // Hodl
@@ -1274,6 +1257,7 @@ namespace Max_Gpu_Roi
             }
         }
 
+        
         // Edit coin list
         private void SaveCoinList_Click(object sender, EventArgs e)
         {
@@ -1405,6 +1389,7 @@ namespace Max_Gpu_Roi
             }
         }
 
+        
         // Gpu list
         private async Task<List<Gpu>> GetGpusFromList()
         {
@@ -1447,6 +1432,12 @@ namespace Max_Gpu_Roi
                 return;
             }
 
+            // Load gpu list from file
+            if (GpuLists.SelectedItems.Count == 1 && GpuLists.SelectedItems[0].Text != "")
+                gpus = JsonCrud.LoadGpuList(GpuListsDirectory + GpuLists.SelectedItems[0].Text + ".json");
+            else
+                gpus = new List<Gpu>();
+
             // Disable user input on the main GUI
             DisableUserInput();          
             
@@ -1454,7 +1445,7 @@ namespace Max_Gpu_Roi
             EditGpuPanel.BringToFront();
 
             // If this is a new list add one new entry
-            if (GpuLists.SelectedItems[0].Tag == null || gpus.Count == 0)
+            if (GpuLists.SelectedItems[0].Text == "")
             {
                 var gpu = new Gpu();
                 var random = new Random();
@@ -1577,6 +1568,7 @@ namespace Max_Gpu_Roi
             }
         }
 
+        
         // Editing gpu list
         private void EditGpuList_SelectedIndexChanged(object sender, EventArgs e)
         {            
@@ -1618,7 +1610,6 @@ namespace Max_Gpu_Roi
             // Add new gpu to master list
             gpus.Add(gpu);
         }
-
         private void EditGpuList_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete && EditGpuList.SelectedItems != null)
@@ -1704,16 +1695,13 @@ namespace Max_Gpu_Roi
         }
         private void SaveGpuList()
         {
-            if (EditGpuList.SelectedItems != null && EditGpuList.SelectedItems.Count > 0)
+            if (GpuListName.Text.Length > 0)
             {
-                if (GpuListName.Text.Length > 0)
-                {
-                    // Save master gpu list to file
-                    JsonCrud.SaveGpuList(gpus, GpuListsDirectory + GpuListName.Text + ".json");
-                }
-                else
-                    MessageBox.Show("The gpu list needs to have a name.");
+                // Save master gpu list to file
+                JsonCrud.SaveGpuList(gpus, GpuListsDirectory + GpuListName.Text + ".json");
             }
+            else
+                MessageBox.Show("The gpu list needs to have a name.");
         }
         private void UpdateGpuList()
         {
@@ -1932,6 +1920,7 @@ namespace Max_Gpu_Roi
             }
         }
 
+        
         // Editing hashrates
         private void EditHashrates_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
@@ -1986,11 +1975,7 @@ namespace Max_Gpu_Roi
                 GetSelectedGpuHashratesFromGui();
                 SaveGpuList();
             }
-        }
-        
-        
-        
-        private bool hideHashrateCoinsMenu = true;
+        }              
         private void EditHashrates_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0)
@@ -2044,7 +2029,6 @@ namespace Max_Gpu_Roi
                 UpdateGpuList();
             }
         }
-
         private void HashrateCoinsMenu_Leave(object sender, EventArgs e)
         {
             HashrateCoinsMenu.Visible = false;
@@ -2085,8 +2069,7 @@ namespace Max_Gpu_Roi
         }
         private void CancelGpuHashrates_Click(object sender, EventArgs e)
         {
-            // If user has gpus on the list, but the list doesn't have a name and user clicks cancel make sure they really want to discard this list
-            if (EditGpuList.Items.Count > 0 && GpuListName.Text.Length == 0)
+            if (GpuListName.Text == "")
             {
                 DialogResult dialogResult = MessageBox.Show("Are you sure you want to discard this list?", "Discard List Confirmation", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
@@ -2170,7 +2153,7 @@ namespace Max_Gpu_Roi
             }
         }
 
-
+        
         // Get/Change ebay item
         private void GetEbayPrice(Gpu gpu)
         {
@@ -2400,6 +2383,7 @@ namespace Max_Gpu_Roi
             }
         }
 
+
         // Misc
         #region
         // Allow user to move window
@@ -2428,7 +2412,75 @@ namespace Max_Gpu_Roi
                 return true;
             return false;
         }
+        private void ShowErrorMessage(string message)
+        {
+            errorCountDownTimer.Enabled = true;
+            errorMessageTimer.Enabled = true;
+            ErrorMessagePanel.Visible = true;
+            ErrorMessage.Text = message;
+            return;
+        }
+        private void DisableUserInput()
+        {
+            GpuLists.Enabled = false;
+            ImportGpuLists.Enabled = false;
+            ExportGpuLists.Enabled = false;
+            EditGpuLists.Enabled = false;
+            CoinLists.Enabled = false;
+            ImportCoinLists.Enabled = false;
+            ExportCoinLists.Enabled = false;
+            EditCoinLists.Enabled = false;
+            Budget.Enabled = false;
+            MaxMyROI.Enabled = false;
+            ElectricityRate.Enabled = false;
+            PoolMinerFee.Enabled = false;
+            ShowAmd.Enabled = false;
+            ShowNvidia.Enabled = false;
+            HodlCoin.Enabled = false;
+            HodlPrice.Enabled = false;
+            MaxMyROI.Enabled = false;
+            Budget.Enabled = false;
+            VramFilter.Enabled = false;
+            AddGpuList.Enabled = false;
+            AddCoinList.Enabled = false;
+        }
+        private void EnableUserInput()
+        {
+            GpuLists.Enabled = true;
+            ImportGpuLists.Enabled = true;
+            ExportGpuLists.Enabled = true;
+            EditGpuLists.Enabled = true;
+            CoinLists.Enabled = true;
+            ImportCoinLists.Enabled = true;
+            ExportCoinLists.Enabled = true;
+            EditCoinLists.Enabled = true;
+            Budget.Enabled = true;
+            MaxMyROI.Enabled = true;
+            ElectricityRate.Enabled = true;
+            PoolMinerFee.Enabled = true;
+            ShowAmd.Enabled = true;
+            ShowNvidia.Enabled = true;
+            HodlCoin.Enabled = true;
+            HodlPrice.Enabled = true;
+            MaxMyROI.Enabled = true;
+            Budget.Enabled = true;
+            VramFilter.Enabled = true;
+            AddGpuList.Enabled = true;
+            AddCoinList.Enabled = true;
+        }
+        private string GetFileFromUser()
+        {
+            var filePath = "";
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+                openFileDialog.Filter = "Json files (*.json)|*.json";
+                openFileDialog.RestoreDirectory = true;
 
-
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    filePath = openFileDialog.FileName;
+            }
+            return filePath;
+        }
     }
 }

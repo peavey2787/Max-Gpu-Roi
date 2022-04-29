@@ -1088,9 +1088,9 @@
             this.ResultsEbayItemSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ResultsEbayItemSelection.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ResultsEbayItemSelection.FormattingEnabled = true;
-            this.ResultsEbayItemSelection.Location = new System.Drawing.Point(1289, 13);
+            this.ResultsEbayItemSelection.Location = new System.Drawing.Point(1448, 13);
             this.ResultsEbayItemSelection.Name = "ResultsEbayItemSelection";
-            this.ResultsEbayItemSelection.Size = new System.Drawing.Size(544, 28);
+            this.ResultsEbayItemSelection.Size = new System.Drawing.Size(385, 28);
             this.ResultsEbayItemSelection.TabIndex = 31;
             this.ResultsEbayItemSelection.SelectedIndexChanged += new System.EventHandler(this.ResultsEbayItemSelection_SelectedIndexChanged);
             // 
@@ -1099,7 +1099,7 @@
             this.ResultsEbayLink.AutoSize = true;
             this.ResultsEbayLink.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ResultsEbayLink.LinkColor = System.Drawing.Color.White;
-            this.ResultsEbayLink.Location = new System.Drawing.Point(1176, 15);
+            this.ResultsEbayLink.Location = new System.Drawing.Point(1325, 15);
             this.ResultsEbayLink.Name = "ResultsEbayLink";
             this.ResultsEbayLink.Size = new System.Drawing.Size(107, 26);
             this.ResultsEbayLink.TabIndex = 18;
@@ -1121,6 +1121,7 @@
             this.ResultsList.View = System.Windows.Forms.View.Details;
             this.ResultsList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ResultsList_ColumnClick);
             this.ResultsList.SelectedIndexChanged += new System.EventHandler(this.ResultsList_SelectedIndexChanged);
+            this.ResultsList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ResultsList_MouseClick);
             // 
             // lblResults
             // 
