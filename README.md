@@ -30,9 +30,9 @@ Then click Max My ROI.
 
 ## How to find the hashrate for my gpu?
 
-Click the edit button  near Gpu Lists and find your gpu in the list and click on it.
-You can copy default hashrates for a single coin from here and paste it into your own custom gpu list.
-If you want to add a coin that isn't listed just select the empty row and add the hashrate info, but make sure to enter the correct coin symbol/algorithm. There are plans to include a dropdown menu to prevent inaccurate entries in a future realese.
+Select the Default gpu list and click the edit button near Gpu Lists. Then find your gpu in the list and click on it.
+You can copy hashrates for a single coin from here and paste it into your own custom gpu list. Make sure you have the whole row selected then press Ctr+C.
+Next you can click cancel then select the gpu list for the gpu you want to paste the hashrates to and make sure the hashrates table has focus then press Ctr+V. If you want to add a coin that isn't listed just select the empty row and add the hashrate info manually.
 
 ## How to find the cheapest gpu on ebay?
 
@@ -40,9 +40,9 @@ There are two ways. You can click on one of the gpus that appear after clicking 
 
 Or
 
-Click the edit button nearest the gpu lists. Then find the gpu you are looking for and click it, then click the Ebay Link. If that isn't the right gpu/item then you can use the dropdown menu to select the next cheapest option.
+Select the Default gpu list and click the edit button. Next find the gpu you are looking for and click it, then click the Ebay Link. If that isn't the right gpu/item then you can use the dropdown menu to select the next cheapest option.
 
-## Why do I sometimes get the wrong gpu when I click on an Ebay Link?
+## Why do I sometimes get the wrong gpu, or no gpu at all, when I click on an Ebay Link?
 
 Unfortunetly, it is out of my skill set to search each ebay images for every gpu listing in order to get all of the necessary information, because sometimes a seller will only post the important details in an image.
 I have done my best to create an algorithm that can find the cheapest gpu from a reputable seller on ebay.
@@ -50,10 +50,10 @@ A seller must have at least 100 feedback and a score of at least 97% for me to e
 I also only look at Buy It Now listings so its possible you could find an even cheaper gpu if you play the auction game.
 
 
-## Why do I see { Text = gpu name $price, Value = Max_Gpu_Roi.EbayItem } in the ebay dropdown menus?
-
-It is a limitation of the combo box that I used. There is surely a better way of doing it, and it will be updated when I can get around to it.
-
 ## Disclaimer
 
 Although I do my best to provide trustworthy ebay listings that I would purchase my self. There is always the possiblity that a reputable seller's Ebay account gets hacked or a reputable seller could be going through some rough times and decides to scam someone. Do your own due diligence when it comes to using Ebay and if it seems too good to be true it probably is. Don't risk saving a few dollars by purchasing from an untrustworthy source but if you do then use PayPal - Goods and Services only or a credit card so if you do get scammed you can just do a charge back to get your money back.
+
+## Donations
+
+I made this program for myself but if you would like to buy me a beer/coffee/tea/etc. then my Eth address is 0x316Fe31e568d82044D821B21D8f5Fd383610b451
