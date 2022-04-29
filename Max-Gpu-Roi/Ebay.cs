@@ -22,7 +22,7 @@ namespace Max_Gpu_Roi
         public string AppAccessToken = "";
 
 
-        private async Task<bool> GetAppAccessToken()
+        private bool GetAppAccessToken()
         {
             // Token isn't expired
             if (TokenExpirationDate.Year == DateTime.Now.Year && TokenExpirationDate.CompareTo(DateTime.Now) < 0)
@@ -42,8 +42,8 @@ namespace Max_Gpu_Roi
             client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
             var base64Creds = Convert.ToBase64String(Encoding.UTF8.GetBytes(ClientId + ":" + SecretId));
             client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Basic " + base64Creds);   
-            var response = await client.PostAsync(url, payload);
-            var responseString = await response.Content.ReadAsStringAsync();
+            var response = client.PostAsync(url, payload).Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
             AppAccessToken = responseString[0].ToString();
 
             dynamic data = JsonSerializer.Deserialize<ExpandoObject>(responseString);
@@ -85,11 +85,11 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <returns></returns>
-        public async Task<List<EbayItem>> GetLowestPrice(Gpu gpu)
+        public List<EbayItem> GetLowestPrice(Gpu gpu)
         {
             var searchPhrase = gpu.Name;
 
-            if(!await GetAppAccessToken())
+            if(!GetAppAccessToken())
                 return new List<EbayItem>();
 
             var ebayItems = new List<EbayItem>();
@@ -101,19 +101,16 @@ namespace Max_Gpu_Roi
             }
             */
 
-            // If nvidia and a possible lhr/non lhr confusion specify non lhr if lhr = false an lhr if its true
-            if (gpu.AmdOrNvidia.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum) 
+            // If nvidia and a possible lhr/non lhr confusion specify non lhr unless gpu.lhr is true
+            if (gpu.Manufacturer.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum) 
                 && parsedModelNum > 3000
                 && parsedModelNum != 3050 )
             {
                 if (gpu.Lhr)
-                    searchPhrase += " lhr";
+                    searchPhrase += " lhr"; // Putting lhr in the search phrase 2x seems to return more accurate results
                 else
                     searchPhrase += " non-lhr";
             }
-
-
-
 
             // If amd add vram size to search
             var version = gpu.VersionPrefix == null ? "" : gpu.VersionPrefix.ToLower();
@@ -122,7 +119,7 @@ namespace Max_Gpu_Roi
 
             if (version == "r9" || model == "radeon" || model == "vega")
                 { }
-            else if (gpu.AmdOrNvidia.ToLower() == "amd" && gpu.VramSize > 0)
+            else if (gpu.Manufacturer.ToLower() == "amd" && gpu.VramSize > 0)
                 searchPhrase += " " + gpu.VramSize + "gb";
 
             // Convert all spaces to %20 for browser            
@@ -162,7 +159,7 @@ namespace Max_Gpu_Roi
                         && double.Parse(item.price.value) > 100 && item.condition != "For parts or not working"
                         && !item.title.ToLower().Contains("cooler only") && !item.title.ToLower().Contains("fan only") && !item.title.ToLower().Contains("fans only")
                         && !item.title.ToLower().Contains("no fan") && !item.title.ToLower().Contains("missing fan")
-                        && !item.title.ToLower().Contains("read description")  && !item.title.ToLower().Contains("fans broken") && !item.title.ToLower().Contains("fan broken")
+                        && !item.title.ToLower().Contains("read description") && !item.title.ToLower().Contains("fans broken") && !item.title.ToLower().Contains("fan broken")
                         && !item.title.ToLower().Contains("artifact") && item.title.ToLower().Contains(gpu.ModelNumber)
                         && item.title.ToLower().Contains(versionSuffix))
                     {
@@ -206,18 +203,16 @@ namespace Max_Gpu_Roi
                         var itemPrice = double.Parse(item.price.value) + shippingPrice;
 
 
-                        // If this item is lower than the previous one, it is the new lowest option
-
-                        //if (itemPrice <= ebayItem.Price || ebayItem.Price == 0)
-                        //{
                         var lowestEbayItem = new EbayItem();
-                        lowestEbayItem.Id = item.itemId;
+                        var rnd = new Random();                        
+                        lowestEbayItem.Id = rnd.Next(99).ToString();
+                        searchPhrase.Replace("lhr lhr", "lhr"); // Remove double lhr 
                         lowestEbayItem.Name = searchPhrase;
                         lowestEbayItem.Url = item.itemWebUrl;
                         lowestEbayItem.Price = itemPrice;
                         lowestEbayItem.LastUpdated = DateTime.Now;
                         ebayItems.Add(lowestEbayItem);
-                        //}
+
                     }
                 }
             }

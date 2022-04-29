@@ -21,23 +21,22 @@ namespace Max_Gpu_Roi
 
     internal class MinerStat
     {
-        public static async Task<CoinInfo> GetCoinInfo(string coinSymbol)
+        public static CoinInfo GetCoinInfo(string coinSymbol)
         {
-            var url = "https://api.minerstat.com/v2/coins?list=";
+            var url = "https://api.minerstat.com/v2/coins?list=" + coinSymbol;            
             var coinInfo = new CoinInfo();
 
 
             try
             {
                 // Get coin info from minerstat.com as json data
-                HttpClient hc = new HttpClient();
-                Task<Stream> result = hc.GetStreamAsync(url + coinSymbol);
-                Stream stream = await result;
-                var coinInfos = await JsonSerializer.DeserializeAsync<List<CoinInfo>>(stream);
-                stream.Close();
+                HttpClient client = new HttpClient();
+                var response = client.GetAsync(url).Result;
+                var responseString = response.Content.ReadAsStringAsync().Result;
+                var coinInfos = JsonSerializer.Deserialize<List<CoinInfo>>(responseString);
 
                 // Minerstat returned good data
-                if (coinInfos != null && coinInfos[0].price != -1)
+                if (coinInfos != null && coinInfos.Count > 0 && coinInfos[0].price != -1)
                     return coinInfos[0];
 
                 else

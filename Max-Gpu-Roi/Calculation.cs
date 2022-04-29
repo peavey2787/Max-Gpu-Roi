@@ -26,9 +26,9 @@ namespace Max_Gpu_Roi
         public int GpuId { get; set; }
 
 
-        public static async Task<Calculation> Calculate(double gpuCost, double hashrate, int watts, string coinSymbol, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
+        public static Calculation Calculate(double gpuCost, double hashrate, int watts, string coinSymbol, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
         {
-            var coinInfo = await MinerStat.GetCoinInfo(coinSymbol);
+            var coinInfo = MinerStat.GetCoinInfo(coinSymbol);
             var reward = new Calculation();
             var price = coinInfo.price;
             if (coinPrice > 0.0)
@@ -42,7 +42,7 @@ namespace Max_Gpu_Roi
             var usdRewardsCalculated = cryptoRewardsCalculated * price;
             reward.UsdRewards = usdRewardsCalculated;        
 
-            // Usd Profits
+            // Usd Profits 
             var poolMinerFeeCost = usdRewardsCalculated * poolMinerFee; // Get pool/miner fee
             var electrictyCosts = ((watts * 0.001) * 24) * electricityRate; // Calculate electricity costs
             usdRewardsCalculated -= poolMinerFeeCost; // Subtract pool/miner fee
@@ -65,13 +65,10 @@ namespace Max_Gpu_Roi
             
             // Roi
             if(reward.UsdProfits > 0)
-                reward.ROI = gpuCost / (usdRewardsCalculated * 30);
+                reward.ROI = gpuCost / (reward.UsdProfits * 30);
 
             // Usd per mhs
-            var costPerMhsCalculated = 0.0;
-            if (hashrate > 0)
-                costPerMhsCalculated = gpuCost / hashrate;
-            reward.CostPerMhs = costPerMhsCalculated;
+            reward.CostPerMhs = hashrate > 0 ? gpuCost / hashrate : 0.0;
 
             reward.GpuCosts = gpuCost;
             reward.GpuHash = hashrate;

@@ -58,24 +58,21 @@
             this.ShowNvidia = new System.Windows.Forms.CheckBox();
             this.ShowAmd = new System.Windows.Forms.CheckBox();
             this.pnlResultsList = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
-            this.ErrorMessagePanel = new System.Windows.Forms.Panel();
-            this.ErrorMessageCountDown = new System.Windows.Forms.Label();
-            this.ErrorMessageCountDownlbl = new System.Windows.Forms.Label();
-            this.ErrorMessage = new System.Windows.Forms.Label();
-            this.ResultsEbayItemSelection = new System.Windows.Forms.ComboBox();
-            this.ResultsEbayLink = new System.Windows.Forms.LinkLabel();
-            this.ResultsList = new System.Windows.Forms.ListView();
+            this.EditCoinPanel = new System.Windows.Forms.Panel();
+            this.CoinListName = new System.Windows.Forms.TextBox();
+            this.lblAllCoinsList = new System.Windows.Forms.Label();
+            this.DeleteCoin = new System.Windows.Forms.Button();
+            this.AddCoin = new System.Windows.Forms.Button();
+            this.ListOfAllCoins = new System.Windows.Forms.ListView();
             this.coinImageList = new System.Windows.Forms.ImageList(this.components);
-            this.lblResults = new System.Windows.Forms.Label();
-            this.Exit = new System.Windows.Forms.Button();
-            this.Budget = new System.Windows.Forms.TextBox();
-            this.lblBudget = new System.Windows.Forms.Label();
-            this.MaxMyROI = new System.Windows.Forms.Button();
-            this.lblBudgetMoneySign = new System.Windows.Forms.Label();
+            this.CancelEditCoinList = new System.Windows.Forms.Button();
+            this.SaveCoinList = new System.Windows.Forms.Button();
+            this.EditCoinList = new System.Windows.Forms.ListView();
             this.EditGpuPanel = new System.Windows.Forms.Panel();
+            this.HashrateCoinsMenu = new System.Windows.Forms.ComboBox();
+            this.EditGpuLbl = new System.Windows.Forms.Label();
+            this.Lhr = new System.Windows.Forms.CheckBox();
             this.HashratesProgressBar = new System.Windows.Forms.ProgressBar();
-            this.LhrLabel = new System.Windows.Forms.Label();
             this.EbayItemSelection = new System.Windows.Forms.ComboBox();
             this.GpuListName = new System.Windows.Forms.TextBox();
             this.GetGpuPrice = new System.Windows.Forms.Button();
@@ -99,29 +96,37 @@
             this.lblMSRP = new System.Windows.Forms.Label();
             this.lblDateReleased = new System.Windows.Forms.Label();
             this.EditGpuList = new System.Windows.Forms.ListView();
-            this.EditCoinPanel = new System.Windows.Forms.Panel();
-            this.CoinListName = new System.Windows.Forms.TextBox();
-            this.lblAllCoinsList = new System.Windows.Forms.Label();
-            this.DeleteCoin = new System.Windows.Forms.Button();
-            this.AddCoin = new System.Windows.Forms.Button();
-            this.ListOfAllCoins = new System.Windows.Forms.ListView();
-            this.CancelEditCoinList = new System.Windows.Forms.Button();
-            this.SaveCoinList = new System.Windows.Forms.Button();
-            this.EditCoinList = new System.Windows.Forms.ListView();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.ErrorMessagePanel = new System.Windows.Forms.Panel();
+            this.ErrorMessageCountDown = new System.Windows.Forms.Label();
+            this.ErrorMessageCountDownlbl = new System.Windows.Forms.Label();
+            this.ErrorMessage = new System.Windows.Forms.Label();
+            this.ResultsEbayItemSelection = new System.Windows.Forms.ComboBox();
+            this.ResultsEbayLink = new System.Windows.Forms.LinkLabel();
+            this.ResultsList = new System.Windows.Forms.ListView();
+            this.lblResults = new System.Windows.Forms.Label();
+            this.Exit = new System.Windows.Forms.Button();
+            this.Budget = new System.Windows.Forms.TextBox();
+            this.lblBudget = new System.Windows.Forms.Label();
+            this.MaxMyROI = new System.Windows.Forms.Button();
+            this.lblBudgetMoneySign = new System.Windows.Forms.Label();
             this.HodlPrice = new System.Windows.Forms.TextBox();
             this.lblHodlDollarSign = new System.Windows.Forms.Label();
             this.lblHodl1 = new System.Windows.Forms.Label();
             this.lblHodl2 = new System.Windows.Forms.Label();
             this.HodlCoin = new System.Windows.Forms.ComboBox();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.TotalsList = new System.Windows.Forms.ListView();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlGpuLists.SuspendLayout();
             this.pnlCoinLists.SuspendLayout();
             this.pnlCosts.SuspendLayout();
             this.pnlFilters.SuspendLayout();
             this.pnlResultsList.SuspendLayout();
-            this.ErrorMessagePanel.SuspendLayout();
+            this.EditCoinPanel.SuspendLayout();
             this.EditGpuPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EditHashrates)).BeginInit();
-            this.EditCoinPanel.SuspendLayout();
+            this.ErrorMessagePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblGpuLists
@@ -227,7 +232,7 @@
             this.ExportGpuLists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExportGpuLists.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ExportGpuLists.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.ExportGpuLists.Location = new System.Drawing.Point(245, 32);
+            this.ExportGpuLists.Location = new System.Drawing.Point(245, 35);
             this.ExportGpuLists.Name = "ExportGpuLists";
             this.ExportGpuLists.Size = new System.Drawing.Size(83, 23);
             this.ExportGpuLists.TabIndex = 4;
@@ -255,7 +260,7 @@
             this.EditGpuLists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditGpuLists.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.EditGpuLists.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EditGpuLists.Location = new System.Drawing.Point(245, 80);
+            this.EditGpuLists.Location = new System.Drawing.Point(245, 113);
             this.EditGpuLists.Name = "EditGpuLists";
             this.EditGpuLists.Size = new System.Drawing.Size(83, 30);
             this.EditGpuLists.TabIndex = 1;
@@ -314,7 +319,7 @@
             this.ExportCoinLists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ExportCoinLists.Font = new System.Drawing.Font("Ink Free", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.ExportCoinLists.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.ExportCoinLists.Location = new System.Drawing.Point(245, 32);
+            this.ExportCoinLists.Location = new System.Drawing.Point(245, 35);
             this.ExportCoinLists.Name = "ExportCoinLists";
             this.ExportCoinLists.Size = new System.Drawing.Size(83, 23);
             this.ExportCoinLists.TabIndex = 5;
@@ -342,7 +347,7 @@
             this.EditCoinLists.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.EditCoinLists.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.EditCoinLists.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.EditCoinLists.Location = new System.Drawing.Point(245, 102);
+            this.EditCoinLists.Location = new System.Drawing.Point(245, 113);
             this.EditCoinLists.Name = "EditCoinLists";
             this.EditCoinLists.Size = new System.Drawing.Size(83, 30);
             this.EditCoinLists.TabIndex = 2;
@@ -496,6 +501,8 @@
             // 
             this.pnlResultsList.BackColor = System.Drawing.Color.Transparent;
             this.pnlResultsList.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlResultsList.Controls.Add(this.EditCoinPanel);
+            this.pnlResultsList.Controls.Add(this.EditGpuPanel);
             this.pnlResultsList.Controls.Add(this.progressBar);
             this.pnlResultsList.Controls.Add(this.ErrorMessagePanel);
             this.pnlResultsList.Controls.Add(this.ResultsEbayItemSelection);
@@ -506,6 +513,517 @@
             this.pnlResultsList.Name = "pnlResultsList";
             this.pnlResultsList.Size = new System.Drawing.Size(1848, 674);
             this.pnlResultsList.TabIndex = 9;
+            // 
+            // EditCoinPanel
+            // 
+            this.EditCoinPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.EditCoinPanel.Controls.Add(this.CoinListName);
+            this.EditCoinPanel.Controls.Add(this.lblAllCoinsList);
+            this.EditCoinPanel.Controls.Add(this.DeleteCoin);
+            this.EditCoinPanel.Controls.Add(this.AddCoin);
+            this.EditCoinPanel.Controls.Add(this.ListOfAllCoins);
+            this.EditCoinPanel.Controls.Add(this.CancelEditCoinList);
+            this.EditCoinPanel.Controls.Add(this.SaveCoinList);
+            this.EditCoinPanel.Controls.Add(this.EditCoinList);
+            this.EditCoinPanel.Location = new System.Drawing.Point(876, 85);
+            this.EditCoinPanel.Name = "EditCoinPanel";
+            this.EditCoinPanel.Size = new System.Drawing.Size(957, 501);
+            this.EditCoinPanel.TabIndex = 16;
+            // 
+            // CoinListName
+            // 
+            this.CoinListName.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.CoinListName.Location = new System.Drawing.Point(6, 7);
+            this.CoinListName.MaxLength = 150;
+            this.CoinListName.Name = "CoinListName";
+            this.CoinListName.PlaceholderText = "Coin  List Name";
+            this.CoinListName.Size = new System.Drawing.Size(342, 41);
+            this.CoinListName.TabIndex = 30;
+            this.CoinListName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CoinListName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CoinListName_KeyDown);
+            // 
+            // lblAllCoinsList
+            // 
+            this.lblAllCoinsList.AutoSize = true;
+            this.lblAllCoinsList.BackColor = System.Drawing.Color.Transparent;
+            this.lblAllCoinsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblAllCoinsList.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblAllCoinsList.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblAllCoinsList.Location = new System.Drawing.Point(584, 12);
+            this.lblAllCoinsList.Name = "lblAllCoinsList";
+            this.lblAllCoinsList.Size = new System.Drawing.Size(213, 30);
+            this.lblAllCoinsList.TabIndex = 21;
+            this.lblAllCoinsList.Text = "All Coins Available";
+            // 
+            // DeleteCoin
+            // 
+            this.DeleteCoin.BackColor = System.Drawing.Color.RoyalBlue;
+            this.DeleteCoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DeleteCoin.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DeleteCoin.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.DeleteCoin.Location = new System.Drawing.Point(354, 207);
+            this.DeleteCoin.Name = "DeleteCoin";
+            this.DeleteCoin.Size = new System.Drawing.Size(80, 30);
+            this.DeleteCoin.TabIndex = 20;
+            this.DeleteCoin.Text = "Delete";
+            this.DeleteCoin.UseVisualStyleBackColor = false;
+            this.DeleteCoin.Click += new System.EventHandler(this.DeleteCoin_Click);
+            // 
+            // AddCoin
+            // 
+            this.AddCoin.BackColor = System.Drawing.Color.RoyalBlue;
+            this.AddCoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddCoin.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AddCoin.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.AddCoin.Location = new System.Drawing.Point(354, 135);
+            this.AddCoin.Name = "AddCoin";
+            this.AddCoin.Size = new System.Drawing.Size(80, 30);
+            this.AddCoin.TabIndex = 19;
+            this.AddCoin.Text = "Add";
+            this.AddCoin.UseVisualStyleBackColor = false;
+            this.AddCoin.Click += new System.EventHandler(this.AddCoin_Click);
+            // 
+            // ListOfAllCoins
+            // 
+            this.ListOfAllCoins.FullRowSelect = true;
+            this.ListOfAllCoins.HideSelection = false;
+            this.ListOfAllCoins.Location = new System.Drawing.Point(440, 49);
+            this.ListOfAllCoins.MultiSelect = false;
+            this.ListOfAllCoins.Name = "ListOfAllCoins";
+            this.ListOfAllCoins.Size = new System.Drawing.Size(504, 410);
+            this.ListOfAllCoins.SmallImageList = this.coinImageList;
+            this.ListOfAllCoins.TabIndex = 18;
+            this.ListOfAllCoins.UseCompatibleStateImageBehavior = false;
+            this.ListOfAllCoins.View = System.Windows.Forms.View.Details;
+            this.ListOfAllCoins.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ListOfAllCoins_KeyDown);
+            // 
+            // coinImageList
+            // 
+            this.coinImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.coinImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("coinImageList.ImageStream")));
+            this.coinImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.coinImageList.Images.SetKeyName(0, "looking-glass.jpg");
+            this.coinImageList.Images.SetKeyName(1, "eth.jpg");
+            this.coinImageList.Images.SetKeyName(2, "erg.jpg");
+            this.coinImageList.Images.SetKeyName(3, "rvn.jpg");
+            this.coinImageList.Images.SetKeyName(4, "cfx.jpg");
+            // 
+            // CancelEditCoinList
+            // 
+            this.CancelEditCoinList.BackColor = System.Drawing.Color.RoyalBlue;
+            this.CancelEditCoinList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CancelEditCoinList.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.CancelEditCoinList.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelEditCoinList.Location = new System.Drawing.Point(744, 465);
+            this.CancelEditCoinList.Name = "CancelEditCoinList";
+            this.CancelEditCoinList.Size = new System.Drawing.Size(83, 30);
+            this.CancelEditCoinList.TabIndex = 17;
+            this.CancelEditCoinList.Text = "Cancel";
+            this.CancelEditCoinList.UseVisualStyleBackColor = false;
+            this.CancelEditCoinList.Click += new System.EventHandler(this.CancelEditCoinList_Click);
+            // 
+            // SaveCoinList
+            // 
+            this.SaveCoinList.BackColor = System.Drawing.Color.RoyalBlue;
+            this.SaveCoinList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveCoinList.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SaveCoinList.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.SaveCoinList.Location = new System.Drawing.Point(632, 465);
+            this.SaveCoinList.Name = "SaveCoinList";
+            this.SaveCoinList.Size = new System.Drawing.Size(83, 30);
+            this.SaveCoinList.TabIndex = 16;
+            this.SaveCoinList.Text = "Save";
+            this.SaveCoinList.UseVisualStyleBackColor = false;
+            this.SaveCoinList.Click += new System.EventHandler(this.SaveCoinList_Click);
+            // 
+            // EditCoinList
+            // 
+            this.EditCoinList.FullRowSelect = true;
+            this.EditCoinList.HideSelection = false;
+            this.EditCoinList.Location = new System.Drawing.Point(6, 61);
+            this.EditCoinList.MultiSelect = false;
+            this.EditCoinList.Name = "EditCoinList";
+            this.EditCoinList.Size = new System.Drawing.Size(342, 434);
+            this.EditCoinList.SmallImageList = this.coinImageList;
+            this.EditCoinList.TabIndex = 4;
+            this.EditCoinList.UseCompatibleStateImageBehavior = false;
+            this.EditCoinList.View = System.Windows.Forms.View.Details;
+            this.EditCoinList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditCoinList_KeyDown);
+            // 
+            // EditGpuPanel
+            // 
+            this.EditGpuPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.EditGpuPanel.Controls.Add(this.HashrateCoinsMenu);
+            this.EditGpuPanel.Controls.Add(this.EditGpuLbl);
+            this.EditGpuPanel.Controls.Add(this.Lhr);
+            this.EditGpuPanel.Controls.Add(this.HashratesProgressBar);
+            this.EditGpuPanel.Controls.Add(this.EbayItemSelection);
+            this.EditGpuPanel.Controls.Add(this.GpuListName);
+            this.EditGpuPanel.Controls.Add(this.GetGpuPrice);
+            this.EditGpuPanel.Controls.Add(this.DateReleased);
+            this.EditGpuPanel.Controls.Add(this.AmdOrNvidia);
+            this.EditGpuPanel.Controls.Add(this.GpuVramSize);
+            this.EditGpuPanel.Controls.Add(this.GpuVersionSuffix);
+            this.EditGpuPanel.Controls.Add(this.GpuVersionPrefix);
+            this.EditGpuPanel.Controls.Add(this.GpuModelNumber);
+            this.EditGpuPanel.Controls.Add(this.AddGpu);
+            this.EditGpuPanel.Controls.Add(this.EditHashrates);
+            this.EditGpuPanel.Controls.Add(this.EbayItemUrl);
+            this.EditGpuPanel.Controls.Add(this.CancelGpuHashrates);
+            this.EditGpuPanel.Controls.Add(this.SaveGpuHashrates);
+            this.EditGpuPanel.Controls.Add(this.lblHashrates);
+            this.EditGpuPanel.Controls.Add(this.PricePaid);
+            this.EditGpuPanel.Controls.Add(this.EbayPrice);
+            this.EditGpuPanel.Controls.Add(this.MSRP);
+            this.EditGpuPanel.Controls.Add(this.lblPricePaid);
+            this.EditGpuPanel.Controls.Add(this.lblEbayPrice);
+            this.EditGpuPanel.Controls.Add(this.lblMSRP);
+            this.EditGpuPanel.Controls.Add(this.lblDateReleased);
+            this.EditGpuPanel.Controls.Add(this.EditGpuList);
+            this.EditGpuPanel.Location = new System.Drawing.Point(30, 85);
+            this.EditGpuPanel.Name = "EditGpuPanel";
+            this.EditGpuPanel.Size = new System.Drawing.Size(827, 502);
+            this.EditGpuPanel.TabIndex = 15;
+            // 
+            // HashrateCoinsMenu
+            // 
+            this.HashrateCoinsMenu.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.HashrateCoinsMenu.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.HashrateCoinsMenu.FormattingEnabled = true;
+            this.HashrateCoinsMenu.Location = new System.Drawing.Point(340, 218);
+            this.HashrateCoinsMenu.Name = "HashrateCoinsMenu";
+            this.HashrateCoinsMenu.Size = new System.Drawing.Size(100, 28);
+            this.HashrateCoinsMenu.TabIndex = 37;
+            this.HashrateCoinsMenu.Visible = false;
+            this.HashrateCoinsMenu.SelectedIndexChanged += new System.EventHandler(this.HashrateCoinsMenu_SelectedIndexChanged);
+            this.HashrateCoinsMenu.Click += new System.EventHandler(this.HashrateCoinsMenu_Click);
+            this.HashrateCoinsMenu.Leave += new System.EventHandler(this.HashrateCoinsMenu_Leave);
+            // 
+            // EditGpuLbl
+            // 
+            this.EditGpuLbl.AutoSize = true;
+            this.EditGpuLbl.BackColor = System.Drawing.Color.Transparent;
+            this.EditGpuLbl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.EditGpuLbl.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EditGpuLbl.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.EditGpuLbl.Location = new System.Drawing.Point(110, 54);
+            this.EditGpuLbl.Name = "EditGpuLbl";
+            this.EditGpuLbl.Size = new System.Drawing.Size(112, 30);
+            this.EditGpuLbl.TabIndex = 36;
+            this.EditGpuLbl.Text = "Edit Gpu";
+            // 
+            // Lhr
+            // 
+            this.Lhr.AutoSize = true;
+            this.Lhr.Checked = true;
+            this.Lhr.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.Lhr.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Lhr.ForeColor = System.Drawing.Color.Green;
+            this.Lhr.Location = new System.Drawing.Point(341, 142);
+            this.Lhr.Name = "Lhr";
+            this.Lhr.Size = new System.Drawing.Size(72, 34);
+            this.Lhr.TabIndex = 35;
+            this.Lhr.Text = "Lhr";
+            this.Lhr.UseVisualStyleBackColor = true;
+            this.Lhr.Click += new System.EventHandler(this.Lhr_Click);
+            // 
+            // HashratesProgressBar
+            // 
+            this.HashratesProgressBar.Location = new System.Drawing.Point(340, 466);
+            this.HashratesProgressBar.Name = "HashratesProgressBar";
+            this.HashratesProgressBar.Size = new System.Drawing.Size(261, 27);
+            this.HashratesProgressBar.Step = 1;
+            this.HashratesProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.HashratesProgressBar.TabIndex = 34;
+            // 
+            // EbayItemSelection
+            // 
+            this.EbayItemSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.EbayItemSelection.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EbayItemSelection.FormattingEnabled = true;
+            this.EbayItemSelection.Location = new System.Drawing.Point(565, 172);
+            this.EbayItemSelection.Name = "EbayItemSelection";
+            this.EbayItemSelection.Size = new System.Drawing.Size(259, 28);
+            this.EbayItemSelection.TabIndex = 30;
+            this.EbayItemSelection.SelectedIndexChanged += new System.EventHandler(this.EbayItemSelection_SelectedIndexChanged);
+            // 
+            // GpuListName
+            // 
+            this.GpuListName.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuListName.Location = new System.Drawing.Point(6, 9);
+            this.GpuListName.MaxLength = 150;
+            this.GpuListName.Name = "GpuListName";
+            this.GpuListName.PlaceholderText = "Gpu  List Name";
+            this.GpuListName.Size = new System.Drawing.Size(320, 41);
+            this.GpuListName.TabIndex = 29;
+            this.GpuListName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GpuListName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuListName_KeyDown);
+            // 
+            // GetGpuPrice
+            // 
+            this.GetGpuPrice.BackColor = System.Drawing.Color.RoyalBlue;
+            this.GetGpuPrice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GetGpuPrice.Font = new System.Drawing.Font("Ink Free", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GetGpuPrice.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.GetGpuPrice.Location = new System.Drawing.Point(666, 136);
+            this.GetGpuPrice.Name = "GetGpuPrice";
+            this.GetGpuPrice.Size = new System.Drawing.Size(87, 30);
+            this.GetGpuPrice.TabIndex = 28;
+            this.GetGpuPrice.Text = "Get Price";
+            this.GetGpuPrice.UseVisualStyleBackColor = false;
+            this.GetGpuPrice.Click += new System.EventHandler(this.GetEbayPrice_Click);
+            // 
+            // DateReleased
+            // 
+            this.DateReleased.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.DateReleased.Location = new System.Drawing.Point(620, 12);
+            this.DateReleased.MaxLength = 150;
+            this.DateReleased.Name = "DateReleased";
+            this.DateReleased.PlaceholderText = "Month Year";
+            this.DateReleased.Size = new System.Drawing.Size(204, 33);
+            this.DateReleased.TabIndex = 27;
+            this.DateReleased.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.DateReleased.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DateReleased_KeyDown);
+            // 
+            // AmdOrNvidia
+            // 
+            this.AmdOrNvidia.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AmdOrNvidia.Location = new System.Drawing.Point(5, 89);
+            this.AmdOrNvidia.MaxLength = 150;
+            this.AmdOrNvidia.Name = "AmdOrNvidia";
+            this.AmdOrNvidia.Size = new System.Drawing.Size(50, 27);
+            this.AmdOrNvidia.TabIndex = 26;
+            this.AmdOrNvidia.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.AmdOrNvidia.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AmdOrNvidia_KeyDown);
+            // 
+            // GpuVramSize
+            // 
+            this.GpuVramSize.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuVramSize.Location = new System.Drawing.Point(266, 89);
+            this.GpuVramSize.MaxLength = 2;
+            this.GpuVramSize.Name = "GpuVramSize";
+            this.GpuVramSize.Size = new System.Drawing.Size(40, 27);
+            this.GpuVramSize.TabIndex = 25;
+            this.GpuVramSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GpuVramSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVramSize_KeyDown);
+            // 
+            // GpuVersionSuffix
+            // 
+            this.GpuVersionSuffix.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuVersionSuffix.Location = new System.Drawing.Point(183, 89);
+            this.GpuVersionSuffix.MaxLength = 150;
+            this.GpuVersionSuffix.Name = "GpuVersionSuffix";
+            this.GpuVersionSuffix.Size = new System.Drawing.Size(80, 27);
+            this.GpuVersionSuffix.TabIndex = 24;
+            this.GpuVersionSuffix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GpuVersionSuffix.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVersionSuffix_KeyDown);
+            // 
+            // GpuVersionPrefix
+            // 
+            this.GpuVersionPrefix.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuVersionPrefix.Location = new System.Drawing.Point(56, 89);
+            this.GpuVersionPrefix.MaxLength = 150;
+            this.GpuVersionPrefix.Name = "GpuVersionPrefix";
+            this.GpuVersionPrefix.Size = new System.Drawing.Size(42, 27);
+            this.GpuVersionPrefix.TabIndex = 22;
+            this.GpuVersionPrefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GpuVersionPrefix.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVersionPrefix_KeyDown);
+            // 
+            // GpuModelNumber
+            // 
+            this.GpuModelNumber.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.GpuModelNumber.Location = new System.Drawing.Point(100, 89);
+            this.GpuModelNumber.MaxLength = 150;
+            this.GpuModelNumber.Name = "GpuModelNumber";
+            this.GpuModelNumber.Size = new System.Drawing.Size(80, 27);
+            this.GpuModelNumber.TabIndex = 23;
+            this.GpuModelNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.GpuModelNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuModelNumber_KeyDown);
+            // 
+            // AddGpu
+            // 
+            this.AddGpu.BackColor = System.Drawing.Color.RoyalBlue;
+            this.AddGpu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.AddGpu.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.AddGpu.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.AddGpu.Location = new System.Drawing.Point(341, 9);
+            this.AddGpu.Name = "AddGpu";
+            this.AddGpu.Size = new System.Drawing.Size(99, 41);
+            this.AddGpu.TabIndex = 21;
+            this.AddGpu.Text = "Add Gpu";
+            this.AddGpu.UseVisualStyleBackColor = false;
+            this.AddGpu.Click += new System.EventHandler(this.AddGpu_Click);
+            // 
+            // EditHashrates
+            // 
+            this.EditHashrates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.EditHashrates.Location = new System.Drawing.Point(340, 218);
+            this.EditHashrates.Name = "EditHashrates";
+            this.EditHashrates.RowTemplate.Height = 25;
+            this.EditHashrates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.EditHashrates.ShowCellToolTips = false;
+            this.EditHashrates.Size = new System.Drawing.Size(478, 236);
+            this.EditHashrates.TabIndex = 18;
+            this.EditHashrates.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellClick);
+            this.EditHashrates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellEndEdit);
+            this.EditHashrates.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Hashrates_EditingControlShowing);
+            this.EditHashrates.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.EditHashrates_RowsRemoved);
+            this.EditHashrates.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Hashrates_KeyDown);
+            // 
+            // EbayItemUrl
+            // 
+            this.EbayItemUrl.AutoSize = true;
+            this.EbayItemUrl.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EbayItemUrl.Location = new System.Drawing.Point(759, 137);
+            this.EbayItemUrl.Name = "EbayItemUrl";
+            this.EbayItemUrl.Size = new System.Drawing.Size(53, 26);
+            this.EbayItemUrl.TabIndex = 17;
+            this.EbayItemUrl.TabStop = true;
+            this.EbayItemUrl.Text = "Link";
+            this.EbayItemUrl.Click += new System.EventHandler(this.EbayItemUrl_Click);
+            // 
+            // CancelGpuHashrates
+            // 
+            this.CancelGpuHashrates.BackColor = System.Drawing.Color.RoyalBlue;
+            this.CancelGpuHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CancelGpuHashrates.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.CancelGpuHashrates.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelGpuHashrates.Location = new System.Drawing.Point(729, 466);
+            this.CancelGpuHashrates.Name = "CancelGpuHashrates";
+            this.CancelGpuHashrates.Size = new System.Drawing.Size(83, 30);
+            this.CancelGpuHashrates.TabIndex = 16;
+            this.CancelGpuHashrates.Text = "Cancel";
+            this.CancelGpuHashrates.UseVisualStyleBackColor = false;
+            this.CancelGpuHashrates.Click += new System.EventHandler(this.CancelGpuHashrates_Click);
+            // 
+            // SaveGpuHashrates
+            // 
+            this.SaveGpuHashrates.BackColor = System.Drawing.Color.RoyalBlue;
+            this.SaveGpuHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SaveGpuHashrates.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.SaveGpuHashrates.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.SaveGpuHashrates.Location = new System.Drawing.Point(607, 466);
+            this.SaveGpuHashrates.Name = "SaveGpuHashrates";
+            this.SaveGpuHashrates.Size = new System.Drawing.Size(83, 30);
+            this.SaveGpuHashrates.TabIndex = 15;
+            this.SaveGpuHashrates.Text = "Save";
+            this.SaveGpuHashrates.UseVisualStyleBackColor = false;
+            this.SaveGpuHashrates.Click += new System.EventHandler(this.SaveGpuHashrates_Click);
+            // 
+            // lblHashrates
+            // 
+            this.lblHashrates.AutoSize = true;
+            this.lblHashrates.BackColor = System.Drawing.Color.Transparent;
+            this.lblHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblHashrates.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblHashrates.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblHashrates.Location = new System.Drawing.Point(336, 179);
+            this.lblHashrates.Name = "lblHashrates";
+            this.lblHashrates.Size = new System.Drawing.Size(132, 30);
+            this.lblHashrates.TabIndex = 13;
+            this.lblHashrates.Text = "Hashrates";
+            // 
+            // PricePaid
+            // 
+            this.PricePaid.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.PricePaid.Location = new System.Drawing.Point(499, 93);
+            this.PricePaid.MaxLength = 9;
+            this.PricePaid.Name = "PricePaid";
+            this.PricePaid.PlaceholderText = "0.00";
+            this.PricePaid.Size = new System.Drawing.Size(136, 37);
+            this.PricePaid.TabIndex = 12;
+            this.PricePaid.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.PricePaid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PricePaid_KeyDown);
+            // 
+            // EbayPrice
+            // 
+            this.EbayPrice.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.EbayPrice.Location = new System.Drawing.Point(666, 93);
+            this.EbayPrice.MaxLength = 9;
+            this.EbayPrice.Name = "EbayPrice";
+            this.EbayPrice.PlaceholderText = "0.00";
+            this.EbayPrice.Size = new System.Drawing.Size(136, 37);
+            this.EbayPrice.TabIndex = 11;
+            this.EbayPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.EbayPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EbayPrice_KeyDown);
+            // 
+            // MSRP
+            // 
+            this.MSRP.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.MSRP.Location = new System.Drawing.Point(340, 93);
+            this.MSRP.MaxLength = 9;
+            this.MSRP.Name = "MSRP";
+            this.MSRP.PlaceholderText = "0.00";
+            this.MSRP.Size = new System.Drawing.Size(132, 37);
+            this.MSRP.TabIndex = 10;
+            this.MSRP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.MSRP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MSRP_KeyDown);
+            // 
+            // lblPricePaid
+            // 
+            this.lblPricePaid.AutoSize = true;
+            this.lblPricePaid.BackColor = System.Drawing.Color.Transparent;
+            this.lblPricePaid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblPricePaid.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblPricePaid.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblPricePaid.Location = new System.Drawing.Point(507, 60);
+            this.lblPricePaid.Name = "lblPricePaid";
+            this.lblPricePaid.Size = new System.Drawing.Size(120, 30);
+            this.lblPricePaid.TabIndex = 9;
+            this.lblPricePaid.Text = "Price Paid";
+            // 
+            // lblEbayPrice
+            // 
+            this.lblEbayPrice.AutoSize = true;
+            this.lblEbayPrice.BackColor = System.Drawing.Color.Transparent;
+            this.lblEbayPrice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblEbayPrice.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblEbayPrice.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblEbayPrice.Location = new System.Drawing.Point(668, 60);
+            this.lblEbayPrice.Name = "lblEbayPrice";
+            this.lblEbayPrice.Size = new System.Drawing.Size(127, 30);
+            this.lblEbayPrice.TabIndex = 8;
+            this.lblEbayPrice.Text = "Ebay Price";
+            // 
+            // lblMSRP
+            // 
+            this.lblMSRP.AutoSize = true;
+            this.lblMSRP.BackColor = System.Drawing.Color.Transparent;
+            this.lblMSRP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblMSRP.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblMSRP.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblMSRP.Location = new System.Drawing.Point(364, 60);
+            this.lblMSRP.Name = "lblMSRP";
+            this.lblMSRP.Size = new System.Drawing.Size(77, 30);
+            this.lblMSRP.TabIndex = 7;
+            this.lblMSRP.Text = "MSRP";
+            // 
+            // lblDateReleased
+            // 
+            this.lblDateReleased.AutoSize = true;
+            this.lblDateReleased.BackColor = System.Drawing.Color.Transparent;
+            this.lblDateReleased.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblDateReleased.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblDateReleased.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lblDateReleased.Location = new System.Drawing.Point(457, 13);
+            this.lblDateReleased.Name = "lblDateReleased";
+            this.lblDateReleased.Size = new System.Drawing.Size(161, 30);
+            this.lblDateReleased.TabIndex = 6;
+            this.lblDateReleased.Text = "Release Date";
+            // 
+            // EditGpuList
+            // 
+            this.EditGpuList.FullRowSelect = true;
+            this.EditGpuList.HideSelection = false;
+            this.EditGpuList.Location = new System.Drawing.Point(5, 122);
+            this.EditGpuList.MultiSelect = false;
+            this.EditGpuList.Name = "EditGpuList";
+            this.EditGpuList.Size = new System.Drawing.Size(321, 374);
+            this.EditGpuList.TabIndex = 3;
+            this.EditGpuList.UseCompatibleStateImageBehavior = false;
+            this.EditGpuList.View = System.Windows.Forms.View.Details;
+            this.EditGpuList.SelectedIndexChanged += new System.EventHandler(this.EditGpuList_SelectedIndexChanged);
+            this.EditGpuList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EditGpuList_KeyDown);
             // 
             // progressBar
             // 
@@ -604,17 +1122,6 @@
             this.ResultsList.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.ResultsList_ColumnClick);
             this.ResultsList.SelectedIndexChanged += new System.EventHandler(this.ResultsList_SelectedIndexChanged);
             // 
-            // coinImageList
-            // 
-            this.coinImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.coinImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("coinImageList.ImageStream")));
-            this.coinImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.coinImageList.Images.SetKeyName(0, "looking-glass.jpg");
-            this.coinImageList.Images.SetKeyName(1, "eth.jpg");
-            this.coinImageList.Images.SetKeyName(2, "erg.jpg");
-            this.coinImageList.Images.SetKeyName(3, "rvn.jpg");
-            this.coinImageList.Images.SetKeyName(4, "cfx.jpg");
-            // 
             // lblResults
             // 
             this.lblResults.AutoSize = true;
@@ -698,473 +1205,6 @@
             this.lblBudgetMoneySign.TabIndex = 14;
             this.lblBudgetMoneySign.Text = "$";
             // 
-            // EditGpuPanel
-            // 
-            this.EditGpuPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.EditGpuPanel.Controls.Add(this.HashratesProgressBar);
-            this.EditGpuPanel.Controls.Add(this.LhrLabel);
-            this.EditGpuPanel.Controls.Add(this.EbayItemSelection);
-            this.EditGpuPanel.Controls.Add(this.GpuListName);
-            this.EditGpuPanel.Controls.Add(this.GetGpuPrice);
-            this.EditGpuPanel.Controls.Add(this.DateReleased);
-            this.EditGpuPanel.Controls.Add(this.AmdOrNvidia);
-            this.EditGpuPanel.Controls.Add(this.GpuVramSize);
-            this.EditGpuPanel.Controls.Add(this.GpuVersionSuffix);
-            this.EditGpuPanel.Controls.Add(this.GpuVersionPrefix);
-            this.EditGpuPanel.Controls.Add(this.GpuModelNumber);
-            this.EditGpuPanel.Controls.Add(this.AddGpu);
-            this.EditGpuPanel.Controls.Add(this.EditHashrates);
-            this.EditGpuPanel.Controls.Add(this.EbayItemUrl);
-            this.EditGpuPanel.Controls.Add(this.CancelGpuHashrates);
-            this.EditGpuPanel.Controls.Add(this.SaveGpuHashrates);
-            this.EditGpuPanel.Controls.Add(this.lblHashrates);
-            this.EditGpuPanel.Controls.Add(this.PricePaid);
-            this.EditGpuPanel.Controls.Add(this.EbayPrice);
-            this.EditGpuPanel.Controls.Add(this.MSRP);
-            this.EditGpuPanel.Controls.Add(this.lblPricePaid);
-            this.EditGpuPanel.Controls.Add(this.lblEbayPrice);
-            this.EditGpuPanel.Controls.Add(this.lblMSRP);
-            this.EditGpuPanel.Controls.Add(this.lblDateReleased);
-            this.EditGpuPanel.Controls.Add(this.EditGpuList);
-            this.EditGpuPanel.Location = new System.Drawing.Point(19, 941);
-            this.EditGpuPanel.Name = "EditGpuPanel";
-            this.EditGpuPanel.Size = new System.Drawing.Size(827, 502);
-            this.EditGpuPanel.TabIndex = 15;
-            this.EditGpuPanel.Visible = false;
-            // 
-            // HashratesProgressBar
-            // 
-            this.HashratesProgressBar.Location = new System.Drawing.Point(340, 466);
-            this.HashratesProgressBar.Name = "HashratesProgressBar";
-            this.HashratesProgressBar.Size = new System.Drawing.Size(261, 27);
-            this.HashratesProgressBar.Step = 1;
-            this.HashratesProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.HashratesProgressBar.TabIndex = 34;
-            // 
-            // LhrLabel
-            // 
-            this.LhrLabel.AutoSize = true;
-            this.LhrLabel.BackColor = System.Drawing.Color.Transparent;
-            this.LhrLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.LhrLabel.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.LhrLabel.ForeColor = System.Drawing.Color.Green;
-            this.LhrLabel.Location = new System.Drawing.Point(487, 14);
-            this.LhrLabel.Name = "LhrLabel";
-            this.LhrLabel.Size = new System.Drawing.Size(53, 30);
-            this.LhrLabel.TabIndex = 31;
-            this.LhrLabel.Text = "Lhr";
-            // 
-            // EbayItemSelection
-            // 
-            this.EbayItemSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.EbayItemSelection.Font = new System.Drawing.Font("Ink Free", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EbayItemSelection.FormattingEnabled = true;
-            this.EbayItemSelection.Location = new System.Drawing.Point(559, 185);
-            this.EbayItemSelection.Name = "EbayItemSelection";
-            this.EbayItemSelection.Size = new System.Drawing.Size(259, 28);
-            this.EbayItemSelection.TabIndex = 30;
-            this.EbayItemSelection.SelectedIndexChanged += new System.EventHandler(this.EbayItemSelection_SelectedIndexChanged);
-            // 
-            // GpuListName
-            // 
-            this.GpuListName.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuListName.Location = new System.Drawing.Point(6, 9);
-            this.GpuListName.MaxLength = 150;
-            this.GpuListName.Name = "GpuListName";
-            this.GpuListName.PlaceholderText = "Gpu  List Name";
-            this.GpuListName.Size = new System.Drawing.Size(306, 41);
-            this.GpuListName.TabIndex = 29;
-            this.GpuListName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GpuListName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuListName_KeyDown);
-            // 
-            // GetGpuPrice
-            // 
-            this.GetGpuPrice.BackColor = System.Drawing.Color.RoyalBlue;
-            this.GetGpuPrice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.GetGpuPrice.Font = new System.Drawing.Font("Ink Free", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GetGpuPrice.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.GetGpuPrice.Location = new System.Drawing.Point(510, 149);
-            this.GetGpuPrice.Name = "GetGpuPrice";
-            this.GetGpuPrice.Size = new System.Drawing.Size(87, 30);
-            this.GetGpuPrice.TabIndex = 28;
-            this.GetGpuPrice.Text = "Get Price";
-            this.GetGpuPrice.UseVisualStyleBackColor = false;
-            this.GetGpuPrice.Click += new System.EventHandler(this.GetEbayPrice_Click);
-            // 
-            // DateReleased
-            // 
-            this.DateReleased.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.DateReleased.Location = new System.Drawing.Point(565, 29);
-            this.DateReleased.MaxLength = 150;
-            this.DateReleased.Name = "DateReleased";
-            this.DateReleased.PlaceholderText = "Month Year";
-            this.DateReleased.Size = new System.Drawing.Size(204, 33);
-            this.DateReleased.TabIndex = 27;
-            this.DateReleased.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.DateReleased.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DateReleased_KeyDown);
-            // 
-            // AmdOrNvidia
-            // 
-            this.AmdOrNvidia.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AmdOrNvidia.Location = new System.Drawing.Point(340, 8);
-            this.AmdOrNvidia.MaxLength = 150;
-            this.AmdOrNvidia.Name = "AmdOrNvidia";
-            this.AmdOrNvidia.PlaceholderText = "Amd/Nvidia";
-            this.AmdOrNvidia.Size = new System.Drawing.Size(132, 41);
-            this.AmdOrNvidia.TabIndex = 26;
-            this.AmdOrNvidia.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.AmdOrNvidia.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AmdOrNvidia_KeyDown);
-            // 
-            // GpuVramSize
-            // 
-            this.GpuVramSize.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuVramSize.Location = new System.Drawing.Point(278, 109);
-            this.GpuVramSize.MaxLength = 2;
-            this.GpuVramSize.Name = "GpuVramSize";
-            this.GpuVramSize.Size = new System.Drawing.Size(40, 31);
-            this.GpuVramSize.TabIndex = 25;
-            this.GpuVramSize.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GpuVramSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVramSize_KeyDown);
-            // 
-            // GpuVersionSuffix
-            // 
-            this.GpuVersionSuffix.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuVersionSuffix.Location = new System.Drawing.Point(192, 109);
-            this.GpuVersionSuffix.MaxLength = 150;
-            this.GpuVersionSuffix.Name = "GpuVersionSuffix";
-            this.GpuVersionSuffix.Size = new System.Drawing.Size(66, 31);
-            this.GpuVersionSuffix.TabIndex = 24;
-            this.GpuVersionSuffix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GpuVersionSuffix.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVersionSuffix_KeyDown);
-            // 
-            // GpuVersionPrefix
-            // 
-            this.GpuVersionPrefix.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuVersionPrefix.Location = new System.Drawing.Point(6, 109);
-            this.GpuVersionPrefix.MaxLength = 150;
-            this.GpuVersionPrefix.Name = "GpuVersionPrefix";
-            this.GpuVersionPrefix.Size = new System.Drawing.Size(72, 31);
-            this.GpuVersionPrefix.TabIndex = 23;
-            this.GpuVersionPrefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GpuVersionPrefix.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuVersionPrefix_KeyDown);
-            // 
-            // GpuModelNumber
-            // 
-            this.GpuModelNumber.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.GpuModelNumber.Location = new System.Drawing.Point(92, 109);
-            this.GpuModelNumber.MaxLength = 150;
-            this.GpuModelNumber.Name = "GpuModelNumber";
-            this.GpuModelNumber.Size = new System.Drawing.Size(84, 31);
-            this.GpuModelNumber.TabIndex = 22;
-            this.GpuModelNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.GpuModelNumber.KeyDown += new System.Windows.Forms.KeyEventHandler(this.GpuModelNumber_KeyDown);
-            // 
-            // AddGpu
-            // 
-            this.AddGpu.BackColor = System.Drawing.Color.RoyalBlue;
-            this.AddGpu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddGpu.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AddGpu.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.AddGpu.Location = new System.Drawing.Point(6, 62);
-            this.AddGpu.Name = "AddGpu";
-            this.AddGpu.Size = new System.Drawing.Size(306, 32);
-            this.AddGpu.TabIndex = 21;
-            this.AddGpu.Text = "Add Gpu";
-            this.AddGpu.UseVisualStyleBackColor = false;
-            this.AddGpu.Click += new System.EventHandler(this.AddGpu_Click);
-            // 
-            // EditHashrates
-            // 
-            this.EditHashrates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.EditHashrates.Location = new System.Drawing.Point(340, 218);
-            this.EditHashrates.Name = "EditHashrates";
-            this.EditHashrates.RowTemplate.Height = 25;
-            this.EditHashrates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.EditHashrates.ShowCellToolTips = false;
-            this.EditHashrates.Size = new System.Drawing.Size(478, 236);
-            this.EditHashrates.TabIndex = 18;
-            this.EditHashrates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellEndEdit);
-            this.EditHashrates.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Hashrates_EditingControlShowing);
-            this.EditHashrates.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.EditHashrates_RowsRemoved);
-            this.EditHashrates.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Hashrates_KeyDown);
-            // 
-            // EbayItemUrl
-            // 
-            this.EbayItemUrl.AutoSize = true;
-            this.EbayItemUrl.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EbayItemUrl.Location = new System.Drawing.Point(603, 150);
-            this.EbayItemUrl.Name = "EbayItemUrl";
-            this.EbayItemUrl.Size = new System.Drawing.Size(53, 26);
-            this.EbayItemUrl.TabIndex = 17;
-            this.EbayItemUrl.TabStop = true;
-            this.EbayItemUrl.Text = "Link";
-            this.EbayItemUrl.Click += new System.EventHandler(this.EbayItemUrl_Click);
-            // 
-            // CancelGpuHashrates
-            // 
-            this.CancelGpuHashrates.BackColor = System.Drawing.Color.RoyalBlue;
-            this.CancelGpuHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelGpuHashrates.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.CancelGpuHashrates.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CancelGpuHashrates.Location = new System.Drawing.Point(729, 466);
-            this.CancelGpuHashrates.Name = "CancelGpuHashrates";
-            this.CancelGpuHashrates.Size = new System.Drawing.Size(83, 30);
-            this.CancelGpuHashrates.TabIndex = 16;
-            this.CancelGpuHashrates.Text = "Cancel";
-            this.CancelGpuHashrates.UseVisualStyleBackColor = false;
-            this.CancelGpuHashrates.Click += new System.EventHandler(this.CancelGpuHashrates_Click);
-            // 
-            // SaveGpuHashrates
-            // 
-            this.SaveGpuHashrates.BackColor = System.Drawing.Color.RoyalBlue;
-            this.SaveGpuHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveGpuHashrates.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SaveGpuHashrates.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.SaveGpuHashrates.Location = new System.Drawing.Point(607, 466);
-            this.SaveGpuHashrates.Name = "SaveGpuHashrates";
-            this.SaveGpuHashrates.Size = new System.Drawing.Size(83, 30);
-            this.SaveGpuHashrates.TabIndex = 15;
-            this.SaveGpuHashrates.Text = "Save";
-            this.SaveGpuHashrates.UseVisualStyleBackColor = false;
-            this.SaveGpuHashrates.Click += new System.EventHandler(this.SaveGpuHashrates_Click);
-            // 
-            // lblHashrates
-            // 
-            this.lblHashrates.AutoSize = true;
-            this.lblHashrates.BackColor = System.Drawing.Color.Transparent;
-            this.lblHashrates.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblHashrates.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblHashrates.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblHashrates.Location = new System.Drawing.Point(336, 179);
-            this.lblHashrates.Name = "lblHashrates";
-            this.lblHashrates.Size = new System.Drawing.Size(132, 30);
-            this.lblHashrates.TabIndex = 13;
-            this.lblHashrates.Text = "Hashrates";
-            // 
-            // PricePaid
-            // 
-            this.PricePaid.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.PricePaid.Location = new System.Drawing.Point(680, 106);
-            this.PricePaid.MaxLength = 9;
-            this.PricePaid.Name = "PricePaid";
-            this.PricePaid.PlaceholderText = "0.00";
-            this.PricePaid.Size = new System.Drawing.Size(136, 37);
-            this.PricePaid.TabIndex = 12;
-            this.PricePaid.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.PricePaid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PricePaid_KeyDown);
-            // 
-            // EbayPrice
-            // 
-            this.EbayPrice.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.EbayPrice.Location = new System.Drawing.Point(510, 106);
-            this.EbayPrice.MaxLength = 9;
-            this.EbayPrice.Name = "EbayPrice";
-            this.EbayPrice.PlaceholderText = "0.00";
-            this.EbayPrice.Size = new System.Drawing.Size(136, 37);
-            this.EbayPrice.TabIndex = 11;
-            this.EbayPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.EbayPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.EbayPrice_KeyDown);
-            // 
-            // MSRP
-            // 
-            this.MSRP.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.MSRP.Location = new System.Drawing.Point(340, 106);
-            this.MSRP.MaxLength = 9;
-            this.MSRP.Name = "MSRP";
-            this.MSRP.PlaceholderText = "0.00";
-            this.MSRP.Size = new System.Drawing.Size(132, 37);
-            this.MSRP.TabIndex = 10;
-            this.MSRP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.MSRP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MSRP_KeyDown);
-            // 
-            // lblPricePaid
-            // 
-            this.lblPricePaid.AutoSize = true;
-            this.lblPricePaid.BackColor = System.Drawing.Color.Transparent;
-            this.lblPricePaid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblPricePaid.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblPricePaid.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblPricePaid.Location = new System.Drawing.Point(682, 73);
-            this.lblPricePaid.Name = "lblPricePaid";
-            this.lblPricePaid.Size = new System.Drawing.Size(120, 30);
-            this.lblPricePaid.TabIndex = 9;
-            this.lblPricePaid.Text = "Price Paid";
-            // 
-            // lblEbayPrice
-            // 
-            this.lblEbayPrice.AutoSize = true;
-            this.lblEbayPrice.BackColor = System.Drawing.Color.Transparent;
-            this.lblEbayPrice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblEbayPrice.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblEbayPrice.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblEbayPrice.Location = new System.Drawing.Point(512, 73);
-            this.lblEbayPrice.Name = "lblEbayPrice";
-            this.lblEbayPrice.Size = new System.Drawing.Size(127, 30);
-            this.lblEbayPrice.TabIndex = 8;
-            this.lblEbayPrice.Text = "Ebay Price";
-            // 
-            // lblMSRP
-            // 
-            this.lblMSRP.AutoSize = true;
-            this.lblMSRP.BackColor = System.Drawing.Color.Transparent;
-            this.lblMSRP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblMSRP.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblMSRP.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblMSRP.Location = new System.Drawing.Point(363, 73);
-            this.lblMSRP.Name = "lblMSRP";
-            this.lblMSRP.Size = new System.Drawing.Size(77, 30);
-            this.lblMSRP.TabIndex = 7;
-            this.lblMSRP.Text = "MSRP";
-            // 
-            // lblDateReleased
-            // 
-            this.lblDateReleased.AutoSize = true;
-            this.lblDateReleased.BackColor = System.Drawing.Color.Transparent;
-            this.lblDateReleased.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblDateReleased.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblDateReleased.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblDateReleased.Location = new System.Drawing.Point(578, 3);
-            this.lblDateReleased.Name = "lblDateReleased";
-            this.lblDateReleased.Size = new System.Drawing.Size(161, 30);
-            this.lblDateReleased.TabIndex = 6;
-            this.lblDateReleased.Text = "Release Date";
-            // 
-            // EditGpuList
-            // 
-            this.EditGpuList.FullRowSelect = true;
-            this.EditGpuList.HideSelection = false;
-            this.EditGpuList.Location = new System.Drawing.Point(6, 146);
-            this.EditGpuList.MultiSelect = false;
-            this.EditGpuList.Name = "EditGpuList";
-            this.EditGpuList.Size = new System.Drawing.Size(320, 350);
-            this.EditGpuList.TabIndex = 3;
-            this.EditGpuList.UseCompatibleStateImageBehavior = false;
-            this.EditGpuList.View = System.Windows.Forms.View.Details;
-            this.EditGpuList.SelectedIndexChanged += new System.EventHandler(this.EditGpuList_SelectedIndexChanged);
-            // 
-            // EditCoinPanel
-            // 
-            this.EditCoinPanel.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.EditCoinPanel.Controls.Add(this.CoinListName);
-            this.EditCoinPanel.Controls.Add(this.lblAllCoinsList);
-            this.EditCoinPanel.Controls.Add(this.DeleteCoin);
-            this.EditCoinPanel.Controls.Add(this.AddCoin);
-            this.EditCoinPanel.Controls.Add(this.ListOfAllCoins);
-            this.EditCoinPanel.Controls.Add(this.CancelEditCoinList);
-            this.EditCoinPanel.Controls.Add(this.SaveCoinList);
-            this.EditCoinPanel.Controls.Add(this.EditCoinList);
-            this.EditCoinPanel.Location = new System.Drawing.Point(904, 942);
-            this.EditCoinPanel.Name = "EditCoinPanel";
-            this.EditCoinPanel.Size = new System.Drawing.Size(957, 501);
-            this.EditCoinPanel.TabIndex = 16;
-            this.EditCoinPanel.Visible = false;
-            // 
-            // CoinListName
-            // 
-            this.CoinListName.Font = new System.Drawing.Font("Ink Free", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.CoinListName.Location = new System.Drawing.Point(6, 7);
-            this.CoinListName.MaxLength = 150;
-            this.CoinListName.Name = "CoinListName";
-            this.CoinListName.PlaceholderText = "Coin  List Name";
-            this.CoinListName.Size = new System.Drawing.Size(320, 41);
-            this.CoinListName.TabIndex = 30;
-            this.CoinListName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lblAllCoinsList
-            // 
-            this.lblAllCoinsList.AutoSize = true;
-            this.lblAllCoinsList.BackColor = System.Drawing.Color.Transparent;
-            this.lblAllCoinsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lblAllCoinsList.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lblAllCoinsList.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lblAllCoinsList.Location = new System.Drawing.Point(584, 12);
-            this.lblAllCoinsList.Name = "lblAllCoinsList";
-            this.lblAllCoinsList.Size = new System.Drawing.Size(213, 30);
-            this.lblAllCoinsList.TabIndex = 21;
-            this.lblAllCoinsList.Text = "All Coins Available";
-            // 
-            // DeleteCoin
-            // 
-            this.DeleteCoin.BackColor = System.Drawing.Color.RoyalBlue;
-            this.DeleteCoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DeleteCoin.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.DeleteCoin.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.DeleteCoin.Location = new System.Drawing.Point(332, 211);
-            this.DeleteCoin.Name = "DeleteCoin";
-            this.DeleteCoin.Size = new System.Drawing.Size(80, 30);
-            this.DeleteCoin.TabIndex = 20;
-            this.DeleteCoin.Text = "Delete";
-            this.DeleteCoin.UseVisualStyleBackColor = false;
-            this.DeleteCoin.Click += new System.EventHandler(this.DeleteCoin_Click);
-            // 
-            // AddCoin
-            // 
-            this.AddCoin.BackColor = System.Drawing.Color.RoyalBlue;
-            this.AddCoin.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.AddCoin.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.AddCoin.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.AddCoin.Location = new System.Drawing.Point(332, 132);
-            this.AddCoin.Name = "AddCoin";
-            this.AddCoin.Size = new System.Drawing.Size(80, 30);
-            this.AddCoin.TabIndex = 19;
-            this.AddCoin.Text = "Add";
-            this.AddCoin.UseVisualStyleBackColor = false;
-            this.AddCoin.Click += new System.EventHandler(this.AddCoin_Click);
-            // 
-            // ListOfAllCoins
-            // 
-            this.ListOfAllCoins.FullRowSelect = true;
-            this.ListOfAllCoins.HideSelection = false;
-            this.ListOfAllCoins.Location = new System.Drawing.Point(418, 49);
-            this.ListOfAllCoins.MultiSelect = false;
-            this.ListOfAllCoins.Name = "ListOfAllCoins";
-            this.ListOfAllCoins.Size = new System.Drawing.Size(526, 410);
-            this.ListOfAllCoins.SmallImageList = this.coinImageList;
-            this.ListOfAllCoins.TabIndex = 18;
-            this.ListOfAllCoins.UseCompatibleStateImageBehavior = false;
-            this.ListOfAllCoins.View = System.Windows.Forms.View.Details;
-            // 
-            // CancelEditCoinList
-            // 
-            this.CancelEditCoinList.BackColor = System.Drawing.Color.RoyalBlue;
-            this.CancelEditCoinList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.CancelEditCoinList.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.CancelEditCoinList.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.CancelEditCoinList.Location = new System.Drawing.Point(744, 465);
-            this.CancelEditCoinList.Name = "CancelEditCoinList";
-            this.CancelEditCoinList.Size = new System.Drawing.Size(83, 30);
-            this.CancelEditCoinList.TabIndex = 17;
-            this.CancelEditCoinList.Text = "Cancel";
-            this.CancelEditCoinList.UseVisualStyleBackColor = false;
-            this.CancelEditCoinList.Click += new System.EventHandler(this.CancelEditCoinList_Click);
-            // 
-            // SaveCoinList
-            // 
-            this.SaveCoinList.BackColor = System.Drawing.Color.RoyalBlue;
-            this.SaveCoinList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.SaveCoinList.Font = new System.Drawing.Font("Ink Free", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.SaveCoinList.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.SaveCoinList.Location = new System.Drawing.Point(632, 465);
-            this.SaveCoinList.Name = "SaveCoinList";
-            this.SaveCoinList.Size = new System.Drawing.Size(83, 30);
-            this.SaveCoinList.TabIndex = 16;
-            this.SaveCoinList.Text = "Save";
-            this.SaveCoinList.UseVisualStyleBackColor = false;
-            this.SaveCoinList.Click += new System.EventHandler(this.SaveCoinList_Click);
-            // 
-            // EditCoinList
-            // 
-            this.EditCoinList.FullRowSelect = true;
-            this.EditCoinList.HideSelection = false;
-            this.EditCoinList.Location = new System.Drawing.Point(6, 61);
-            this.EditCoinList.MultiSelect = false;
-            this.EditCoinList.Name = "EditCoinList";
-            this.EditCoinList.Size = new System.Drawing.Size(320, 434);
-            this.EditCoinList.SmallImageList = this.coinImageList;
-            this.EditCoinList.TabIndex = 4;
-            this.EditCoinList.UseCompatibleStateImageBehavior = false;
-            this.EditCoinList.View = System.Windows.Forms.View.Details;
-            // 
             // HodlPrice
             // 
             this.HodlPrice.Font = new System.Drawing.Font("Ink Free", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -1230,6 +1270,39 @@
             this.HodlCoin.TabIndex = 32;
             this.HodlCoin.SelectedIndexChanged += new System.EventHandler(this.HodlCoin_SelectedIndexChanged);
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+            // 
+            // TotalsList
+            // 
+            this.TotalsList.FullRowSelect = true;
+            this.TotalsList.HideSelection = false;
+            this.TotalsList.Location = new System.Drawing.Point(12, 974);
+            this.TotalsList.MultiSelect = false;
+            this.TotalsList.Name = "TotalsList";
+            this.TotalsList.Size = new System.Drawing.Size(1849, 171);
+            this.TotalsList.SmallImageList = this.coinImageList;
+            this.TotalsList.TabIndex = 33;
+            this.TotalsList.UseCompatibleStateImageBehavior = false;
+            this.TotalsList.View = System.Windows.Forms.View.Details;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.label1.Font = new System.Drawing.Font("Ink Free", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.label1.Location = new System.Drawing.Point(850, 932);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(116, 39);
+            this.label1.TabIndex = 34;
+            this.label1.Text = "Total: ";
+            // 
             // MaxGpuRoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1237,13 +1310,12 @@
             this.AutoSize = true;
             this.BackgroundImage = global::Max_Gpu_Roi.Properties.Resources.space_background;
             this.ClientSize = new System.Drawing.Size(1873, 1460);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.TotalsList);
             this.Controls.Add(this.HodlCoin);
             this.Controls.Add(this.lblHodl2);
-            this.Controls.Add(this.lblHodl1);
             this.Controls.Add(this.lblHodlDollarSign);
             this.Controls.Add(this.HodlPrice);
-            this.Controls.Add(this.EditCoinPanel);
-            this.Controls.Add(this.EditGpuPanel);
             this.Controls.Add(this.MaxMyROI);
             this.Controls.Add(this.Budget);
             this.Controls.Add(this.Exit);
@@ -1254,6 +1326,7 @@
             this.Controls.Add(this.pnlGpuLists);
             this.Controls.Add(this.lblBudget);
             this.Controls.Add(this.lblBudgetMoneySign);
+            this.Controls.Add(this.lblHodl1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "MaxGpuRoi";
@@ -1270,13 +1343,13 @@
             this.pnlFilters.PerformLayout();
             this.pnlResultsList.ResumeLayout(false);
             this.pnlResultsList.PerformLayout();
-            this.ErrorMessagePanel.ResumeLayout(false);
-            this.ErrorMessagePanel.PerformLayout();
+            this.EditCoinPanel.ResumeLayout(false);
+            this.EditCoinPanel.PerformLayout();
             this.EditGpuPanel.ResumeLayout(false);
             this.EditGpuPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EditHashrates)).EndInit();
-            this.EditCoinPanel.ResumeLayout(false);
-            this.EditCoinPanel.PerformLayout();
+            this.ErrorMessagePanel.ResumeLayout(false);
+            this.ErrorMessagePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1348,7 +1421,6 @@
         private System.Windows.Forms.TextBox AmdOrNvidia;
         private System.Windows.Forms.TextBox GpuListName;
         private System.Windows.Forms.ComboBox EbayItemSelection;
-        private System.Windows.Forms.Label LhrLabel;
         private System.Windows.Forms.LinkLabel ResultsEbayLink;
         private System.Windows.Forms.ComboBox ResultsEbayItemSelection;
         private System.Windows.Forms.Button AddGpuList;
@@ -1368,5 +1440,11 @@
         private System.Windows.Forms.ComboBox HodlCoin;
         private System.Windows.Forms.ProgressBar HashratesProgressBar;
         private System.Windows.Forms.Label dayWeekMonthLabel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.ListView TotalsList;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox Lhr;
+        private System.Windows.Forms.Label EditGpuLbl;
+        private System.Windows.Forms.ComboBox HashrateCoinsMenu;
     }
 }

@@ -25,7 +25,7 @@ namespace Max_Gpu_Roi
                 {
                     var hashes = new List<Hashrate>();
                     // AMD
-                    if (gpu.AmdOrNvidia.ToLower() == "amd")
+                    if (gpu.Manufacturer.ToLower() == "amd")
                     {
                         if (hashes.Count == 0 && (gpu.ModelNumber == "6800" || gpu.ModelNumber == "6900"))
                         {
@@ -74,7 +74,7 @@ namespace Max_Gpu_Roi
 
                     // NVIDIA
                     // Get lhr variant for 3070ti/3080ti
-                    if (gpu.AmdOrNvidia == "nvidia" && (gpu.ModelNumber == "3070" || gpu.ModelNumber == "3080") && gpu.VersionSuffix == "ti") //int.TryParse(gpu.ModelNumber, out var modelNum) && modelNum > 3000)
+                    if (gpu.Manufacturer == "nvidia" && (gpu.ModelNumber == "3070" || gpu.ModelNumber == "3080") && gpu.VersionSuffix == "ti") //int.TryParse(gpu.ModelNumber, out var modelNum) && modelNum > 3000)
                     {
                         gpu.Lhr = true;
                         hashes = await NiceHash.GetHashratesForGpu(await NiceHash.GetNiceHashUrl(gpu));
@@ -125,7 +125,7 @@ namespace Max_Gpu_Roi
                     gpu.Hashrates.AddRange(hashes);
                 }
                 gpus.AddRange(gpusToAdd);
-                await JsonCrud.SaveGpuList(gpus, fileName); // Write hashrate info to json file
+                JsonCrud.SaveGpuList(gpus, fileName); // Write hashrate info to json file
             }
             catch (Exception ex) { }
         }
@@ -239,7 +239,7 @@ namespace Max_Gpu_Roi
 
         public static async Task<string> GetNiceHashUrl(Gpu gpu)
         {
-            var url = gpu.AmdOrNvidia.ToLower();
+            var url = gpu.Manufacturer.ToLower();
 
             url += gpu.VersionPrefix == null ? "" : "-" + gpu.VersionPrefix.ToLower();
             url += gpu.ModelNumber == null ? "" : "-" + gpu.ModelNumber.ToLower();
@@ -258,7 +258,7 @@ namespace Max_Gpu_Roi
                 return url;
 
             // Most amd cards require gb
-            if (gpu.AmdOrNvidia.ToLower() == "amd" && gpu.VramSize > 0)
+            if (gpu.Manufacturer.ToLower() == "amd" && gpu.VramSize > 0)
                 url += "-" + gpu.VramSize.ToString() + "gb";
 
             return url;

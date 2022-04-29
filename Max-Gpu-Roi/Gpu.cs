@@ -11,7 +11,6 @@ namespace Max_Gpu_Roi
         public int Id { get; set; }
         public string Name { get { return GetUserFriendlyName();  } set { SetName(value); } }
         public string ModelNumber { get; set; } // 3080/6800/580
-        public string Manufacturer { get; set; }
         public string VersionPrefix { get; set; } // Cmp/gtx/rtx/rx
         public string VersionSuffix { get; set; } // xt/ti/super
         public double MSRP { get; set; }
@@ -20,7 +19,7 @@ namespace Max_Gpu_Roi
         public int Watts { get; set; }
         public int VramSize { get; set; }
         public DateTime DateReleased { get; set; }
-        public string AmdOrNvidia { get; set; }
+        public string Manufacturer { get; set; }
         public bool Lhr { get; set; }
         public string EbayLink { get; set; }
         public List<Hashrate> Hashrates { get; set; }
@@ -29,7 +28,6 @@ namespace Max_Gpu_Roi
         {
             Id = -1;
             ModelNumber = "unknown";
-            Manufacturer = "unknown";
             VersionPrefix = "unknown";
             VersionSuffix = "unknown";
             MSRP = 0;
@@ -38,7 +36,7 @@ namespace Max_Gpu_Roi
             Watts = 0;
             VramSize = 0;
             DateReleased = DateTime.Now;
-            AmdOrNvidia = "unknown";
+            Manufacturer = "unknown";
             Lhr = false;
             EbayLink = "unknown";
             Hashrates = new List<Hashrate>();
@@ -208,9 +206,8 @@ namespace Max_Gpu_Roi
             int index = manufacterer.FindIndex(a => gpuName.Contains(a));
             if (index > -1)
             {
-                AmdOrNvidia = manufacterer[index];
                 Manufacturer = manufacterer[index];
-                gpuName = gpuName.Replace(AmdOrNvidia, ""); // remove manufacturer
+                gpuName = gpuName.Replace(Manufacturer, ""); // remove manufacturer
             }
 
             // Get version prefix
@@ -275,9 +272,8 @@ namespace Max_Gpu_Roi
         {
             var newGpu = new Gpu();
             newGpu.Id = new Random(500 - 100000).Next();
-            newGpu.Manufacturer = Manufacturer;
             newGpu.ModelNumber = ModelNumber;
-            newGpu.AmdOrNvidia = AmdOrNvidia;
+            newGpu.Manufacturer = Manufacturer;
             newGpu.Lhr = Lhr;
             newGpu.VersionPrefix = VersionPrefix;
             newGpu.VersionSuffix = VersionSuffix;

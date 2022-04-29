@@ -17,11 +17,11 @@ namespace Max_Gpu_Roi
         /// <param name="coins"></param>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static async Task<bool> SaveCoinList(List<Coin> coins, string file)
+        public static bool SaveCoinList(List<Coin> coins, string file)
         {
             // If this is a new list
             if (!File.Exists(file))
-                return await WriteToCoinListFile(file, coins); // Save the new list to a new file
+                return WriteToCoinListFile(file, coins); // Save the new list to a new file
 
 
             // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
@@ -30,17 +30,17 @@ namespace Max_Gpu_Roi
             {
                 // If the file exists and its not locked
                 if (File.Exists(file) && !IsFileLocked(new FileInfo(file)))
-                    return await WriteToCoinListFile(file, coins);  // Save the updated list to the file
+                    return WriteToCoinListFile(file, coins);  // Save the updated list to the file
 
                 x++;
-                await Task.Delay(1000);
+                Task.Delay(1000);
             } while (x < 10);
 
             try
             {
                 // The file is locked, Try deleting the file
                 File.Delete(file);
-                return await WriteToCoinListFile(file, coins);  // Then save the updated list to the new file
+                return WriteToCoinListFile(file, coins);  // Then save the updated list to the new file
             }
             catch { }
 
@@ -55,7 +55,7 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public static async Task<List<Coin>> LoadCoinList(string file)
+        public static List<Coin> LoadCoinList(string file)
         {
             // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
             int x = 0;
@@ -65,12 +65,10 @@ namespace Max_Gpu_Roi
                 {
                     try
                     {
-                        // Open the file
-                        using FileStream fs = File.OpenRead(file);
+                        string jsonString = File.ReadAllText(file);
+
                         // Extract the data
-                        var coins = await JsonSerializer.DeserializeAsync<List<Coin>>(fs);
-                        // Close the file
-                        fs.Close();
+                        var coins = JsonSerializer.Deserialize<List<Coin>>(jsonString);
 
                         // Return the data if the file indeed has data
                         if (coins != null && coins.Count > 0)
@@ -82,7 +80,7 @@ namespace Max_Gpu_Roi
                     return new List<Coin>();
                 }
                 x++;
-                await Task.Delay(1000);
+                Task.Delay(1000);
             } while (x < 10);
 
             // The file was not found or in-use. Show a pop-up with which one it is.
@@ -101,12 +99,12 @@ namespace Max_Gpu_Roi
         /// <param name="gpus"></param>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static async Task<bool> SaveGpuList(List<Gpu> gpus, string file)
+        public static bool SaveGpuList(List<Gpu> gpus, string file)
         {
 
             // If this is a new list
             if (!File.Exists(file))                
-                return await WriteToGpuListFile(file, gpus); // Save the new list to a new file
+                return WriteToGpuListFile(file, gpus); // Save the new list to a new file
 
 
             // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
@@ -115,17 +113,17 @@ namespace Max_Gpu_Roi
             {
                 // If the file exists and its not locked
                 if (File.Exists(file) && !IsFileLocked(new FileInfo(file)))                
-                    return await WriteToGpuListFile(file, gpus);  // Save the updated list to the file
+                    return WriteToGpuListFile(file, gpus);  // Save the updated list to the file
 
                 x++;
-                await Task.Delay(1000);
+                Task.Delay(1000);
             } while (x < 10);
 
             try
             { 
                 // The file is locked, Try deleting the file
                 File.Delete(file);
-                return await WriteToGpuListFile(file, gpus);  // Then save the updated list to the new file
+                return WriteToGpuListFile(file, gpus);  // Then save the updated list to the new file
             }
             catch { }
 
@@ -140,7 +138,7 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static async Task<List<Gpu>> LoadGpuList(string file)
+        public static List<Gpu> LoadGpuList(string file)
         {
             // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
             int x = 0;
@@ -150,12 +148,11 @@ namespace Max_Gpu_Roi
                 {
                     try
                     {
-                        // Open the file
-                        using FileStream fs = File.OpenRead(file);
+                        // Read the file
+                        string jsonString = File.ReadAllText(file); 
+                        
                         // Extract the data
-                        var gpus = await JsonSerializer.DeserializeAsync<List<Gpu>>(fs);
-                        // Close the file
-                        fs.Close();
+                        var gpus = JsonSerializer.Deserialize<List<Gpu>>(jsonString);
 
                         // Return the data if the file indeed has data
                         if (gpus != null && gpus.Count > 0)
@@ -167,8 +164,9 @@ namespace Max_Gpu_Roi
                     MessageBox.Show("Failed to load Gpu List data! Please import a backup.");
                     return new List<Gpu>();
                 }
+                // Wait a second before retrying to open the file that is in-use
                 x++;
-                await Task.Delay(1000);
+                Task.Delay(1000);
             } while (x < 10);
 
             // The file was not found or in-use. Show a pop-up with which one it is.
@@ -214,14 +212,13 @@ namespace Max_Gpu_Roi
         /// <param name="file"></param>
         /// <param name="gpus"></param>
         /// <returns></returns>
-        public static async Task<bool> WriteToGpuListFile(string file, List<Gpu> gpus)
+        public static bool WriteToGpuListFile(string file, List<Gpu> gpus)
         {
             // Save the given gpu list to the given file
             try
             {
-                using FileStream createStream = File.Create(file);
-                await JsonSerializer.SerializeAsync(createStream, gpus, new JsonSerializerOptions() { WriteIndented = true });
-                createStream.Close();
+                var jsonString = JsonSerializer.Serialize<List<Gpu>>(gpus, new JsonSerializerOptions() { WriteIndented = true });
+                File.WriteAllText(file, jsonString);
                 return true;
             }
             catch { return false; }
@@ -233,14 +230,13 @@ namespace Max_Gpu_Roi
         /// <param name="file"></param>
         /// <param name="gpus"></param>
         /// <returns></returns>
-        public static async Task<bool> WriteToCoinListFile(string file, List<Coin> coins)
+        public static bool WriteToCoinListFile(string file, List<Coin> coins)
         {
             // Save the given coin list to the given file
             try
             {
-                using FileStream createStream = File.Create(file);
-                await JsonSerializer.SerializeAsync(createStream, coins, new JsonSerializerOptions() { WriteIndented = true });
-                createStream.Close();
+                var jsonString = JsonSerializer.Serialize<List<Coin>>(coins, new JsonSerializerOptions() { WriteIndented = true });
+                File.WriteAllText(file, jsonString);
                 return true;
             }
             catch { return false; }
