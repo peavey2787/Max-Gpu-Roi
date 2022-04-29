@@ -118,6 +118,7 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.TotalsList = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
+            this.Minimize = new System.Windows.Forms.Button();
             this.pnlGpuLists.SuspendLayout();
             this.pnlCoinLists.SuspendLayout();
             this.pnlCosts.SuspendLayout();
@@ -1304,6 +1305,24 @@
             this.label1.TabIndex = 34;
             this.label1.Text = "Total: ";
             // 
+            // Minimize
+            // 
+            this.Minimize.BackColor = System.Drawing.Color.DarkRed;
+            this.Minimize.FlatAppearance.BorderColor = System.Drawing.Color.DarkRed;
+            this.Minimize.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkRed;
+            this.Minimize.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Red;
+            this.Minimize.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Minimize.Font = new System.Drawing.Font("Ink Free", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Minimize.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.Minimize.Location = new System.Drawing.Point(1743, 1);
+            this.Minimize.Margin = new System.Windows.Forms.Padding(0);
+            this.Minimize.Name = "Minimize";
+            this.Minimize.Size = new System.Drawing.Size(25, 39);
+            this.Minimize.TabIndex = 35;
+            this.Minimize.Text = "-";
+            this.Minimize.UseVisualStyleBackColor = false;
+            this.Minimize.Click += new System.EventHandler(this.Minimize_Click);
+            // 
             // MaxGpuRoi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -1311,6 +1330,7 @@
             this.AutoSize = true;
             this.BackgroundImage = global::Max_Gpu_Roi.Properties.Resources.space_background;
             this.ClientSize = new System.Drawing.Size(1873, 1460);
+            this.Controls.Add(this.Minimize);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.TotalsList);
             this.Controls.Add(this.HodlCoin);
@@ -1447,5 +1467,6 @@
         private System.Windows.Forms.CheckBox Lhr;
         private System.Windows.Forms.Label EditGpuLbl;
         private System.Windows.Forms.ComboBox HashrateCoinsMenu;
+        private System.Windows.Forms.Button Minimize;
     }
 }

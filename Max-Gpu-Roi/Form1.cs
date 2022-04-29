@@ -1174,15 +1174,19 @@ namespace Max_Gpu_Roi
         private void ImportCoinLists_Click(object sender, EventArgs e)
         {
             var file = GetFileFromUser();
-            var coins = GetCoinsFromList();
 
-            // Add listview item
+            // Add list name to coin lists gui
             var li = new ListViewItem();
             li.Tag = file;
             li.Text = Path.GetFileNameWithoutExtension(file);
-            li.SubItems.Add(coins.Count.ToString());
+            li.SubItems.Add("0");
+            li.Selected = true;
             CoinLists.Items.Add(li);
-            CoinLists.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            // Load the coins from the list
+            coins = GetCoinsFromList();
+
+            CoinLists.SelectedItems[0].SubItems[1].Text = coins.Count.ToString();
         }
         private void CoinLists_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1487,16 +1491,22 @@ namespace Max_Gpu_Roi
         }
         private async void ImportGpuLists_Click(object sender, EventArgs e)
         {
-            var gpuListFileName = GpuListsDirectory + GpuLists.SelectedItems[0].Text; 
-            gpus = await GetGpusFromList();
+            // Get file to import from the user
+            var gpuListFileName = GetFileFromUser();
 
-            // Add listview item
+            // Add the file name to the gpu lists gui
             var li = new ListViewItem();
             li.Tag = gpuListFileName;
             li.Text = Path.GetFileNameWithoutExtension(gpuListFileName);
-            li.SubItems.Add(gpus.Count.ToString());
+            li.SubItems.Add("0");
+            li.Selected = true;
             GpuLists.Items.Add(li);
-            GpuLists.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            // Load the gpus from the list
+            gpus = await GetGpusFromList();
+
+            // Update the gpu count 
+            GpuLists.SelectedItems[0].SubItems[1].Text = gpus.Count.ToString();
         }
         private void GpuLists_KeyDown(object sender, KeyEventArgs e)
         {
@@ -2481,6 +2491,11 @@ namespace Max_Gpu_Roi
                     filePath = openFileDialog.FileName;
             }
             return filePath;
+        }
+
+        private void Minimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }
