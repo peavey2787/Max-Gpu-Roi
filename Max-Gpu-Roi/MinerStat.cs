@@ -1,17 +1,8 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
-using WebDriverManager;
-using WebDriverManager.DriverConfigs.Impl; 
 
 namespace Max_Gpu_Roi
 {

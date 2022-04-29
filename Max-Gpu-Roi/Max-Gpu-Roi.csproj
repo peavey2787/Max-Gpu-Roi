@@ -9,13 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NReco.PhantomJS" Version="1.0.4" />
-    <PackageReference Include="Selenium.PhantomJS.WebDriver" Version="2.1.1" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
-    <PackageReference Include="Selenium.WebDriver.PhantomJS" Version="1.0.0" />
-    <PackageReference Include="Selenium.WebDriver.PhantomJS.Xplatform" Version="2.45.0.1" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
-    <PackageReference Include="WebDriverManager" Version="2.12.4" />
   </ItemGroup>
 
   <ItemGroup>
