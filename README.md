@@ -10,6 +10,7 @@ Update for considerations for dual mining planned for future realese.
 # Frequently Asked Questions
 
 ## How to find the "best" gpu to buy?
+
 Best is subjective, but there are plenty of options to sort the gpus by.
 Launch the app and click Max My ROI.
 Then sort the list by clicking on one of the column headers.
@@ -17,6 +18,10 @@ If you're looking for low power usage and high profits click Efficiency.
 If you're looking for low cost and high profits regardless of power click $/Mhs.
 If you're looking for the quickest ROI click ROI.
 If you just want the cheapest gpu click Price.
+
+## Which price is used for the calculations? MSRP, Ebay, or Price Paid?
+
+If there is an amount given for the Price Paid it will always be used. However, if no Price Paid is given then the Ebay price will be used. The only time MSRP is used is if there were no reputable Ebay listings to get a price.
 
 
 ## How to find the most profitable coin to mine for my gpu?
