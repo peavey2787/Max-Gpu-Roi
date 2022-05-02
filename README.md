@@ -4,7 +4,6 @@
 
 This app will search ebay for you and take care of all the calculations to ensure you make the right choice on your next gpu purchase.
 If you aren't looking to purchase any more gpus this app will still help maximize your ROI by performing the calculations needed to determine the most profitable coin to mine for each gpu.
-Currently only works with gpus/coins that are measured in megahashes per second (mhs).
 Update for considerations for dual mining planned for future realese.
 
 # Frequently Asked Questions
