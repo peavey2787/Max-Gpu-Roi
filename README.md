@@ -35,8 +35,8 @@ Then click Max My ROI.
 ## How to find the hashrate for my gpu?
 
 Select the Default gpu list and click the edit button near Gpu Lists. Then find your gpu in the list and click on it.
-You can copy hashrates for a single coin from here and paste it into your own custom gpu list. Make sure you have the whole row selected then press Ctr+C.
-Next you can click cancel then select the gpu list for the gpu you want to paste the hashrates to and make sure the hashrates table has focus then press Ctr+V. If you want to add a coin that isn't listed just select the empty row and add the hashrate info manually.
+You can copy hashrates for a single coin from here and paste it into your own custom gpu list. Make sure you click the algorithm to select the row then press Ctr+C.
+Next you can click cancel then select the gpu list for the gpu you want to paste the hashrates to and make sure the hashrates table has focus by again clicking the algorithm cell then press Ctr+V. If you want to add a coin that isn't listed just select the empty row and add the hashrate info manually.
 
 ## How to find the cheapest gpu on ebay?
 
