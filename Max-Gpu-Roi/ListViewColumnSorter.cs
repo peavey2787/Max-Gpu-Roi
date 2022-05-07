@@ -95,7 +95,11 @@ public class ListViewColumnSorter : IComparer
                 break;           
 
             case Constants.Hashrate:
-                compareResult = CompareNumbers(listviewX.SubItems[ColumnToSort].Text, listviewY.SubItems[ColumnToSort].Text);
+                num1 = listviewX.SubItems[ColumnToSort].Text;
+                num1 = num1.Substring(0, num1.IndexOf(" "));
+                num2 = listviewX.SubItems[ColumnToSort].Text;
+                num2 = num2.Substring(0, num2.IndexOf(" "));
+                compareResult = CompareNumbers(num1, num2);
                 break;
 
             case Constants.Efficiency:

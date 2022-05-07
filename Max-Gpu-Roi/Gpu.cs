@@ -268,16 +268,23 @@ namespace Max_Gpu_Roi
             }
         }
 
-        public Gpu CloneGpu()
+        public Gpu CloneGpu(int newRandomId)
         {
             var newGpu = new Gpu();
-            newGpu.Id = new Random(500 - 100000).Next();
+            newGpu.Id = newRandomId;
             newGpu.ModelNumber = ModelNumber;
             newGpu.Manufacturer = Manufacturer;
             newGpu.Lhr = Lhr;
             newGpu.VersionPrefix = VersionPrefix;
             newGpu.VersionSuffix = VersionSuffix;
             newGpu.VramSize = VramSize;
+            newGpu.Hashrates = Hashrates;
+            newGpu.DateReleased = DateReleased;
+            newGpu.EbayLink = EbayLink;
+            newGpu.EbayPrice = EbayPrice;
+            newGpu.PricePaid = PricePaid;
+            newGpu.MSRP = MSRP;
+            newGpu.Watts = Watts;
             return newGpu;
         }
 
@@ -294,17 +301,17 @@ namespace Max_Gpu_Roi
     }
     internal class Hashrate
     {
-        public string Coin { get; set; }
-        public string Algorithm { get; set; }
+        public CoinInfo? Coin { get; set; }
         public double HashrateSpeed { get; set; }
         public int Watts { get; set; }
-
+        public Hashrate? DualMineHashrate { get; set; }
+        public Calculation? Calculation { get; set; }
         public Hashrate()
         {
-            Coin = "unknown";
-            Algorithm = "unknown";
             HashrateSpeed = 0;
             Watts = 0;
         }
+
     }
+
 }

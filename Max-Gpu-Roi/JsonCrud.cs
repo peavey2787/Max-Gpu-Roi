@@ -17,7 +17,7 @@ namespace Max_Gpu_Roi
         /// <param name="coins"></param>
         /// <param name="listName"></param>
         /// <returns></returns>
-        public static bool SaveCoinList(List<Coin> coins, string file)
+        public static bool SaveCoinList(List<CoinInfo> coins, string file)
         {
             // If this is a new list
             if (!File.Exists(file))
@@ -55,7 +55,7 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="file"></param>
         /// <returns></returns>
-        public static List<Coin> LoadCoinList(string file)
+        public static List<CoinInfo> LoadCoinList(string file)
         {
             // Incase the file is locked, automatically retry 10 times, waiting 1 second between retries
             int x = 0;
@@ -68,7 +68,7 @@ namespace Max_Gpu_Roi
                         string jsonString = File.ReadAllText(file);
 
                         // Extract the data
-                        var coins = JsonSerializer.Deserialize<List<Coin>>(jsonString);
+                        var coins = JsonSerializer.Deserialize<List<CoinInfo>>(jsonString);
 
                         // Return the data if the file indeed has data
                         if (coins != null && coins.Count > 0)
@@ -77,7 +77,7 @@ namespace Max_Gpu_Roi
                     catch { }
 
                     // If the file has no data then return an empty list
-                    return new List<Coin>();
+                    return new List<CoinInfo>();
                 }
                 x++;
                 Task.Delay(1000);
@@ -90,7 +90,7 @@ namespace Max_Gpu_Roi
             else
                 message = file + "  - Coin list file in-use, please make sure the file isn't open and try again.";
             MessageBox.Show(message);
-            return new List<Coin>();
+            return new List<CoinInfo>();
         }
 
         /// <summary>
@@ -230,12 +230,12 @@ namespace Max_Gpu_Roi
         /// <param name="file"></param>
         /// <param name="gpus"></param>
         /// <returns></returns>
-        public static bool WriteToCoinListFile(string file, List<Coin> coins)
+        public static bool WriteToCoinListFile(string file, List<CoinInfo> coins)
         {
             // Save the given coin list to the given file
             try
             {
-                var jsonString = JsonSerializer.Serialize<List<Coin>>(coins, new JsonSerializerOptions() { WriteIndented = true });
+                var jsonString = JsonSerializer.Serialize<List<CoinInfo>>(coins, new JsonSerializerOptions() { WriteIndented = true });
                 File.WriteAllText(file, jsonString);
                 return true;
             }

@@ -17,7 +17,7 @@ namespace Max_Gpu_Roi
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MaxGpuRoi());
+           Application.Run(new MaxGpuRoi());
         }
     }
 }

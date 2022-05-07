@@ -31,7 +31,21 @@ namespace Max_Gpu_Roi
         public const int HashratesCoin = 0;
         public const int HashratesAlgo = 1;
         public const int HashratesHashrate = 2;
-        public const int HashratesWatts = 3;
+        public const int HashratesSize = 3;
+        public const int HashratesWatts = 4;
+        public const int HashratesCoin2 = 5;
+        public const int HashratesAlgo2 = 6;
+        public const int HashratesHashrate2 = 7;
+        public const int HashratesSize2 = 8;
+        public const int HashratesWatts2 = 9;
+
+        public const double KiloHash = 1000;
+        public const double MegaHash = 1000000;
+        public const double GigaHash = 1000000000;
+        public const double TeraHash = 1000000000000;
+        public const double PetaHash = 1000000000000000;
+        public const double ExaHash = 1000000000000000000;
+        public const double ZettaHash = 1e+21;
 
 
         public const int DigitsToRound = 7;

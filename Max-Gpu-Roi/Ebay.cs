@@ -44,7 +44,6 @@ namespace Max_Gpu_Roi
             client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "Basic " + base64Creds);   
             var response = client.PostAsync(url, payload).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
-            AppAccessToken = responseString[0].ToString();
 
             dynamic data = JsonSerializer.Deserialize<ExpandoObject>(responseString);
             AppAccessToken = data.access_token.ToString();
@@ -85,14 +84,21 @@ namespace Max_Gpu_Roi
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <returns></returns>
-        public List<EbayItem> GetLowestPrice(Gpu gpu)
+        public async Task<List<EbayItem>> GetLowestPrice(Gpu gpu)
         {
+            var ebayItems = new List<EbayItem>();
             var searchPhrase = gpu.Name;
 
-            if(!GetAppAccessToken())
-                return new List<EbayItem>();
-
-            var ebayItems = new List<EbayItem>();
+            try
+            {
+                if (!GetAppAccessToken())
+                    System.Windows.Forms.MessageBox.Show("Unable to contact ebay, please try again in a few minutes");
+            }
+            catch (Exception ex)
+            {
+                var come = "get me for debugging";
+                return ebayItems;
+            }
 
             /*
             if(gpu.ModelNumber == "3060" && gpu.VersionSuffix == "ti")
@@ -127,25 +133,17 @@ namespace Max_Gpu_Roi
 
                 try
                 {
-                var root = new Root();
-                
-                HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
-                request.Method = "GET";                
-                request.Headers.Add(HttpRequestHeader.Authorization, "Bearer " + AppAccessToken);                
-                request.Headers.Add(HttpRequestHeader.Accept, "application/json");
-                request.Headers.Add("X-EBAY-C-MARKETPLACE-ID", "EBAY-US");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
 
-                var response = (HttpWebResponse)request.GetResponse();
+                HttpClient hc = new HttpClient();
+                hc.DefaultRequestHeaders.Add("Authorization", "Bearer :" + AppAccessToken);
+                hc.DefaultRequestHeaders.Add("X-EBAY-C-MARKETPLACE-ID", "EBAY-US");
+                Task<Stream> result = hc.GetStreamAsync(url);
+                Stream stream = await result;
+                var root = await JsonSerializer.DeserializeAsync<Root>(stream);
+                stream.Close();
 
-                using (var streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    root = JsonSerializer.Deserialize<Root>(result);//.DeserializeAsync<Root>(result);
-                }
-                
-                if (root.itemSummaries == null)
+                if (root.itemSummaries == null || root.itemSummaries.Count == 0)
                     return ebayItems;
 
                 var gpuModelNumber = searchPhrase.ToLower();
@@ -161,7 +159,10 @@ namespace Max_Gpu_Roi
                         && !item.title.ToLower().Contains("no fan") && !item.title.ToLower().Contains("missing fan")
                         && !item.title.ToLower().Contains("read description") && !item.title.ToLower().Contains("fans broken") && !item.title.ToLower().Contains("fan broken")
                         && !item.title.ToLower().Contains("artifact") && item.title.ToLower().Contains(gpu.ModelNumber)
-                        && item.title.ToLower().Contains(versionSuffix))
+                        && item.title.ToLower().Contains(versionSuffix) && !item.title.ToLower().Contains("water block for")
+                        && !item.title.ToLower().Contains("water-block for") && !item.title.ToLower().Contains("waterblock for")
+                        && !item.title.ToLower().Contains("bridge") && !item.title.ToLower().Contains("lego") && !item.title.ToLower().Contains("nvlink connector") 
+                        && !item.title.ToLower().Contains("jersey") && !item.title.ToLower().Contains("to connect 2") && !item.title.ToLower().Contains("heatsink only") )
                     {
 
                         // Don't get non-lhr options if looking for lhr cards
@@ -195,13 +196,11 @@ namespace Max_Gpu_Roi
                         { }
 
 
-
                         // Get item's price + shipping costs
                         var shippingPrice = 0.0;
                         if (item.shippingOptions != null && item.shippingOptions[0].shippingCostType != "CALCULATED")
                             shippingPrice = double.Parse(item.shippingOptions[0].shippingCost.value);
                         var itemPrice = double.Parse(item.price.value) + shippingPrice;
-
 
                         var lowestEbayItem = new EbayItem();
                         var rnd = new Random();                        

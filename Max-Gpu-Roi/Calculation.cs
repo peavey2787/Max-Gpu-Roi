@@ -23,24 +23,58 @@ namespace Max_Gpu_Roi
         public double GpuCosts { get; set; }
         public double GpuHash { get; set; }
         public double Efficiency { get; set; }
-        public int GpuId { get; set; }
+        public Calculation DualMineCalculation { get; set; }
 
 
-        public static Calculation Calculate(double gpuCost, double hashrate, int watts, string coinSymbol, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
+        public static Calculation Calculate(double gpuCost, double hashrate, int watts, CoinInfo coin, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
         {
-            var coinInfo = MinerStat.GetCoinInfo(coinSymbol);
+            // Do nothing if no coin is given to perform calculations with
+            if (coin == null || coin == new CoinInfo())
+                return new Calculation();
+
+            // Using hodl price
+            if (coinPrice > 0)
+                return PerformCalculation(gpuCost, hashrate, watts, coin, electricityRate, poolMinerFee, coinPrice);
+
+            // Using real time price
+            else
+                return PerformCalculation(gpuCost, hashrate, watts, coin, electricityRate, poolMinerFee);
+        }
+
+        public static Calculation AddCalculations(Calculation calc1, Calculation calc2)
+        {
+            var total = new Calculation();
+            total.UsdElectricityCost = calc1.UsdElectricityCost + calc2.UsdElectricityCost;
+            total.UsdPoolMinerFeeCost = calc1.UsdPoolMinerFeeCost + calc2.UsdPoolMinerFeeCost;           
+            total.UsdProfits = calc1.UsdProfits + calc2.UsdProfits;
+            total.Efficiency = calc1.Efficiency + calc2.Efficiency;
+            total.UsdRewards = calc1.UsdRewards + calc2.UsdRewards;
+            total.ROI = calc1.GpuCosts / ((calc1.UsdProfits + calc2.UsdProfits) * 30);
+            return total;
+        }
+        public static double GetRoiFromTwoCalculations(Calculation calc1, Calculation calc2)
+        {
+            return calc1.GpuCosts / ((calc1.UsdProfits + calc2.UsdProfits) * 30);
+        }
+        private static Calculation PerformCalculation(double gpuCost, double hashrate, int watts, CoinInfo coin, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
+        {
             var reward = new Calculation();
-            var price = coinInfo.price;
+
+            // Set coin symbol
+            reward.Coin = coin.coin.ToLower();
+
+            // Set coin price
+            var price = coin.price;
             if (coinPrice > 0.0)
                 price = coinPrice;
 
             // Crypto rewards
-            var cryptoRewardsCalculated = (coinInfo.reward * (hashrate * 1000000)) * 24; // ((difficulty * coinInfo.reward_block) / (gpuHash * 1000000)) * 8640;
+            var cryptoRewardsCalculated = (coin.reward * hashrate) * 24;
             reward.CryptoRewards = cryptoRewardsCalculated;
 
             // Usd rewards
             var usdRewardsCalculated = cryptoRewardsCalculated * price;
-            reward.UsdRewards = usdRewardsCalculated;        
+            reward.UsdRewards = usdRewardsCalculated;
 
             // Usd Profits 
             var poolMinerFeeCost = usdRewardsCalculated * poolMinerFee; // Get pool/miner fee
@@ -60,20 +94,52 @@ namespace Max_Gpu_Roi
             reward.CryptoPoolMinerFeeCost = cryptoPoolMinerFeeCost;
             reward.CryptoProfits = cryptoRewardsCalculated;
 
-            // Efficiency
-            reward.Efficiency = hashrate / watts;
-            
+            // Efficiency mhs/watts
+            var hashSize = GetHashrateSize(hashrate);
+            reward.Efficiency = (hashrate / hashSize) / watts;
+
             // Roi
-            if(reward.UsdProfits > 0)
-                reward.ROI = gpuCost / (reward.UsdProfits * 30);
+            reward.ROI = gpuCost / (reward.UsdProfits * 30);
 
             // Usd per mhs
-            reward.CostPerMhs = hashrate > 0 ? gpuCost / hashrate : 0.0;
+            if (hashrate > 0)
+            {
+                var costPerUsd = (decimal)(gpuCost / hashrate);
+                costPerUsd = Math.Round(costPerUsd, 6);
+                reward.CostPerMhs = (double)costPerUsd;
+            }
 
             reward.GpuCosts = gpuCost;
             reward.GpuHash = hashrate;
 
             return reward;
+        }
+        public static double GetHashrateSize(double hashrate)
+        {
+            var zettaHash = hashrate / 1e+21;
+            var exaHash = hashrate / 1000000000000000000;
+            var petaHash = hashrate / 1000000000000000;
+            var teraHash = hashrate / 1000000000000;
+            var gigaHash = hashrate / 1000000000;
+            var megaHash = hashrate / 1000000;
+            var kiloHash = hashrate / 1000;
+
+            if (zettaHash > 1)
+                return Constants.ZettaHash;
+            if (exaHash > 1)
+                return Constants.ExaHash;
+            if (petaHash > 1)
+                return Constants.PetaHash;
+            if (teraHash > 1)
+                return Constants.TeraHash;
+            if (gigaHash > 1)
+                return Constants.GigaHash;
+            if (megaHash > 1)
+                return Constants.MegaHash;
+            if (kiloHash > 1)
+                return Constants.KiloHash;
+
+            return hashrate;
         }
     }
 }
