@@ -526,6 +526,7 @@ namespace Max_Gpu_Roi
             }
             else
             {
+                li.Text += "/" + hashrate.DualMineHashrate.Coin.coin;
                 // Dual mine hashrate calculation
                 li.SubItems.Add("$" + hashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.Calculation.Coin + " / $" + hashrate.DualMineHashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.DualMineHashrate.Calculation.Coin);
                 
@@ -703,8 +704,8 @@ namespace Max_Gpu_Roi
                 if (gpu.Hashrates[i].DualMineHashrate != null && gpu.Hashrates[i].DualMineHashrate.Coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin != null && gpu.Hashrates[i].DualMineHashrate.HashrateSpeed > 0)
                 {
                     // Get this coins most up to date info from default coin list
-                    gpu.Hashrates[i].DualMineHashrate.Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower());
-
+                    gpu.Hashrates[i].DualMineHashrate.Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower());                    
+                    
                     gpu.Hashrates[i].DualMineHashrate.Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i].DualMineHashrate);
                 }
             }
@@ -717,6 +718,11 @@ namespace Max_Gpu_Roi
 
             var mostProfitableHashrate = new Hashrate();
             var sortedCalculations = new List<Calculation>();
+
+            if(gpu.ModelNumber == "6700")
+            {
+                var come = "getme";
+            }
             
             // Perform calculations on this gpu's hashrates and save gpu to master list
             gpu = await PerformCalculationsOnAllHashrates(gpu);
@@ -761,7 +767,7 @@ namespace Max_Gpu_Roi
                     continue;
 
                 // Don't perform eth calculations if the gpu doesn't have enough vram for the DAG
-                if (gpu.VramSize <= 4 && hashrate.Coin.coin.ToLower() == "eth")
+                if (gpu.VramSize > 0 && gpu.VramSize <= 4 && hashrate.Coin.coin.ToLower() == "eth")
                     continue;
 
                 // Set the first valid hashrate as the quickest/highest
@@ -974,7 +980,7 @@ namespace Max_Gpu_Roi
                     if (dualCoin == "" && (gpu.Hashrates[i].DualMineHashrate == null || gpu.Hashrates[i].DualMineHashrate.Coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin.Length == 0))
                     { }
                     // If the user selected a coin with a dual coin this is the right hashrate
-                    else if (dualCoin != "" && gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower() == dualCoin.ToLower())
+                    else if (dualCoin != "" && gpu.Hashrates[i].DualMineHashrate != null && gpu.Hashrates[i].DualMineHashrate.Coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower() == dualCoin.ToLower())
                     { }
                     else // Skip everything else (user selects eth but this is eth/ton) or (user selected eth/ton but this is just eth)
                         continue;
@@ -2261,12 +2267,6 @@ namespace Max_Gpu_Roi
                 if (gpus == null)
                     gpus = new List<Gpu>();
 
-                // Get old gpu to remove from lists
-                var oldGpu = EditGpuList.SelectedItems[0].Tag as Gpu;
-
-                // Transfer gpu id's from old to new
-                newGpu.Id = oldGpu.Id;
-
                 // Update gui gpu
                 EditGpuList.SelectedItems[0].Tag = newGpu;
 
@@ -2274,7 +2274,7 @@ namespace Max_Gpu_Roi
                 int x = 0;
                 foreach (Gpu gpu in gpus)
                 {
-                    if (gpu.Id == oldGpu.Id)
+                    if (gpu.Id == newGpu.Id)
                     {
                         gpus.Remove(gpu);
                         break;
