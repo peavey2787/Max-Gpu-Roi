@@ -915,7 +915,6 @@
             this.EditHashrates.ShowEditingIcon = false;
             this.EditHashrates.Size = new System.Drawing.Size(839, 236);
             this.EditHashrates.TabIndex = 18;
-            this.EditHashrates.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellClick);
             this.EditHashrates.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellEndEdit);
             this.EditHashrates.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.EditHashrates_CellPainting);
             this.EditHashrates.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.EditHashrates_CellValueChanged);

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Dynamic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
@@ -569,8 +568,8 @@ namespace Max_Gpu_Roi
                         hashrate.DualMineHashrate.Calculation.CryptoElectricityCost = 0;
                     cryptoCosts = decimal.Round((decimal)(hashrate.DualMineHashrate.Calculation.CryptoPoolMinerFeeCost + hashrate.DualMineHashrate.Calculation.CryptoElectricityCost), Constants.DigitsToRound);
 
-                    if (hashrate.Watts > 0)
-                        watts = hashrate.Watts;
+                    if (hashrate.DualMineHashrate.Watts > 0)
+                        watts = hashrate.DualMineHashrate.Watts;
 
                     if (double.IsInfinity(hashrate.DualMineHashrate.Calculation.CryptoRewards))
                         cryptoRewards = 0;
@@ -592,8 +591,6 @@ namespace Max_Gpu_Roi
                 li.SubItems.Add(ConvertHashrateToReadable(hashrate.HashrateSpeed) + " " + hashrate.Coin.coin + " / " + ConvertHashrateToReadable(hashrate.DualMineHashrate.HashrateSpeed) + " " + hashrate.DualMineHashrate.Coin.coin);
 
                 // Watts
-                if (hashrate.Watts > 0)
-                    watts = hashrate.Watts;
                 li.SubItems.Add(watts.ToString());
 
                 // Efficiency
@@ -696,12 +693,20 @@ namespace Max_Gpu_Roi
                 if (gpu.Hashrates[i].Watts == 0)
                     gpu.Hashrates[i].Watts = gpu.Watts;
 
+                // Get this coins most up to date info from default coin list
+                gpu.Hashrates[i].Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].Coin.coin.ToLower());
+
                 // Get calculation
                 gpu.Hashrates[i].Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i]);
 
                 // Get dual hashrate calculation
                 if (gpu.Hashrates[i].DualMineHashrate != null && gpu.Hashrates[i].DualMineHashrate.Coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin != null && gpu.Hashrates[i].DualMineHashrate.HashrateSpeed > 0)
-                    gpu.Hashrates[i].DualMineHashrate.Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i].DualMineHashrate);                
+                {
+                    // Get this coins most up to date info from default coin list
+                    gpu.Hashrates[i].DualMineHashrate.Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower());
+
+                    gpu.Hashrates[i].DualMineHashrate.Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i].DualMineHashrate);
+                }
             }
             return gpu;
         }
@@ -963,12 +968,17 @@ namespace Max_Gpu_Roi
 
             for(int i = 0; i < gpu.Hashrates.Count; i++)
             {
-                if (gpu.Hashrates[i].Calculation.Coin.ToLower() == selectedCoin.ToLower() && (dualCoin == "" 
-                    || ( gpu.Hashrates[i].DualMineHashrate != null 
-                    && gpu.Hashrates[i].DualMineHashrate.Coin != null 
-                    && gpu.Hashrates[i].DualMineHashrate.Coin.coin != null 
-                    && dualCoin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower())))
+                if (gpu.Hashrates[i].Calculation.Coin.ToLower() == selectedCoin.ToLower())
                 {
+                    // If the user selected just one coin this is the right hashrate
+                    if (dualCoin == "" && (gpu.Hashrates[i].DualMineHashrate == null || gpu.Hashrates[i].DualMineHashrate.Coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin.Length == 0))
+                    { }
+                    // If the user selected a coin with a dual coin this is the right hashrate
+                    else if (dualCoin != "" && gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower() == dualCoin.ToLower())
+                    { }
+                    else // Skip everything else (user selects eth but this is eth/ton) or (user selected eth/ton but this is just eth)
+                        continue;
+
                     // Create listview item
                     var li = CreateResultsListviewItem(gpu, gpu.Hashrates[i]);
                     li.Selected = true;
@@ -2507,9 +2517,6 @@ namespace Max_Gpu_Roi
             }
             AddingNewGpuList = false;
         }
-        private void EditHashrates_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
         private void EditHashrates_Click(object sender, EventArgs e)
         {
             EditHashratesSelectedColIndex = EditHashrates.CurrentCell.ColumnIndex;
@@ -3167,7 +3174,5 @@ namespace Max_Gpu_Roi
             }
             return hashSpeed;
         }
-
-
     }
 }
