@@ -374,6 +374,7 @@ namespace Max_Gpu_Roi
             userChangedEbaySelection = false;
             filteredSearchResults.Clear();
 
+            #region budget
 
             // If budget is given then show most profitable configuration
             /*if (double.TryParse(Budget.Text, out var budget) && budget > 0)
@@ -437,7 +438,7 @@ namespace Max_Gpu_Roi
             }*/
 
             // If no budget given then show the most profitable coins to mine for each gpu
-
+            #endregion
             // Set title
             lblResults.Text = "Most Profitable Coin per Gpu for";
             SelectedGpuListName.Text = GpuLists.SelectedItems[0].Text;
@@ -447,45 +448,38 @@ namespace Max_Gpu_Roi
         }
         private async Task<Task> PerformCalculations()
         {
-            return Task.Factory.StartNew(async () =>
+            return Task.Factory.StartNew(() =>
             {
                 // Get the list of gpus
                 int progress = 10;
                 var gpus = GetMasterGpuList();
 
                 // Start the progress bar
-                progressBar.InvokeIfRequired(c => { c.Maximum = gpus.Count + 10; });
-
-                var task = Task.Factory.StartNew(() =>
+                progressBar.InvokeIfRequired(c => { c.Maximum = gpus.Count + 10; c.Value = 10; });
+                
+                // Go through each gpu
+                foreach (Gpu gpu in gpus)
                 {
-                    // Go through each gpu
-                    foreach (Gpu gpu in gpus)
-                    {
-                        Task<Hashrate> t = Task.Run(async () => { return await GetMostProfitableHashrate(gpu); });
+                    var task = Task.Run(async () => { return await GetMostProfitableHashrate(gpu); });
 
-                        t.ContinueWith(t1 =>
+                    task.ContinueWith(t1 =>
+                    {
+                        if (t1.IsCompleted && !t1.IsFaulted && !t1.IsCanceled)
                         {
-                            if (t1.IsCompleted && !t1.IsFaulted && !t1.IsCanceled)
-                            {
-                                var mostProfitableHash = t1.Result;
+                            var mostProfitableHash = t1.Result;
 
                                 // Then display the results
                                 if (mostProfitableHash != null && mostProfitableHash.Coin != null && mostProfitableHash.Coin.coin != null && mostProfitableHash.Calculation != null)
-                                    DisplayCalculation(mostProfitableHash, gpu);
+                                DisplayCalculation(mostProfitableHash, gpu);
 
                                 // Update the progress bar
-                                progressBar.InvokeIfRequired(c => { c.Value = progress; });
-                                progress++;
-                            }
-                        });
-                    }
-                    while(progress - 10 != gpus.Count) {; }  // wait for them to finish
-                    return Task.CompletedTask;
-                });
-
-                // Wait for all the hashrates to get calculated
-                //await task;
-                task.Wait();
+                                progressBar.InvokeIfRequired(c => { if(c.Value > 0) c.Value = progress; });
+                            progress++;
+                        }
+                        return Task.CompletedTask;
+                    });
+                    task.Wait();
+                }
                 // Reset progress bar
                 progressBar.InvokeIfRequired(c => { c.Value = 0; });
 
@@ -508,9 +502,6 @@ namespace Max_Gpu_Roi
 
             // Perform calculations on this gpu's hashrates and save gpu to master list
             gpu = await PerformCalculationsOnAllHashrates(gpu);
-
-            // Update the master gpu list
-            UpdateGpuInMasterGpuList(gpu);
 
             // Get user's coin list
             var coins = new List<CoinInfo>();
@@ -1874,8 +1865,10 @@ namespace Max_Gpu_Roi
         }
         private void AddGpuToGpuList(Gpu gpu)
         {
-            // Add new gpu to master list
+            // Get master list
             var gpus = GetMasterGpuList();
+
+            // Add new gpu to master list
             gpus.Add(gpu);
 
             // Add master list back to gui list name tag and increase gpu count
@@ -3211,7 +3204,8 @@ namespace Max_Gpu_Roi
         private int GetImageIndex(string coin)
         {
             var index = 0;
-            index = coinImageList.Images.IndexOfKey(coin.ToLower() + ".jpg");
+            try { index = coinImageList.Images.IndexOfKey(coin.ToLower() + ".jpg"); }
+            catch { index = 0; }            
             return index;
         }
     }
