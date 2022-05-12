@@ -64,6 +64,7 @@ public class ListViewColumnSorter : IComparer
                 compareResult = CompareNumbers(listviewX.SubItems[ColumnToSort].Text.Replace("$", ""), listviewY.SubItems[ColumnToSort].Text.Replace("$", ""));
                 break;
 
+            case Constants.UsdCosts:
             case Constants.UsdPerMhs:
             case Constants.UsdRewards:
             case Constants.UsdProfits:
@@ -142,13 +143,16 @@ public class ListViewColumnSorter : IComparer
     {
         var item1 = itemX.SubItems[Constants.Roi].Text;
         item1 = item1.Replace(" months", ""); // remove months        
-        // put gpus with 0 roi at the end
-        if (item1 == "0.00")
+
+        // Put gpus with 0/negative Roi at the end
+        if (int.TryParse(item1, out var parsedItem1) && parsedItem1 <= 0)
             item1 = "10000";
 
         var item2 = itemY.SubItems[Constants.Roi].Text;
         item2 = item2.Replace(" months", ""); // remove months      
-        if (item2 == "0.00")
+
+        // Put gpus with 0/negative Roi at the end
+        if (int.TryParse(item2, out var parsedItem2) && parsedItem2 <= 0)
             item2 = "10000";
 
         return CompareNumbers(item1, item2);

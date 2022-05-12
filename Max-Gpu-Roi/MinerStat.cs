@@ -65,10 +65,10 @@ namespace Max_Gpu_Roi
                     var coinsWithPrices = new List<CoinInfo>();
                     foreach (var coin in coins)
                     {
-                        if (coin.price > 0 && coin.volume > 0 && !coin.name.ToLower().Contains("2miners") && coin.coin != "unknown" && coin.coin.Length > 0)
+                        if (coin.price > 0 && coin.volume > 10000 && !coin.name.ToLower().Contains("2miners") && coin.coin != "unknown" && coin.coin.Length > 0)
                         {
                             if (coin.algorithm == "Ethash" && coin.coin != "ETH")
-                                continue; // Skip coins on eth only get ethereum
+                                continue; // Skip coins on eth, only get ethereum
                             else
                                 coinsWithPrices.Add(coin);
                         }
@@ -172,7 +172,6 @@ namespace Max_Gpu_Roi
                                     var power = hashrateStats.power.ToString();
 
                                     var hashrate = new Hashrate();
-                                    hashrate.Calculation = new Calculation();
                                     hashrate.HashrateSpeed = int.TryParse(speed, out int parsedSpeed) ? parsedSpeed : 0.0; // / 1000000 : 0.0;
 
                                     // If we didn't get power from above, try here
@@ -192,15 +191,14 @@ namespace Max_Gpu_Roi
                                     {
                                         // Get coin symbol
                                         foreach (var coinInfo in coins)
-                                            if (coin == coinInfo.algorithm || coin == coinInfo.coin)
+                                            if (coin == coinInfo.algorithm)
                                             {
-                                                hashrate.Calculation.Coin = coinInfo.coin.ToLower();
                                                 hashrate.Coin = coinInfo;
                                                 break;
                                             }
 
-                                        // Don't add hashrates with coins that don't have symbols
-                                        if (hashrate.Calculation.Coin != null)
+                                        // Add hashrate if it has good data
+                                        if (hashrate.Coin != null && hashrate.Coin.coin.Length > 0)
                                             gpu.Hashrates.Add(hashrate);
                                     }
                                 }

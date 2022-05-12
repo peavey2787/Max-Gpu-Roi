@@ -253,7 +253,7 @@ namespace Max_Gpu_Roi
             }
 
             gpuName = gpuName.Replace("-", ""); // remove dashes and spaces
-            gpuName = gpuName.Replace(" ", "");
+            while (gpuName.Contains(" ")) { gpuName = gpuName.Replace(" ", ""); } // remove all spaces   
 
             // Get model number
             index = modelNumber.FindIndex(a => gpuName.Contains(a));
@@ -261,13 +261,26 @@ namespace Max_Gpu_Roi
                 ModelNumber = modelNumber[index]; // Found model from list of known gpus
             else
             {
-                // Whats left should be the model number
-                gpuName = gpuName.Replace("-", ""); // remove any dashes/spaces
-                gpuName = gpuName.Replace(" ", "");
+                // Whats left should be the model number         
                 ModelNumber = gpuName;
             }
         }
-
+        public bool IsLhr()
+        {
+            // If this gpu is a lhr/non-lhr 
+            if (Manufacturer.ToLower() == "nvidia" &&
+                ((int.TryParse(ModelNumber, out var modelNum) && modelNum > 3050 && modelNum != 3090))
+                || ModelNumber.ToLower() == "3080 12gb")
+                return true;
+            return false;
+        }
+        public bool HasDualMiningHashrate(Hashrate hashrate)
+        {
+            if (hashrate.DualMineHashrate != null && hashrate.DualMineHashrate.Coin != null 
+                && hashrate.DualMineHashrate.Coin.coin != null && hashrate.DualMineHashrate.HashrateSpeed > 0)
+                return true;
+            return false;
+        }
         public Gpu CloneGpu(int newRandomId)
         {
             var newGpu = new Gpu();
@@ -311,7 +324,5 @@ namespace Max_Gpu_Roi
             HashrateSpeed = 0;
             Watts = 0;
         }
-
     }
-
 }

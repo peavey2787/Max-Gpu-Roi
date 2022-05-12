@@ -1372,7 +1372,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.BackgroundImage = global::Max_Gpu_Roi.Properties.Resources.space_background;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(1873, 1460);
             this.Controls.Add(this.Minimize);
             this.Controls.Add(this.label1);
@@ -1394,6 +1394,7 @@
             this.Controls.Add(this.lblHodl1);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MaxGpuRoi";
             this.Text = "Max-Gpu-Roi";
             this.Load += new System.EventHandler(this.MaxGpuRoi_Load);

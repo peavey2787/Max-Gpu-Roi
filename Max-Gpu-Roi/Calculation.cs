@@ -9,7 +9,6 @@ namespace Max_Gpu_Roi
 {
     internal class Calculation
     {
-        public string Coin { get; set; }
         public double CryptoRewards { get; set; }
         public double CryptoProfits { get; set; }
         public double UsdRewards { get; set; }
@@ -52,16 +51,10 @@ namespace Max_Gpu_Roi
             total.ROI = calc1.GpuCosts / ((calc1.UsdProfits + calc2.UsdProfits) * 30);
             return total;
         }
-        public static double GetRoiFromTwoCalculations(Calculation calc1, Calculation calc2)
-        {
-            return calc1.GpuCosts / ((calc1.UsdProfits + calc2.UsdProfits) * 30);
-        }
+
         private static Calculation PerformCalculation(double gpuCost, double hashrate, int watts, CoinInfo coin, double electricityRate, double poolMinerFee, double coinPrice = 0.0)
         {
             var reward = new Calculation();
-
-            // Set coin symbol
-            reward.Coin = coin.coin.ToLower();
 
             // Set coin price
             var price = coin.price;

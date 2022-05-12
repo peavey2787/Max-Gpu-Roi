@@ -96,16 +96,8 @@ namespace Max_Gpu_Roi
             }
             catch (Exception ex)
             {
-                var come = "get me for debugging";
                 return ebayItems;
             }
-
-            /*
-            if(gpu.ModelNumber == "3060" && gpu.VersionSuffix == "ti")
-            {
-                var come = "get me for debugging";
-            }
-            */
 
             // If nvidia and a possible lhr/non lhr confusion specify non lhr unless gpu.lhr is true
             if (gpu.Manufacturer.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum) 
