@@ -273,7 +273,8 @@ namespace Max_Gpu_Roi
                 foreach (var filePath in coinLists)
                 {
                     var fileName = Path.GetFileNameWithoutExtension(filePath);
-                    var coins = JsonCrud.LoadCoinList(filePath);
+                    var coins = JsonCrud.LoadCoinList(filePath);                   
+
                     if (coins != null && coins.Count > 0)
                     {
                         var li = new ListViewItem(fileName);
@@ -292,9 +293,8 @@ namespace Max_Gpu_Roi
 
             // Add Default gpu list item            
             GpuLists.Items.Add("Default");
-            defaultGpus = await MinerStat.GetAllGpus(defaultCoins);
-            GpuLists.Items[0].SubItems.Add(defaultGpus.Count.ToString());
-            GpuLists.Items[0].Tag = defaultGpus;
+
+            var defaultLoaded = false;
 
             // Make sure gpulist directory exists, if not create it
             if (!Directory.Exists(GpuListsDirectory))
@@ -308,6 +308,16 @@ namespace Max_Gpu_Roi
                 {
                     var fileName = Path.GetFileNameWithoutExtension(filePath);
                     var gpus = JsonCrud.LoadGpuList(filePath);
+
+                    if (fileName == "Default")
+                    {
+                        defaultLoaded = true;
+                        defaultGpus = gpus;
+                        GpuLists.Items[0].SubItems.Add(gpus.Count.ToString());
+                        GpuLists.Items[0].Tag = gpus;
+                        continue;
+                    }
+
                     if (gpus != null && gpus.Count > 0)
                     {
                         var li = new ListViewItem(fileName);
@@ -317,6 +327,17 @@ namespace Max_Gpu_Roi
                         GpuLists.Items.Add(li);
                     }
                 }
+            }
+
+            if (!defaultLoaded)
+            {
+                // Generate a new list
+                defaultGpus = await MinerStat.GetAllGpus(defaultCoins);
+                GpuLists.Items[0].SubItems.Add(defaultGpus.Count.ToString());
+                GpuLists.Items[0].Tag = defaultGpus;
+                
+                // Save the list to file
+                JsonCrud.SaveGpuList(defaultGpus, GpuListsDirectory + "Default" + ".json");
             }
 
             // Select the default gpulist
@@ -366,9 +387,9 @@ namespace Max_Gpu_Roi
 
             // Clear old results
             progressBar.Value = 0;
-            CurrentSearchResults = new List<ListViewItem>();
             TotalsList.Items.Clear();
             ResultsList.Items.Clear();
+            CurrentSearchResults = new List<ListViewItem>();
             ResultsEbayItemSelection.Items.Clear();
             ResultsEbayLink.Tag = null;
             userChangedEbaySelection = false;
@@ -446,40 +467,45 @@ namespace Max_Gpu_Roi
             if (PerformingCalculations == null || PerformingCalculations.IsCompleted)
                 PerformingCalculations = PerformCalculations();
         }
-        private async Task<Task> PerformCalculations()
+        private Task PerformCalculations()
         {
-            return Task.Factory.StartNew(() =>
+            return Task.Run( async () =>
             {
                 // Get the list of gpus
-                int progress = 10;
                 var gpus = GetMasterGpuList();
+                int progress = 10;
+                var tasks = new List<Task>();
 
                 // Start the progress bar
                 progressBar.InvokeIfRequired(c => { c.Maximum = gpus.Count + 10; c.Value = 10; });
-                
+
                 // Go through each gpu
-                foreach (Gpu gpu in gpus)
+                foreach(Gpu device in gpus)
                 {
-                    var task = Task.Run(async () => { return await GetMostProfitableHashrate(gpu); });
-
-                    task.ContinueWith(t1 =>
+                    var task = Task<bool>.Run( async () =>
                     {
-                        if (t1.IsCompleted && !t1.IsFaulted && !t1.IsCanceled)
+                        var gpu = await PerformCalculationsOnAllHashrates(device);
+                        var mostProfitableHash = await GetMostProfitableHashrate(gpu);
+
+                        // Then display the results
+                        if (mostProfitableHash != null && mostProfitableHash.Coin != null && mostProfitableHash.Coin.coin != null && mostProfitableHash.Calculation != null)
                         {
-                            var mostProfitableHash = t1.Result;
-
-                                // Then display the results
-                                if (mostProfitableHash != null && mostProfitableHash.Coin != null && mostProfitableHash.Coin.coin != null && mostProfitableHash.Calculation != null)
-                                DisplayCalculation(mostProfitableHash, gpu);
-
-                                // Update the progress bar
-                                progressBar.InvokeIfRequired(c => { if(c.Value > 0) c.Value = progress; });
-                            progress++;
+                            ListViewItem li = CreateResultsListviewItem(gpu, mostProfitableHash);
+                            // Add result to GUI
+                            ResultsList.InvokeIfRequired(c => { c.Items.Add(li); });
+                            CurrentSearchResults.Add(li);
                         }
-                        return Task.CompletedTask;
+                        // Update the progress bar
+                        progressBar.InvokeIfRequired(c => { if (c.Value > 0) c.Value = progress; });
+                        progress++;
+                        
+                        return true;
                     });
-                    task.Wait();
-                }
+                    tasks.Add(task);
+                }             
+
+                await Task.WhenAll(tasks);
+
                 // Reset progress bar
                 progressBar.InvokeIfRequired(c => { c.Value = 0; });
 
@@ -492,6 +518,40 @@ namespace Max_Gpu_Roi
                 HodlCoin.InvokeIfRequired(h => { h.Text = ""; });
             });
         }
+        private async Task<Gpu> PerformCalculationsOnAllHashrates(Gpu gpu)
+        {
+            var gpuCost = await GetGpuCost(gpu);
+            // Go through each saved hashrate
+            for (int i = 0; i < gpu.Hashrates.Count; i++)
+            {
+                if (gpu.Hashrates[i].Coin == null || gpu.Hashrates[i].Coin.coin == null)
+                    continue;
+
+                // If watts for this hashrate is given use that, otherwise use the overall rated power
+                if (gpu.Hashrates[i].Watts == 0)
+                    gpu.Hashrates[i].Watts = gpu.Watts;
+
+                // Get this coins most up to date info from default coin list
+                var coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].Coin.coin.ToLower());
+                if (coin != null)
+                    gpu.Hashrates[i].Coin = coin;
+                else
+                    continue; // No coin found, possibly low 24 volume, or a coin spiked last time app was used and now it has low volume
+
+                // Get calculation
+                gpu.Hashrates[i].Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i]);
+
+                // Get dual hashrate calculation
+                if (gpu.HasDualMiningHashrate(gpu.Hashrates[i]))
+                {
+                    // Get this coins most up to date info from default coin list
+                    gpu.Hashrates[i].DualMineHashrate.Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower());
+
+                    gpu.Hashrates[i].DualMineHashrate.Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i].DualMineHashrate);
+                }
+            }
+            return gpu;
+        }
         private async Task<Hashrate> GetMostProfitableHashrate(Gpu gpu)
         {
             if (FilterGpu(gpu))
@@ -499,9 +559,6 @@ namespace Max_Gpu_Roi
 
             var mostProfitableHashrate = new Hashrate();
             var sortedCalculations = new List<Calculation>();
-
-            // Perform calculations on this gpu's hashrates and save gpu to master list
-            gpu = await PerformCalculationsOnAllHashrates(gpu);
 
             // Get user's coin list
             var coins = new List<CoinInfo>();
@@ -561,7 +618,7 @@ namespace Max_Gpu_Roi
                     // Equals 0
                     if (calc.ROI == 0 && quickestRoi.Calculation.ROI == 0)
                     {
-                        // gpu didn't have a cost so return highest usd profits
+                        // Gpu didn't have a cost so return highest usd profits
                         if (calc.UsdProfits > quickestRoi.Calculation.UsdProfits)
                             quickestRoi = hashrate;
                     }
@@ -583,36 +640,6 @@ namespace Max_Gpu_Roi
 
             return mostProfitableHashrate;
         }
-        private async Task<Gpu> PerformCalculationsOnAllHashrates(Gpu gpu)
-        {
-            var gpuCost = await GetGpuCost(gpu);
-            // Go through each saved hashrate
-            for (int i = 0; i < gpu.Hashrates.Count; i++)
-            {
-                if (gpu.Hashrates[i].Coin == null || gpu.Hashrates[i].Coin.coin == null)
-                    continue;
-
-                // If watts for this hashrate is given use that, otherwise use the overall rated power
-                if (gpu.Hashrates[i].Watts == 0)
-                    gpu.Hashrates[i].Watts = gpu.Watts;
-
-                // Get this coins most up to date info from default coin list
-                gpu.Hashrates[i].Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].Coin.coin.ToLower());
-
-                // Get calculation
-                gpu.Hashrates[i].Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i]);
-
-                // Get dual hashrate calculation
-                if (gpu.HasDualMiningHashrate(gpu.Hashrates[i]))
-                {
-                    // Get this coins most up to date info from default coin list
-                    gpu.Hashrates[i].DualMineHashrate.Coin = defaultCoins.Find(c => c.coin.ToLower() == gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower());
-
-                    gpu.Hashrates[i].DualMineHashrate.Calculation = GetCalculationForHashrate(gpuCost, gpu.Hashrates[i].DualMineHashrate);
-                }
-            }
-            return gpu;
-        }
         private Calculation GetCalculationForHashrate(double gpuCost, Hashrate hashrate)
         {
             var calculation = new Calculation();
@@ -631,24 +658,12 @@ namespace Max_Gpu_Roi
             HodlCoin.InvokeIfRequired(c => { hodlCoin = c.SelectedItem != null ? c.SelectedItem.ToString() : ""; });
             HodlPrice.InvokeIfRequired(h => { hodlPrice = h.Text; });
 
-
             // Perform calculation with hodl price if given
             if (hashrate.Coin.coin.ToLower() == hodlCoin.ToLower() && double.TryParse(hodlPrice, out var parsedHodlPrice) && parsedHodlPrice > 0)
                 calculation = Calculation.Calculate(gpuCost, hashrate.HashrateSpeed, hashrate.Watts, hashrate.Coin, electricityRate, fee, parsedHodlPrice);
             else
                 calculation = Calculation.Calculate(gpuCost, hashrate.HashrateSpeed, hashrate.Watts, hashrate.Coin, electricityRate, fee);
             return calculation;
-        }
-        private void DisplayCalculation(Hashrate hashrate, Gpu gpu)
-        {
-            // Create listview item
-            var li = CreateResultsListviewItem(gpu, hashrate);
-
-            // Save master list to apply filters to and prevent unnecessary internet calls 
-            CurrentSearchResults.Add(li);
-
-            // Add result to GUI
-            ResultsList.InvokeIfRequired(c => { c.Items.Add(li); });
         }
         private ListViewItem CreateResultsListviewItem(Gpu gpu, Hashrate hashrate)
         {
@@ -723,6 +738,7 @@ namespace Max_Gpu_Roi
             else
             {
                 li.Text += "/" + hashrate.DualMineHashrate.Coin.coin;
+                
                 // Dual mine hashrate calculation
                 li.SubItems.Add("$" + hashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.Coin.coin + " / $" + hashrate.DualMineHashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.DualMineHashrate.Coin.coin);
 
@@ -951,10 +967,6 @@ namespace Max_Gpu_Roi
                     // Get the selected item's index
                     var index = ResultsList.SelectedItems[0].Index;
 
-                    // Update master list to apply filters to and prevent unnecessary internet calls 
-                    CurrentSearchResults.Remove(ResultsList.SelectedItems[0]);
-                    CurrentSearchResults.Add(li);
-
                     // Update gui list
                     ResultsList.Items.Remove(ResultsList.SelectedItems[0]);
                     ResultsList.Items.Insert(index, li);
@@ -1034,8 +1046,8 @@ namespace Max_Gpu_Roi
 
                 total.Add(t);
             }
+
             
-            // If there are results
             if (filteredSearchResults.Count > 0 || CurrentSearchResults.Count > 0)
             {
                 var searchResults = filteredSearchResults.Count > 0 ? filteredSearchResults : CurrentSearchResults;
@@ -1122,7 +1134,8 @@ namespace Max_Gpu_Roi
             }
 
             // Calculate ROI
-            total[0].ROI = total[0].GpuCosts / (total[0].UsdProfits * 30);
+            if(total[0].GpuCosts > 0)
+                total[0].ROI = total[0].GpuCosts / (total[0].UsdProfits * 30);
 
             // Calculate Efficiency
             var hashSize = Calculation.GetHashrateSize(total[0].Hashrate);
@@ -1284,28 +1297,6 @@ namespace Max_Gpu_Roi
 
 
         // Coin list
-        private async Task<List<CoinInfo>> GetCoinList()
-        {
-            return await Task.Run(async () =>
-            {
-                var selectedItem = CoinLists.InvokeIfRequired(c => { return c.SelectedItems[0].Text; });
-                if (selectedItem == "Default")
-                {
-                    if (defaultCoins.Count > 0)
-                        return defaultCoins;
-                    else
-                    {
-                        defaultCoins = await MinerStat.GetAllCoins();
-                        return defaultCoins;
-                    }
-                }
-                else
-                {
-                    var coinListFileName = CoinListsDirectory + selectedItem + ".json";
-                    return JsonCrud.LoadCoinList(coinListFileName);
-                }
-            });
-        }
         private void EditCoinLists_Click(object sender, EventArgs e)
         {
             // Clear edit coin list
@@ -1399,23 +1390,19 @@ namespace Max_Gpu_Roi
             CoinLists.Items[index].Selected = true;
             EditCoinLists.PerformClick();
         }
-        private async void ImportCoinLists_Click(object sender, EventArgs e)
+        private void ImportCoinLists_Click(object sender, EventArgs e)
         {
             var file = GetFileFromUser();
+            // Load the coins from the list
+            var coins = JsonCrud.LoadCoinList(file);
 
             // Add list name to coin lists gui
             var li = new ListViewItem();
-            li.Tag = file;
+            li.Tag = coins;
             li.Text = Path.GetFileNameWithoutExtension(file);
-            li.SubItems.Add("0");
+            li.SubItems.Add(coins.Count.ToString());
             li.Selected = true;
             CoinLists.Items.Add(li);
-
-            // Load the coins from the list
-            var coins = await GetCoinList();
-
-            CoinLists.SelectedItems[0].SubItems[1].Text = coins.Count.ToString();
-            CoinLists.SelectedItems[0].Tag = coins;
         }
         private void CoinLists_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1823,7 +1810,7 @@ namespace Max_Gpu_Roi
                 MessageBox.Show("The gpu list needs to have a name.");
         }
         private List<Gpu> GetMasterGpuList()
-        {
+        {            
             // Get the master gpu list
             var gpus = new List<Gpu>();
             GpuLists.InvokeIfRequired(g => { gpus = g.SelectedItems[0].Tag as List<Gpu>; });
@@ -2073,12 +2060,15 @@ namespace Max_Gpu_Roi
                     }
             }
 
+            // Hashrate speed
             var hashSpeed = ConvertHashrateFromReadable(EditHashrates[Constants.HashratesHashrate, rowIndex].Value.ToString() + " " + EditHashrates[Constants.HashratesSize, rowIndex].Value.ToString());
             hashrate.HashrateSpeed = hashSpeed;
             
+            // Watts
             if(EditHashrates[Constants.HashratesWatts, rowIndex].Value != null)
                 hashrate.Watts = int.TryParse(EditHashrates[Constants.HashratesWatts, rowIndex].Value.ToString(), out var watts) ? watts : 0;
 
+            // Dual mine coin
             if (hashrate.DualMineHashrate != null && EditHashrates[Constants.HashratesCoin2, rowIndex].Value != null)
             {
                 var coin2 = EditHashrates[Constants.HashratesAlgo2, rowIndex].Tag as CoinInfo;
@@ -2086,18 +2076,14 @@ namespace Max_Gpu_Roi
                     hashrate.DualMineHashrate.Coin = coin2;
             }
 
-            if (hashrate.DualMineHashrate != null && EditHashrates[Constants.HashratesAlgo2, rowIndex].Value != null && EditHashrates[Constants.HashratesAlgo2, rowIndex].Value.ToString().Length > 0)
-            {
-                var algo2 = EditHashrates[Constants.HashratesAlgo2, rowIndex].Value.ToString();
-                if (algo2 != "unknown" && algo2.Length > 2)
-                    hashrate.DualMineHashrate.Coin.algorithm = algo2;
-            }
-
+            // Dual mine hashrate speed
             if (hashrate.DualMineHashrate != null && EditHashrates[Constants.HashratesHashrate2, rowIndex].Value != null && EditHashrates[Constants.HashratesHashrate2, rowIndex].Value.ToString().Length > 0)
             {
                 var hashSpeed2 = ConvertHashrateFromReadable(EditHashrates[Constants.HashratesHashrate2, rowIndex].Value.ToString() + " " + EditHashrates[Constants.HashratesSize2, rowIndex].Value.ToString());
                 hashrate.DualMineHashrate.HashrateSpeed = hashSpeed2;
             }
+            
+            // Dual mine watts
             if (hashrate.DualMineHashrate != null && EditHashrates[Constants.HashratesWatts2, rowIndex].Value != null && EditHashrates[Constants.HashratesWatts2, rowIndex].Value.ToString().Length > 0)
                 hashrate.DualMineHashrate.Watts = int.TryParse(EditHashrates[Constants.HashratesWatts2, rowIndex].Value.ToString(), out var parsedWatts2) ? parsedWatts2 : 0;
 
@@ -2860,7 +2846,6 @@ namespace Max_Gpu_Roi
             filteredSearchResults.Clear();
 
             // Go through all gpus in results and apply filters
-            var progress = 0;
             foreach (ListViewItem item in CurrentSearchResults)
             {
                 var GpuAndCalc = item.Tag as dynamic;
@@ -3208,5 +3193,7 @@ namespace Max_Gpu_Roi
             catch { index = 0; }            
             return index;
         }
+
+
     }
 }

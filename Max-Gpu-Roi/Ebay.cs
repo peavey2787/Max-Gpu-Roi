@@ -75,7 +75,7 @@ namespace Max_Gpu_Roi
 
         }
 
-       
+
 
         /// <summary>
         /// Returns the lowest priced item based on a given search phrase. Also uses filters 
@@ -99,10 +99,10 @@ namespace Max_Gpu_Roi
                 return ebayItems;
             }
 
-            // If nvidia and a possible lhr/non lhr confusion specify non lhr unless gpu.lhr is true
-            if (gpu.Manufacturer.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum) 
-                && parsedModelNum > 3000
-                && parsedModelNum != 3050 )
+            // If nvidia and a possible lhr/non lhr confusion specify non lhr unless gpu is lhr
+            if (gpu.Manufacturer.ToLower() == "nvidia" && int.TryParse(gpu.ModelNumber, out var parsedModelNum)
+                && parsedModelNum > 3000 && parsedModelNum < 3090
+                && parsedModelNum != 3050 && parsedModelNum != 3070)
             {
                 if (gpu.Lhr)
                     searchPhrase += " lhr"; // Putting lhr in the search phrase 2x seems to return more accurate results
@@ -116,17 +116,15 @@ namespace Max_Gpu_Roi
             var versionSuffix = gpu.VersionSuffix == null ? "" : gpu.VersionSuffix.ToLower();
 
             if (version == "r9" || model == "radeon" || model == "vega")
-                { }
+            { }
             else if (gpu.Manufacturer.ToLower() == "amd" && gpu.VramSize > 0)
                 searchPhrase += " " + gpu.VramSize + "gb";
 
             // Convert all spaces to %20 for browser            
             var url = BaseUrl + "search?q=" + Uri.EscapeDataString(searchPhrase);
 
-                try
-                {
-
-
+            try
+            {
                 HttpClient hc = new HttpClient();
                 hc.DefaultRequestHeaders.Add("Authorization", "Bearer :" + AppAccessToken);
                 hc.DefaultRequestHeaders.Add("X-EBAY-C-MARKETPLACE-ID", "EBAY-US");
@@ -153,8 +151,9 @@ namespace Max_Gpu_Roi
                         && !item.title.ToLower().Contains("artifact") && item.title.ToLower().Contains(gpu.ModelNumber)
                         && item.title.ToLower().Contains(versionSuffix) && !item.title.ToLower().Contains("water block for")
                         && !item.title.ToLower().Contains("water-block for") && !item.title.ToLower().Contains("waterblock for")
-                        && !item.title.ToLower().Contains("bridge") && !item.title.ToLower().Contains("lego") && !item.title.ToLower().Contains("nvlink connector") 
-                        && !item.title.ToLower().Contains("jersey") && !item.title.ToLower().Contains("to connect 2") && !item.title.ToLower().Contains("heatsink only") )
+                        && !item.title.ToLower().Contains("bridge") && !item.title.ToLower().Contains("lego") && !item.title.ToLower().Contains("nvlink connector")
+                        && !item.title.ToLower().Contains("jersey") && !item.title.ToLower().Contains("to connect 2") && !item.title.ToLower().Contains("heatsink only")
+                        && !item.title.ToLower().Contains("mining rig"))
                     {
 
                         // Don't get non-lhr options if looking for lhr cards
@@ -195,7 +194,7 @@ namespace Max_Gpu_Roi
                         var itemPrice = double.Parse(item.price.value) + shippingPrice;
 
                         var lowestEbayItem = new EbayItem();
-                        var rnd = new Random();                        
+                        var rnd = new Random();
                         lowestEbayItem.Id = rnd.Next(99).ToString();
                         searchPhrase = searchPhrase.Replace("lhr lhr", "lhr"); // Remove double lhr 
                         lowestEbayItem.Name = searchPhrase;

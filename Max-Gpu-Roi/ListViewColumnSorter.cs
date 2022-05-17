@@ -145,14 +145,14 @@ public class ListViewColumnSorter : IComparer
         item1 = item1.Replace(" months", ""); // remove months        
 
         // Put gpus with 0/negative Roi at the end
-        if (int.TryParse(item1, out var parsedItem1) && parsedItem1 <= 0)
+        if (double.TryParse(item1, out var parsedItem1) && parsedItem1 <= 0)
             item1 = "10000";
 
         var item2 = itemY.SubItems[Constants.Roi].Text;
         item2 = item2.Replace(" months", ""); // remove months      
 
         // Put gpus with 0/negative Roi at the end
-        if (int.TryParse(item2, out var parsedItem2) && parsedItem2 <= 0)
+        if (double.TryParse(item2, out var parsedItem2) && parsedItem2 <= 0)
             item2 = "10000";
 
         return CompareNumbers(item1, item2);
