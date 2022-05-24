@@ -469,7 +469,7 @@ namespace Max_Gpu_Roi
         }
         private Task PerformCalculations()
         {
-            return Task.Run( async () =>
+            return Task<bool>.Run( async () =>
             {
                 // Get the list of gpus
                 var gpus = GetMasterGpuList();
@@ -506,6 +506,8 @@ namespace Max_Gpu_Roi
 
                 await Task.WhenAll(tasks);
 
+                EditingGpuList = false;
+
                 // Reset progress bar
                 progressBar.InvokeIfRequired(c => { c.Value = 0; });
 
@@ -516,6 +518,8 @@ namespace Max_Gpu_Roi
                 // Reset hodl coin
                 searchingByHodlPrice = false;
                 HodlCoin.InvokeIfRequired(h => { h.Text = ""; });
+
+                return true;
             });
         }
         private async Task<Gpu> PerformCalculationsOnAllHashrates(Gpu gpu)
@@ -667,7 +671,7 @@ namespace Max_Gpu_Roi
         }
         private ListViewItem CreateResultsListviewItem(Gpu gpu, Hashrate hashrate)
         {
-            if (gpu == null || hashrate == null || hashrate.Calculation == null)
+            if (gpu == null || hashrate == null || hashrate.Calculation == null || hashrate.Coin == null)
                 return new ListViewItem();
 
             // Start is same for single/dual mine hashrate calculations
@@ -1791,6 +1795,7 @@ namespace Max_Gpu_Roi
 
 
         // Master Gpu List Crud
+        private bool EditingGpuList = false;
         private void SaveGpuList()
         {
             var gpus = GetMasterGpuList();
@@ -1810,13 +1815,25 @@ namespace Max_Gpu_Roi
                 MessageBox.Show("The gpu list needs to have a name.");
         }
         private List<Gpu> GetMasterGpuList()
-        {            
-            // Get the master gpu list
-            var gpus = new List<Gpu>();
-            GpuLists.InvokeIfRequired(g => { gpus = g.SelectedItems[0].Tag as List<Gpu>; });
-            if (gpus == null)
-                gpus = new List<Gpu>();
-            return gpus;
+        {
+            while(EditingGpuList)
+            {
+                System.Threading.Thread.Sleep(500);
+            }
+
+            if (!EditingGpuList)
+            {
+                EditingGpuList = true;
+
+                // Get the master gpu list
+                var gpus = new List<Gpu>();
+                GpuLists.InvokeIfRequired(g => { gpus = g.SelectedItems[0].Tag as List<Gpu>; });
+                if (gpus == null)
+                    gpus = new List<Gpu>();
+                return gpus;
+            }
+
+            return new List<Gpu>();
         }
         private void UpdateGpuInMasterGpuList(Gpu gpu)
         {
@@ -1838,6 +1855,8 @@ namespace Max_Gpu_Roi
 
             // Add master list back to gui and update gpu count
             GpuLists.InvokeIfRequired(g => { g.SelectedItems[0].Tag = gpus; });
+
+            EditingGpuList = false;
         }
         private void RemoveGpuInMasterGpuList(Gpu gpu)
         {
@@ -1849,6 +1868,8 @@ namespace Max_Gpu_Roi
 
             // Add master list back to gui and update gpu count
             GpuLists.InvokeIfRequired(g => { g.SelectedItems[0].Tag = gpus; g.SelectedItems[0].SubItems[1].Text = gpus.Count.ToString(); });
+
+            EditingGpuList = false;
         }
         private void AddGpuToGpuList(Gpu gpu)
         {
@@ -1860,6 +1881,8 @@ namespace Max_Gpu_Roi
 
             // Add master list back to gui list name tag and increase gpu count
             GpuLists.InvokeIfRequired(g => { g.SelectedItems[0].Tag = gpus; g.SelectedItems[0].SubItems[1].Text = gpus.Count.ToString(); });
+
+            EditingGpuList = false;
         }
         // For updated gui and master list when editing gpus
         private void UpdateGpuList(bool removeSelectedGpu = false, bool getGpuInfoFromUserInput = false)
