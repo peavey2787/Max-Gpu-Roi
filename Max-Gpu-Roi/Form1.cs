@@ -244,15 +244,7 @@ namespace Max_Gpu_Roi
             errorCountDownTimer.Elapsed += new ElapsedEventHandler(OnErrorCountDownTimerTickEvent);
             errorCountDownTimer.Interval = 900; // 1 secs
 
-            Task<Bitmap>.Factory.StartNew(() =>
-            {
-                Object rm = Properties.Resources.ResourceManager.GetObject("space-background");
-                Bitmap myImage = (Bitmap)rm;
-                return myImage;
-            }).ContinueWith(t =>
-            {
-                this.BackgroundImage = t.Result;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+            LoadBackgroundImage();
         }
         private async void LoadDefaults()
         {
@@ -352,7 +344,28 @@ namespace Max_Gpu_Roi
         {
             this.WindowState = FormWindowState.Minimized;
         }
-
+        private void MaxGpuRoi_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Normal && this.BackgroundImage == null)
+                LoadBackgroundImage();
+            else if (WindowState == FormWindowState.Minimized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.BackgroundImage = null;
+            }
+        }
+        private void LoadBackgroundImage()
+        {
+            Task<Bitmap>.Factory.StartNew(() =>
+            {
+                Object rm = Properties.Resources.ResourceManager.GetObject("space-background");
+                Bitmap myImage = (Bitmap)rm;
+                return myImage;
+            }).ContinueWith(t =>
+            {
+                this.BackgroundImage = t.Result;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
         // Results
         private void MaxMyROI_Click(object sender, EventArgs e)
@@ -3216,7 +3229,5 @@ namespace Max_Gpu_Roi
             catch { index = 0; }            
             return index;
         }
-
-
     }
 }

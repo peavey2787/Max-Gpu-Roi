@@ -1399,6 +1399,7 @@
             this.Text = "Max-Gpu-Roi";
             this.Load += new System.EventHandler(this.MaxGpuRoi_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MaxGpuRoi_MouseDown);
+            this.Resize += new System.EventHandler(this.MaxGpuRoi_Resize);
             this.pnlGpuLists.ResumeLayout(false);
             this.pnlGpuLists.PerformLayout();
             this.pnlCoinLists.ResumeLayout(false);
