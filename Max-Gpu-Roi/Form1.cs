@@ -177,7 +177,7 @@ namespace Max_Gpu_Roi
             ResultsList.Columns.Add("Crypto Rewards", -2, HorizontalAlignment.Center);
             ResultsList.Columns.Add("Usd Profits", -2, HorizontalAlignment.Center);
             ResultsList.Columns.Add("Crypto Profits", -2, HorizontalAlignment.Center);
-            ResultsList.Columns.Add("R-O-I", -2, HorizontalAlignment.Center);
+            ResultsList.Columns.Add("Break Even", -2, HorizontalAlignment.Center);
             ResultsList.Columns[Constants.Coin].Width = 69;
             ResultsList.Columns[Constants.Gpu].Width = 91;
             ResultsList.Columns[Constants.Manufacturer].Width = 48;
@@ -632,12 +632,11 @@ namespace Max_Gpu_Roi
                     if (gpu.HasDualMiningHashrate(hashrate) && hashrate.DualMineHashrate.Calculation != null)
                         calc = Calculation.AddCalculations(hashrate.Calculation, hashrate.DualMineHashrate.Calculation);
 
-                    // Equals 0
-                    if (calc.ROI == 0 && quickestRoi.Calculation.ROI == 0)
+                    // Gpu didn't have a cost so return highest usd profits
+                    if ( (calc.ROI == 0 && quickestRoi.Calculation.ROI == 0)
+                        || (calc.ROI == 0 && calc.UsdProfits > quickestRoi.Calculation.UsdProfits) )
                     {
-                        // Gpu didn't have a cost so return highest usd profits
-                        if (calc.UsdProfits > quickestRoi.Calculation.UsdProfits)
-                            quickestRoi = hashrate;
+                        quickestRoi = hashrate;
                     }
                     // closest to 0 when roi is positive an quickest is negative closest to 0 when roi and quickest is positive in middle and closest to 0 when roi and quickest is negative on right 
                     else if ((calc.ROI > 0 && quickestRoi.Calculation.ROI < 0 && calc.ROI > quickestRoi.Calculation.ROI)
@@ -703,7 +702,7 @@ namespace Max_Gpu_Roi
             li.SubItems.Add("$" + gpu.PricePaid.ToString("0.00"));
 
             // If not a dual mine hashrate calculation
-            if (hashrate.DualMineHashrate == null || hashrate.DualMineHashrate.Calculation == null)
+            if (!gpu.HasDualMiningHashrate(hashrate) || hashrate.DualMineHashrate.Calculation != null)
             {
                 var calculation = hashrate.Calculation;
 

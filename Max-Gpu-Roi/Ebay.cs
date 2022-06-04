@@ -153,7 +153,7 @@ namespace Max_Gpu_Roi
                         && !item.title.ToLower().Contains("water-block for") && !item.title.ToLower().Contains("waterblock for")
                         && !item.title.ToLower().Contains("bridge") && !item.title.ToLower().Contains("lego") && !item.title.ToLower().Contains("nvlink connector")
                         && !item.title.ToLower().Contains("jersey") && !item.title.ToLower().Contains("to connect 2") && !item.title.ToLower().Contains("heatsink only")
-                        && !item.title.ToLower().Contains("mining rig"))
+                        && !item.title.ToLower().Contains("mining rig") && !item.title.ToLower().Contains("enclosure only"))
                     {
 
                         // Don't get non-lhr options if looking for lhr cards
