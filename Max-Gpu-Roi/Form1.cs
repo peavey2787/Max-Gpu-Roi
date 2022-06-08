@@ -701,60 +701,11 @@ namespace Max_Gpu_Roi
             li.SubItems.Add("$" + gpu.EbayPrice.ToString("0.00"));
             li.SubItems.Add("$" + gpu.PricePaid.ToString("0.00"));
 
-            // If not a dual mine hashrate calculation
-            if (!gpu.HasDualMiningHashrate(hashrate) || hashrate.DualMineHashrate.Calculation != null)
-            {
-                var calculation = hashrate.Calculation;
-
-                // Cost per $
-                li.SubItems.Add("$" + calculation.CostPerMhs.ToString("0.00"));
-
-                // Fee
-                var usdCosts = calculation.UsdPoolMinerFeeCost + calculation.UsdElectricityCost;
-                li.SubItems.Add("$" + usdCosts.ToString("0.00") + " / $" + (usdCosts * 7).ToString("0.00") + " / $" + (usdCosts * 30).ToString("0.00"));
-
-                // Crypto costs
-                if (double.IsInfinity(calculation.CryptoElectricityCost))
-                    calculation.CryptoElectricityCost = 0;
-
-                var cryptoCosts = decimal.Round((decimal)(calculation.CryptoPoolMinerFeeCost + calculation.CryptoElectricityCost), Constants.DigitsToRound);
-                li.SubItems.Add(cryptoCosts.ToString() + " / " + (cryptoCosts * 7).ToString() + " / " + (cryptoCosts * 30));
-
-                // Hashrate
-                li.SubItems.Add(ConvertHashrateToReadable(hashrate.HashrateSpeed));
-
-                // Watts
-                var watts = gpu.Watts;
-                if (hashrate.Watts > 0)
-                    watts = hashrate.Watts;
-                li.SubItems.Add(watts.ToString());
-
-                // Efficiency
-                li.SubItems.Add(calculation.Efficiency.ToString("0.000") + " kw/mhs");
-
-                // Usd Rewards
-                li.SubItems.Add("$" + calculation.UsdRewards.ToString("0.00") + " / $" + (calculation.UsdRewards * 7).ToString("0.00") + " / $" + (calculation.UsdRewards * 30).ToString("0.00"));
-
-                if (double.IsInfinity(calculation.CryptoRewards))
-                    calculation.CryptoRewards = 0;
-
-                var cryptoRewards = decimal.Round((decimal)calculation.CryptoRewards, Constants.DigitsToRound);
-                li.SubItems.Add(cryptoRewards.ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoRewards * 7).ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoRewards * 30).ToString("0.00") + " " + hashrate.Coin.coin);
-                li.SubItems.Add("$" + calculation.UsdProfits.ToString("0.00") + " / $" + (calculation.UsdProfits * 7).ToString("0.00") + " / $" + (calculation.UsdProfits * 30).ToString("0.00"));
-
-                if (double.IsInfinity(calculation.CryptoProfits))
-                    calculation.CryptoProfits = 0;
-
-                var cryptoProfits = decimal.Round((decimal)calculation.CryptoProfits, Constants.DigitsToRound);
-                li.SubItems.Add(cryptoProfits.ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoProfits * 7).ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoProfits * 30).ToString("0.00") + " " + hashrate.Coin.coin);
-                li.SubItems.Add(calculation.ROI.ToString("0.00") + " months");
-
-                return li;
-            }
-            else
+            // If a dual mine hashrate calculation
+            if (gpu.HasDualMiningHashrate(hashrate))
             {
                 li.Text += "/" + hashrate.DualMineHashrate.Coin.coin;
-                
+
                 // Dual mine hashrate calculation
                 li.SubItems.Add("$" + hashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.Coin.coin + " / $" + hashrate.DualMineHashrate.Calculation.CostPerMhs.ToString("0.00") + " " + hashrate.DualMineHashrate.Coin.coin);
 
@@ -843,6 +794,55 @@ namespace Max_Gpu_Roi
 
                 // ROI
                 li.SubItems.Add(roi.ToString("0.00") + " months");
+
+                return li;
+            }
+            else
+            {
+                var calculation = hashrate.Calculation;
+
+                // Cost per $
+                li.SubItems.Add("$" + calculation.CostPerMhs.ToString("0.00"));
+
+                // Fee
+                var usdCosts = calculation.UsdPoolMinerFeeCost + calculation.UsdElectricityCost;
+                li.SubItems.Add("$" + usdCosts.ToString("0.00") + " / $" + (usdCosts * 7).ToString("0.00") + " / $" + (usdCosts * 30).ToString("0.00"));
+
+                // Crypto costs
+                if (double.IsInfinity(calculation.CryptoElectricityCost))
+                    calculation.CryptoElectricityCost = 0;
+
+                var cryptoCosts = decimal.Round((decimal)(calculation.CryptoPoolMinerFeeCost + calculation.CryptoElectricityCost), Constants.DigitsToRound);
+                li.SubItems.Add(cryptoCosts.ToString() + " / " + (cryptoCosts * 7).ToString() + " / " + (cryptoCosts * 30));
+
+                // Hashrate
+                li.SubItems.Add(ConvertHashrateToReadable(hashrate.HashrateSpeed));
+
+                // Watts
+                var watts = gpu.Watts;
+                if (hashrate.Watts > 0)
+                    watts = hashrate.Watts;
+                li.SubItems.Add(watts.ToString());
+
+                // Efficiency
+                li.SubItems.Add(calculation.Efficiency.ToString("0.000") + " kw/mhs");
+
+                // Usd Rewards
+                li.SubItems.Add("$" + calculation.UsdRewards.ToString("0.00") + " / $" + (calculation.UsdRewards * 7).ToString("0.00") + " / $" + (calculation.UsdRewards * 30).ToString("0.00"));
+
+                if (double.IsInfinity(calculation.CryptoRewards))
+                    calculation.CryptoRewards = 0;
+
+                var cryptoRewards = decimal.Round((decimal)calculation.CryptoRewards, Constants.DigitsToRound);
+                li.SubItems.Add(cryptoRewards.ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoRewards * 7).ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoRewards * 30).ToString("0.00") + " " + hashrate.Coin.coin);
+                li.SubItems.Add("$" + calculation.UsdProfits.ToString("0.00") + " / $" + (calculation.UsdProfits * 7).ToString("0.00") + " / $" + (calculation.UsdProfits * 30).ToString("0.00"));
+
+                if (double.IsInfinity(calculation.CryptoProfits))
+                    calculation.CryptoProfits = 0;
+
+                var cryptoProfits = decimal.Round((decimal)calculation.CryptoProfits, Constants.DigitsToRound);
+                li.SubItems.Add(cryptoProfits.ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoProfits * 7).ToString("0.00") + " " + hashrate.Coin.coin + " / " + (cryptoProfits * 30).ToString("0.00") + " " + hashrate.Coin.coin);
+                li.SubItems.Add(calculation.ROI.ToString("0.00") + " months");
 
                 return li;
             }
@@ -954,7 +954,6 @@ namespace Max_Gpu_Roi
             {
                 var start = selectedCoin.IndexOf("/ ") + 2;
                 dualCoin = selectedCoin.Substring(start, selectedCoin.Length - start);
-
                 selectedCoin = selectedCoin.Substring(0, start - 3);
             }
 
@@ -962,17 +961,21 @@ namespace Max_Gpu_Roi
             var gpuAndHash = ResultsList.SelectedItems[0].Tag as dynamic;
             var gpu = gpuAndHash.Gpu;
 
+            // Go through each hashrate
             for(int i = 0; i < gpu.Hashrates.Count; i++)
             {
+                // If this hashrate is for the selected coin
                 if (gpu.Hashrates[i] != null && gpu.Hashrates[i].Coin != null 
                     && gpu.Hashrates[i].Coin.coin.ToLower() == selectedCoin.ToLower())
                 {
                     // If the user selected just one coin this is the right hashrate
                     if (dualCoin == "" && (gpu.Hashrates[i].DualMineHashrate == null || gpu.Hashrates[i].DualMineHashrate.Coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin == null || gpu.Hashrates[i].DualMineHashrate.Coin.coin.Length == 0))
-                    { }
+                    {
+                    }
                     // If the user selected a coin with a dual coin this is the right hashrate
                     else if (dualCoin != "" && gpu.Hashrates[i].DualMineHashrate != null && gpu.Hashrates[i].DualMineHashrate.Coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin != null && gpu.Hashrates[i].DualMineHashrate.Coin.coin.ToLower() == dualCoin.ToLower())
-                    { }
+                    {
+                    }
                     else // Skip everything else (user selects eth but this is eth/ton) or (user selected eth/ton but this is just eth)
                         continue;
 
