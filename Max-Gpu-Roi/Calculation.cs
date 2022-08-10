@@ -63,11 +63,11 @@ namespace Max_Gpu_Roi
 
             // Crypto rewards
             var cryptoRewardsCalculated = (coin.reward * hashrate) * 24;
-            reward.CryptoRewards = cryptoRewardsCalculated;
+            reward.CryptoRewards = (double)cryptoRewardsCalculated;
 
             // Usd rewards
             var usdRewardsCalculated = cryptoRewardsCalculated * price;
-            reward.UsdRewards = usdRewardsCalculated;
+            reward.UsdRewards = (double)usdRewardsCalculated;
 
             // Usd Profits 
             var poolMinerFeeCost = usdRewardsCalculated * poolMinerFee; // Get pool/miner fee
@@ -75,17 +75,17 @@ namespace Max_Gpu_Roi
             usdRewardsCalculated -= poolMinerFeeCost; // Subtract pool/miner fee
             usdRewardsCalculated -= electrictyCosts; // Subtract electric costs
             reward.UsdElectricityCost = electrictyCosts;
-            reward.UsdPoolMinerFeeCost = poolMinerFeeCost;
-            reward.UsdProfits = usdRewardsCalculated;
+            reward.UsdPoolMinerFeeCost = (double)poolMinerFeeCost;
+            reward.UsdProfits = (double)usdRewardsCalculated;
 
             // Crypto profits
             var cryptoPoolMinerFeeCost = cryptoRewardsCalculated * poolMinerFee; // Get pool/miner fee
             var cryptoElecCosts = electrictyCosts / price; // Calculate electricity costs
             cryptoRewardsCalculated -= cryptoPoolMinerFeeCost; // Subtract pool/miner fee
             cryptoRewardsCalculated -= -cryptoElecCosts; // Subtract electric costs
-            reward.CryptoElectricityCost = cryptoElecCosts;
-            reward.CryptoPoolMinerFeeCost = cryptoPoolMinerFeeCost;
-            reward.CryptoProfits = cryptoRewardsCalculated;
+            reward.CryptoElectricityCost = (double)cryptoElecCosts;
+            reward.CryptoPoolMinerFeeCost = (double)cryptoPoolMinerFeeCost;
+            reward.CryptoProfits = (double)cryptoRewardsCalculated;
 
             // Efficiency mhs/watts
             var hashSize = GetHashrateSize(hashrate);
