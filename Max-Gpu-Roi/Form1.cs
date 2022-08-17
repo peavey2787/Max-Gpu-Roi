@@ -1845,6 +1845,8 @@ namespace Max_Gpu_Roi
                 GpuLists.InvokeIfRequired(g => { gpus = g.SelectedItems[0].Tag as List<Gpu>; });
                 if (gpus == null)
                     gpus = new List<Gpu>();
+
+                EditingGpuList = false;
                 return gpus;
             }
 
@@ -1857,16 +1859,23 @@ namespace Max_Gpu_Roi
 
             // Get old gpu index to replace in master list
             var index = gpus.FindIndex(g => g.Id == gpu.Id);
-            
+
             // Show error if gpu not found
-            if (index == -1)
+            if (index == -1 && gpus.Count > 0)
             {
                 MessageBox.Show("Gpu with id: " + gpu.Id + " was not found in the gpu list and was unable to be updated");
+                EditingGpuList = false;
                 return;
             }
-
-            gpus.RemoveAt(index);
-            gpus.Insert(index, gpu);
+            else if (index == -1 && gpus.Count == 0)
+            {
+                gpus.Add(gpu);
+            }
+            else
+            {
+                gpus.RemoveAt(index);
+                gpus.Insert(index, gpu);
+            }
 
             // Add master list back to gui and update gpu count
             GpuLists.InvokeIfRequired(g => { g.SelectedItems[0].Tag = gpus; });
@@ -2435,6 +2444,9 @@ namespace Max_Gpu_Roi
             EnableUserInput();
 
             UpdateGpuList(false, true);
+
+            // Update gui list name
+            GpuLists.SelectedItems[0].Text = GpuListName.Text;
         }
         private void CancelGpuHashrates_Click(object sender, EventArgs e)
         {

@@ -141,19 +141,22 @@ namespace Max_Gpu_Roi
                 // get lowest price with user rating atleast 97% and over 100 items sold 
                 foreach (var item in root.itemSummaries)
                 {
+                    var title = item.title.ToLower();
+
                     // only include buy it now options from the United States for $100 or more
                     if (item.buyingOptions.Count > 0 && item.buyingOptions[0] == "FIXED_PRICE" && item.itemLocation.country == "US"
                         && item.seller.feedbackScore > 100 && double.Parse(item.seller.feedbackPercentage) > 97
                         && double.Parse(item.price.value) > 100 && item.condition != "For parts or not working"
-                        && !item.title.ToLower().Contains("cooler only") && !item.title.ToLower().Contains("fan only") && !item.title.ToLower().Contains("fans only")
-                        && !item.title.ToLower().Contains("no fan") && !item.title.ToLower().Contains("missing fan")
-                        && !item.title.ToLower().Contains("read description") && !item.title.ToLower().Contains("fans broken") && !item.title.ToLower().Contains("fan broken")
-                        && !item.title.ToLower().Contains("artifact") && item.title.ToLower().Contains(gpu.ModelNumber)
-                        && item.title.ToLower().Contains(versionSuffix) && !item.title.ToLower().Contains("water block for")
-                        && !item.title.ToLower().Contains("water-block for") && !item.title.ToLower().Contains("waterblock for")
-                        && !item.title.ToLower().Contains("bridge") && !item.title.ToLower().Contains("lego") && !item.title.ToLower().Contains("nvlink connector")
-                        && !item.title.ToLower().Contains("jersey") && !item.title.ToLower().Contains("to connect 2") && !item.title.ToLower().Contains("heatsink only")
-                        && !item.title.ToLower().Contains("mining rig") && !item.title.ToLower().Contains("enclosure only"))
+                        && !title.Contains("for parts") && !title.Contains("parts only") && !title.Contains("broken") && !title.Contains("not working")
+                        && !title.Contains("cooler only") && !title.Contains("fan only") && !title.Contains("fans only")
+                        && !title.Contains("no fan") && !title.Contains("missing fan")
+                        && !title.Contains("read description") && !title.Contains("fans broken") && !title.Contains("fan broken")
+                        && !title.Contains("artifact") && title.Contains(gpu.ModelNumber)
+                        && title.Contains(versionSuffix) && !title.Contains("water block for") && !title.Contains("bykski")
+                        && !title.Contains("water-block for") && !title.Contains("waterblock for")
+                        && !title.Contains("bridge") && !title.Contains("lego") && !title.Contains("nvlink connector")
+                        && !title.Contains("jersey") && !title.Contains("to connect 2") && !title.Contains("heatsink only")
+                        && !title.Contains("mining rig") && !title.Contains("enclosure only"))
                     {
 
                         // Don't get non-lhr options if looking for lhr cards
@@ -161,29 +164,29 @@ namespace Max_Gpu_Roi
                             || searchPhrase.ToLower().Contains("fhr") || !searchPhrase.ToLower().Contains("lhr"))
                         {
                             // non lhr card search 
-                            if (item.title.ToLower().Contains("fhr") || item.title.ToLower().Contains("non-lhr")
-                            || item.title.ToLower().Contains("non lhr") || item.title.ToLower().Contains("no lhr")
-                            || item.title.ToLower().Contains("founders edition") || item.title.ToLower().Contains(gpuModelNumber + "fe"))
+                            if (title.Contains("fhr") || title.Contains("non-lhr")
+                            || title.Contains("non lhr") || title.Contains("no lhr")
+                            || title.Contains("founders edition") || title.Contains(gpuModelNumber + "fe"))
                             {
                                 // this is specifically a non lhr card 
                             }
-                            else if (item.title.ToLower().Contains("lhr"))
+                            else if (title.Contains("lhr"))
                                 continue; // skip this lhr card we looking for non lhr
                         }
-                        else if (searchPhrase.ToLower().Contains("lhr") && item.title.ToLower().Contains("fhr") || item.title.ToLower().Contains("non-lhr")
-                            || item.title.ToLower().Contains("non lhr") || item.title.ToLower().Contains("no lhr"))
+                        else if (searchPhrase.ToLower().Contains("lhr") && title.Contains("fhr") || title.Contains("non-lhr")
+                            || title.Contains("non lhr") || title.Contains("no lhr"))
                         {
                             // searching for lhr card but this is a non lhr card skip this one                            
                             continue;
                         }
 
                         // If we not looking for ti and this is a ti card skit it 
-                        if (!searchPhrase.ToLower().Contains("ti") && (item.title.ToLower().Contains(gpuModelNumber + " ti")
-                            || item.title.ToLower().Contains(gpuModelNumber + "ti")))
+                        if (!searchPhrase.ToLower().Contains("ti") && (title.Contains(gpuModelNumber + " ti")
+                            || title.Contains(gpuModelNumber + "ti")))
                             continue;
                         // Or if this is a ti card and we looking for ti card
-                        else if (searchPhrase.ToLower().Contains("ti") && (item.title.ToLower().Contains(gpuModelNumber + "ti")
-                            || item.title.ToLower().Contains(gpuModelNumber + " ti")))
+                        else if (searchPhrase.ToLower().Contains("ti") && (title.Contains(gpuModelNumber + "ti")
+                            || title.Contains(gpuModelNumber + " ti")))
                         { }
 
 

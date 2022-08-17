@@ -109,13 +109,13 @@ namespace Max_Gpu_Roi
         }
         public static double GetHashrateSize(double hashrate)
         {
-            var zettaHash = hashrate / 1e+21;
-            var exaHash = hashrate / 1000000000000000000;
-            var petaHash = hashrate / 1000000000000000;
-            var teraHash = hashrate / 1000000000000;
-            var gigaHash = hashrate / 1000000000;
-            var megaHash = hashrate / 1000000;
-            var kiloHash = hashrate / 1000;
+            var zettaHash = hashrate / Constants.ZettaHash;
+            var exaHash = hashrate / Constants.ExaHash;
+            var petaHash = hashrate / Constants.PetaHash;
+            var teraHash = hashrate / Constants.TeraHash;
+            var gigaHash = hashrate / Constants.GigaHash;
+            var megaHash = hashrate / Constants.MegaHash;
+            var kiloHash = hashrate / Constants.KiloHash;
 
             if (zettaHash > 1)
                 return Constants.ZettaHash;
