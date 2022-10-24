@@ -152,7 +152,7 @@ namespace Max_Gpu_Roi
                         && !title.Contains("no fan") && !title.Contains("missing fan")
                         && !title.Contains("read description") && !title.Contains("fans broken") && !title.Contains("fan broken")
                         && !title.Contains("artifact") && title.Contains(gpu.ModelNumber)
-                        && title.Contains(versionSuffix) && !title.Contains("water block for") && !title.Contains("bykski")
+                        && title.Contains(versionSuffix) && !title.Contains("water block for") && !title.Contains("bykski") && !title.Contains("hybrid kit")
                         && !title.Contains("water-block for") && !title.Contains("waterblock for")
                         && !title.Contains("bridge") && !title.Contains("lego") && !title.Contains("nvlink connector")
                         && !title.Contains("jersey") && !title.Contains("to connect 2") && !title.Contains("heatsink only")

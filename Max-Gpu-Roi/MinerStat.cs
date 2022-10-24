@@ -221,13 +221,13 @@ namespace Max_Gpu_Roi
         public string? id { get; set; }
         public string? coin { get; set; }
         public string? name { get; set; }
-        public string? type { get; set; }
+        public object? type { get; set; }
         public string? algorithm { get; set; }
         public double? network_hashrate { get; set; }
         public object? difficulty { get; set; }
         public double? reward { get; set; }
         public string? reward_unit { get; set; }
-        public double? reward_block { get; set; }
+        public object? reward_block { get; set; }
         public double? price { get; set; }
         public double? volume { get; set; }
         public int? updated { get; set; }

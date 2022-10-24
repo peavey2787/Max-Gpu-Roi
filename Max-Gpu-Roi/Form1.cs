@@ -1374,7 +1374,7 @@ namespace Max_Gpu_Roi
             {
                 foreach (var coin in defaultCoins)
                 {
-                    if (coin.type == "coin")
+                    if (coin.type.ToString() == "coin")
                     {
                         // Extract only useful data from minerstats coinInfo
                         var li = new ListViewItem(coin.algorithm);
